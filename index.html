@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E5A42">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Daily Organoleptic">
+<title>Daily Organoleptic Report</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --canvas:#FAF8F5; --card:#FFFFFF; --bd:#E7E2DA; --ink:#1F1B16; --mute:#6B645A;
+  --emerald:#0E5A42; --emerald-soft:#E8F3EE; --rose:#B84A62; --rose-soft:#FDF2F5;
+  --accent:var(--emerald); --accent-soft:var(--emerald-soft); --r:14px;
+  --g-bg:#E4F3EA; --g-fg:#1B6B45; --a-bg:#FFF1D6; --a-fg:#8A5A00; --r-bg:#FCE4E8; --r-fg:#A3162F; --n-bg:#EFEBE5; --n-fg:#5B554C;
+}
+body[data-mode="on"]{ --accent:var(--rose); --accent-soft:var(--rose-soft); }
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--canvas);color:var(--ink);font:16px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+button,select,input,textarea{font:inherit;color:inherit}
+#app{display:flex;flex-direction:column;min-height:100dvh}
+.strip{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 12px;background:var(--card);border-bottom:1px solid var(--bd)}
+.strip h1{font-size:18px;margin:0 auto 0 0;color:var(--emerald);white-space:nowrap}
+body[data-mode="on"] .strip h1{color:var(--rose)}
+.strip select,.strip input{height:44px;border:1.5px solid var(--bd);border-radius:12px;padding:0 10px;background:#fff;font-size:16px}
+#shift{width:118px}#op{width:150px}#batch{width:150px;text-transform:uppercase}
+.tag{border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;background:var(--emerald-soft);color:var(--emerald)}
+.tag.off{background:var(--r-bg);color:var(--r-fg)}
+.tag.q{background:var(--a-bg);color:var(--a-fg)}
+.hide{display:none!important}
+.seg{display:grid;grid-template-columns:1fr 1fr;margin:10px 12px 0;border:1.5px solid var(--bd);border-radius:var(--r);overflow:hidden;background:#fff}
+.seg button{border:0;background:#fff;min-height:54px;padding:6px 10px;text-align:center;cursor:pointer;line-height:1.15}
+.seg button b{display:block;font-size:17px}.seg button span{font-size:14px;color:var(--mute)}
+.seg button[aria-pressed="true"]{color:#fff}.seg button[aria-pressed="true"] span{color:#fff;opacity:.9}
+#modeOff[aria-pressed="true"]{background:var(--emerald)}#modeOn[aria-pressed="true"]{background:var(--rose)}
+main{flex:1;display:flex;flex-direction:column;gap:10px;padding:10px 12px 12px}
+.col{display:flex;flex-direction:column;gap:10px;min-height:0}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:10px 12px}
+.lbl{font-size:13px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{min-height:44px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--bd);background:#fff;font-weight:600;font-size:16px;cursor:pointer;text-align:center;line-height:1.15}
+.pill[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.pill.suggest{outline:3px solid var(--a-fg);outline-offset:1px}
+.pill.empty{color:var(--mute);border-style:dashed}
+#sku .pill{border-radius:12px}
+.skuwrap{min-height:0}
+.note{background:var(--a-bg);color:var(--a-fg);border-radius:12px;padding:10px 12px;font-size:15px;font-weight:600}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.reading label{display:block}
+.reading input{width:100%;height:52px;font-size:30px;font-weight:700;text-align:center;border:1.5px solid var(--bd);border-radius:12px;background:#fff}
+.reading input:focus,.tx:focus,textarea:focus{outline:3px solid var(--accent-soft);border-color:var(--accent)}
+.badge{display:inline-block;margin-top:6px;border-radius:999px;padding:5px 12px;font-size:14px;font-weight:800}
+.spec{font-size:14px;color:var(--mute);margin-top:4px;min-height:18px}
+.GREEN{background:var(--g-bg);color:var(--g-fg)}.AMBER{background:var(--a-bg);color:var(--a-fg)}.RED{background:var(--r-bg);color:var(--r-fg)}.NA,.MISSING{background:var(--n-bg);color:var(--n-fg)}
+#overall{border-radius:12px;text-align:center;font-weight:900;font-size:22px;padding:12px 8px}
+.voice{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+#mic{height:52px;border:0;border-radius:var(--r);background:var(--accent);color:#fff;font-size:19px;font-weight:800;cursor:pointer}
+#mic.live{background:var(--r-fg);animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.75}}
+#lang{height:52px;border:1.5px solid var(--bd);border-radius:12px;padding:0 8px;background:#fff}
+textarea{width:100%;border:1.5px solid var(--bd);border-radius:12px;padding:10px;background:#fff;resize:none;font-size:17px}
+#tx{height:48px;margin-top:8px}#remark{height:48px}#ca{height:48px}
+#vwarn{margin-top:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{min-height:44px;padding:6px 14px;border-radius:999px;border:1.5px solid var(--bd);background:var(--card);font-weight:600;cursor:pointer}
+.actions{display:grid;grid-template-columns:1fr 2fr;gap:10px}
+.actions button{height:56px;border-radius:var(--r);font-size:19px;font-weight:800;cursor:pointer;border:1.5px solid var(--bd);background:#fff}
+#log{background:var(--accent);border-color:var(--accent);color:#fff}
+#log:disabled{opacity:.4}
+.link{height:44px;border:1.5px solid var(--bd);border-radius:12px;background:#fff;padding:0 14px;font-weight:700;cursor:pointer}
+.rec{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:3px 0;border-bottom:1px solid var(--bd)}
+.rec:last-child{border:0}
+#manualWrap input{width:100%;height:48px;border:1.5px solid var(--bd);border-radius:12px;padding:0 12px;font-size:17px;margin-top:8px}
+#toast{position:fixed;left:12px;right:12px;bottom:12px;background:#1F1B16;color:#fff;padding:14px;border-radius:12px;display:none;z-index:9;font-weight:700}
+/* Landscape / tablet workspace: fits one screen, no page scroll */
+@media (min-width:1024px){
+  html,body{overflow:hidden}
+  #app{height:100dvh;min-height:0}
+  main{display:grid;grid-template-columns:5fr 6fr;min-height:0}
+  .col{overflow:auto}
+  .actions{position:sticky;bottom:0;background:var(--canvas);padding-top:6px}
+  .card{padding:8px 12px}
+  .skuwrap{flex:1;overflow:auto}
+}
+@media (max-width:679px){
+  .strip h1{font-size:16px;flex-basis:100%}
+  #shift,#op,#batch{flex:1 1 30%;width:auto}
+  .seg button b{font-size:15px}.seg button span{font-size:12px}
+  .reading input{font-size:28px}
+}
+</style>
+</head>
+<body data-mode="off">
+<div id="app">
+  <div class="strip">
+    <h1>Daily Organoleptic Report</h1>
+    <select id="shift" aria-label="Shift"><option>Morning</option><option>Afternoon</option><option>Night</option></select>
+    <input id="op" placeholder="QA operator" autocomplete="off" aria-label="QA operator">
+    <input id="batch" placeholder="Batch code" autocomplete="off" autocapitalize="characters" aria-label="Batch code">
+    <span id="net" class="tag">Online</span>
+    <span id="qn" class="tag q hide">Queue 0</span>
+    <button id="retry" type="button" class="link hide">Retry</button>
+  </div>
+  <div class="seg" role="group" aria-label="Private Labeling">
+    <button id="modeOff" type="button" aria-pressed="true"><b>Private Labeling: OFF</b><span>Barakat House Brands</span></button>
+    <button id="modeOn" type="button" aria-pressed="false"><b>Private Labeling: ON</b><span>Contract Brands</span></button>
+  </div>
+  <main>
+    <div class="col">
+      <div class="card"><div class="lbl">Stream</div><div id="stream" class="pills"></div>
+        <div id="subWrap" style="margin-top:10px"><div class="lbl">Sub-category</div><div id="sub" class="pills"></div></div></div>
+      <div class="card skuwrap"><div class="lbl">SKU &mdash; tap, or read the name aloud</div>
+        <div id="sku" class="pills"></div>
+        <div id="manualWrap" class="hide"><div id="streamNote" class="note"></div>
+          <input id="manualSku" placeholder="SKU name (manual entry, no limits)" autocomplete="off" aria-label="Manual SKU name"></div>
+        <div id="cands" class="pills" style="margin-top:8px"></div></div>
+      <div class="card"><div class="lbl">Recent (this device)</div><div id="recent"></div></div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="voice"><button id="mic" type="button">&#127908; Tap to Speak</button>
+          <select id="lang" aria-label="Language"><option value="en-AE">EN (UAE)</option><option value="en-GB">EN (UK)</option><option value="en-US">EN (US)</option></select></div>
+        <textarea id="tx" class="tx" placeholder='Say: "Green Apple Mint Lemon brix 11.2 ph 3.8 normal"' aria-label="Transcript"></textarea>
+        <div id="vwarn" class="note hide"></div>
+        <button id="parse" type="button" class="link hide">Parse</button>
+      </div>
+      <div class="card">
+        <div class="row2">
+          <div class="reading"><div class="lbl">Brix</div><input id="brix" inputmode="decimal" autocomplete="off" aria-label="Brix">
+            <span id="bs" class="badge NA">&mdash;</span><div id="bspec" class="spec"></div></div>
+          <div class="reading"><div class="lbl">pH</div><input id="ph" inputmode="decimal" autocomplete="off" aria-label="pH">
+            <span id="ps" class="badge NA">&mdash;</span><div id="pspec" class="spec"></div></div>
+        </div>
+      </div>
+      <div id="verdictCard" class="card"><div class="lbl">QC Evaluation Verdict</div><div id="overall" class="NA">&mdash;</div></div>
+      <div class="card">
+        <div class="lbl">Organoleptic</div>
+        <div id="remchips" class="chips" style="margin-top:0"></div>
+        <textarea id="remark" aria-label="Organoleptic remark" placeholder="Remark"></textarea>
+        <div id="cawrap" class="hide"><div class="lbl" style="color:var(--r-fg);margin-top:8px">Corrective action / HOLD (required for RED)</div>
+          <textarea id="ca" placeholder="e.g. Batch on HOLD, re-tested, QA notified"></textarea></div>
+      </div>
+      <div class="actions"><button id="clearBtn" type="button">Clear</button><button id="log" type="button">Log QC Result</button></div>
+    </div>
+  </main>
+</div>
+<div id="toast"></div>
+
+<!-- ============ LOGIC (pure, testable) ============ -->
+<script id="logic">
+(function (root) {
+'use strict';
+var NL = null;
+// [Stream, Sub_Category, SKU_Name, Spoken_Aliases, minPH, maxPH, minBrix, maxBrix, Brix_Rule]
+var SKUS = [
+// ---- Barakat (32) ----
+['Barakat','Fresh Juices','Pineapple Juice','Pineapple, Fresh Pineapple',3.5,4.5,9.5,13.0,'Range'],
+['Barakat','Fresh Juices','Green Juice','Green, Greens Juice',3.5,4.5,8.5,10.5,'Range'],
+['Barakat','Fresh Juices','Green Apple Juice','Green Apple, Apple Green',3.5,4.5,10.0,12.0,'Range'],
+['Barakat','Fresh Juices','Mint Lemon Juice','Mint Lemon, Lemon Mint',3.0,4.0,11.5,13.5,'Range'],
+['Barakat','Fresh Juices','Orange Ginger Juice','Orange Ginger, Ginger Orange',NL,NL,9.0,11.0,'Range'],
+['Barakat','Fresh Juices','Pomegranate Beetroot Juice','Pomegranate Beetroot, Pom Beetroot, Pom Beet',NL,NL,11.0,13.0,'Range'],
+['Barakat','Fresh Juices','Watermelon Juice','Watermelon, Fresh Watermelon',5.5,6.5,6.5,8.5,'Range'],
+['Barakat','Fresh Juices','Pomegranate Juice','Pomegranate, Pom Juice',3.5,4.5,11.5,14.0,'Range'],
+['Barakat','Fresh Juices','Carrot Juice','Carrot, Fresh Carrot',6.0,7.0,6.5,8.5,'Range'],
+['Barakat','Fresh Juices','Carrot Orange Juice','Carrot Orange, Orange Carrot',4.0,5.0,8.0,10.0,'Range'],
+['Barakat','Fresh Juices','Beetroot Orange Juice','Beetroot Orange, Beet Orange',4.0,5.0,8.5,10.5,'Range'],
+['Barakat','Fresh Juices','Sweet Melon Juice','Sweet Melon, Melon Juice',NL,NL,NL,NL,'Range'],
+['Barakat','Fresh Juices','Grapefruit Juice','Grapefruit, Pink Grapefruit, Grape Fruit',3.0,4.0,8.0,10.5,'Range'],
+['Barakat','Fresh Juices','Red Apple Juice','Red Apple, Apple Juice',3.0,4.0,11.5,14.0,'Range'],
+['Barakat','Fresh Juices','Kiwi Juice','Kiwi, Fresh Kiwi',NL,NL,NL,NL,'Range'],
+['Barakat','Fresh Juices','Strawberry Juice','Strawberry, Fresh Strawberry',NL,NL,NL,NL,'Range'],
+['Barakat','Fresh Juices','Cocktail Juice','Cocktail, Mixed Fruit',NL,NL,NL,NL,'Range'],
+['Barakat','Fresh Juices','Guava Juice','Guava, Fresh Guava',NL,NL,NL,NL,'Range'],
+['Barakat','Fresh Juices','Orange Juice','Orange, Fresh Orange, OJ',3.5,4.5,10.0,12.5,'Range'],
+['Barakat','Fresh Juices','Mango Juice','Mango, Fresh Mango',4.0,5.0,14.0,16.0,'Range'],
+['Barakat','Fresh Juices','Lime Juice','Lime, Fresh Lime',2.5,3.5,6.5,8.0,'Range'],
+['Barakat','Smoothies','Mango Passion Smoothie','Mango Passion',NL,NL,NL,NL,'Range'],
+['Barakat','Smoothies','Strawberry Banana Smoothie','Strawberry Banana',4.0,5.0,12.5,14.5,'Range'],
+['Barakat','Smoothies','Mixed Berry Smoothie','Mixed Berry, Berry Smoothie',4.5,5.5,16.0,18.5,'Range'],
+['Barakat','Smoothies','Date Smoothie','Date, Dates Smoothie',6.0,7.0,26.0,29.0,'Range'],
+['Barakat','Shots & HPP','Probiotic Shots','Probiotic, Probiotic Shot, Probiotics',NL,NL,7.5,10.0,'Range'],
+['Barakat','Shots & HPP','Coconut Water','Coconut, Fresh Coconut Water',5.0,6.0,7.0,9.0,'Range'],
+['Barakat','Shots & HPP','Ginger Shot','Ginger, Ginger Shots',4.0,5.0,5.0,7.0,'Range'],
+['Barakat','Shots & HPP','Turmeric Shot','Turmeric, Turmeric Shots',5.0,6.0,6.0,8.0,'Range'],
+['Barakat','Shots & HPP','Wheatgrass Shot','Wheatgrass, Wheatgrass Shots',NL,NL,NL,NL,'Range'],
+['Barakat','Iced Teas','Peach Iced Tea','Peach Tea, Peach Ice Tea',3.5,4.5,8.5,10.0,'Range'],
+['Barakat','Iced Teas','Lemon Iced Tea','Lemon Tea, Lemon Ice Tea',NL,NL,NL,NL,'Range'],
+// ---- Thrill (11) ----
+['Thrill','Fresh Juices','Coconut Water','Coconut',5.0,6.0,7.0,9.0,'Range'],
+['Thrill','Fresh Juices','Pineapple Juice','Pineapple',3.5,4.5,9.5,13.0,'Range'],
+['Thrill','Fresh Juices','Orange Juice','Orange, OJ',3.5,4.5,10.0,12.5,'Range'],
+['Thrill','Fresh Juices','Green Juice','Green, Greens',3.5,4.5,8.5,10.5,'Range'],
+['Thrill','Fresh Juices','Green Apple Mint Lemon','Apple Mint Lemon, Green Apple, Mint Lemon',NL,NL,NL,NL,'Range'], // combined limits NOT verified -> N/A (spec pending)
+['Thrill','Functional & Shots','Pombeet Shine','Pom Beets Shine, Pombeet',3.0,4.0,9.0,11.5,'Range'],
+['Thrill','Functional & Shots','Burn Stubborn','Burns Stubborn',4.0,5.0,10.0,12.0,'Range'],
+['Thrill','Functional & Shots','Green Goodness','Green Goodness',3.5,4.5,9.0,11.5,'Range'],
+['Thrill','Functional & Shots','Coconut Punch','Coconut Punch',5.0,6.0,7.0,8.0,'Range'],
+['Thrill','Functional & Shots','Golden Crush','Golden Crush',3.5,4.5,11.0,13.5,'Range'],
+['Thrill','Functional & Shots','Red Juice','Red',3.5,4.5,8.0,10.0,'Range'],
+// ---- EKFC / EKMT (4) ----
+['EKFC','Mocktails','Raspberry Spice','Raspberry',3.5,4.5,4.5,6.5,'Range'],
+['EKFC','Mocktails','Citrus Twist','Citrus',3.5,4.5,10.5,12.5,'Range'],
+['EKFC','Mocktails','Tropical Twist','Tropical',3.5,4.5,12.5,14.5,'Range'],
+['EKFC','Mocktails','Rose Iced Tea','Rose Tea, Rose Ice Tea',3.5,4.5,7.5,9.5,'Range'],
+// ---- Viva + Cipriani (8) ----
+['Viva','HPP Juices','Coconut Water HPP 330ml-Viva(Pl)','Viva Coconut, Cipri Coconut, Cipriani Coconut',5.0,6.0,7.0,9.0,'Range'],
+['Viva','HPP Juices','Green Apple Juice HPP-330ml-Viva(Pl)','Green Apple, Cipri Green Apple, Cipriani Green Apple',3.5,4.5,10.0,12.0,'Range'],
+['Viva','HPP Juices','Mint Lemonade HPP 330ml-Viva(Pl)','Mint Lemon, Lemon Mint',3.0,4.0,11.5,13.5,'Range'],
+['Viva','HPP Juices','Watermelon Juice HPP 330ml-Viva(Pl)','Watermelon',5.5,6.5,6.5,8.5,'Range'],
+['Viva','HPP Juices','Carrot Orange HPP 330ml-Viva(Pl)','Carrot Orange, Orange Carrot, Cipri Orange Carrot',4.0,5.0,8.0,10.0,'Range'],
+['Viva','HPP Juices','Pineapple Juice HPP 330ml-Viva(Pl)','Pineapple',3.5,4.5,9.5,13.0,'Range'],
+['Viva','HPP Juices','Pomegranate Juice HPP 330ml-Viva(Pl)','Pomegranate',3.5,4.5,11.5,14.0,'Range'],
+['Viva','HPP Juices','Beetroot & Orange Juice HPP 330ml-Viva(Pl)','Beetroot Orange, Beet Orange, Cipri Beetroot Orange',4.0,5.0,8.5,10.5,'Range'],
+// ---- ADNOC Oasis (5) ----
+['ADNOC Oasis','Bottled Juices','Orange Juice Fresh (Adnoc Pl) 330ml','Orange',3.5,4.5,10.0,12.5,'Range'],
+['ADNOC Oasis','Bottled Juices','Beetroot Juice 330ml-Adnoc Pl','Beetroot, Beet',6.0,7.0,5.0,6.5,'Range'],
+['ADNOC Oasis','Bottled Juices','Coconut Water Fresh (Adnoc Pl) 330ml','Coconut',5.0,6.0,7.0,9.0,'Range'],
+['ADNOC Oasis','Bottled Juices','Green Juice Fresh (Adnoc Pl) 330ml','Green',3.5,4.5,8.5,10.5,'Range'],
+['ADNOC Oasis','Bottled Juices','Pineapple Juice Fresh (Adnoc Pl) 330ml','Pineapple',3.5,4.5,9.5,13.0,'Range'],
+// ---- Talabat (10) ----
+['Talabat','Fresh Juices','Orange Lover Juice','Orange Lover',NL,NL,11.0,12.0,'Range'],
+['Talabat','Fresh Juices','Coco Me Crazy Juice','Coco Me Crazy, Coconut',NL,NL,5.0,9.0,'Min_Only_Plus4'],
+['Talabat','Smoothies','Berry Royale Smoothie','Berry Royale',NL,NL,12.5,14.0,'Range'],
+['Talabat','Smoothies','Tropical Smoothie','Tropical',NL,NL,12.0,14.5,'Range'],
+['Talabat','Fresh Juices','What a Melon','Melon, Watermelon',NL,NL,7.0,8.0,'Range'],
+['Talabat','Fresh Juices','Mint to Fix You','Mint Fix, Mint to Fix',NL,NL,7.0,11.0,'Min_Only_Plus4'],
+['Talabat','Fresh Juices','Simply Green Juice','Simply Green, Green',NL,NL,4.0,8.0,'Min_Only_Plus4'],
+['Talabat','Shots','Green Juice Shot','Green Shot',NL,NL,10.0,12.0,'Range'],
+['Talabat','Shots','Ginger shot (Talabat)','Ginger, Ginger Shot',NL,NL,NL,NL,'No_Limit'],
+['Talabat','Fresh Juices','Cucumber juice (Talabat)','Cucumber',NL,NL,NL,NL,'No_Limit'],
+// ---- Calo Smoothies (2) ----
+['Calo Smoothies','Smoothies','Protein Vanilla Milk Shake','Vanilla Milk Shake, Protein Vanilla, Vanilla Shake',NL,NL,18.0,19.0,'Range'],
+['Calo Smoothies','Smoothies','Protein Chocolate Milk Shake','Chocolate Milk Shake, Protein Chocolate, Chocolate Shake',NL,NL,18.0,19.0,'Range']
+// Carrefour and Etihad: intentionally NO SKUs (no spec sheet provided).
+].map(function (r) {
+  return { stream:r[0], sub:r[1], name:r[2], aliases:r[3].split(',').map(function(s){return s.trim();}).filter(Boolean),
+           minPH:r[4], maxPH:r[5], minBrix:r[6], maxBrix:r[7], rule:r[8],
+           pending: (r[0] === 'Thrill' && r[2] === 'Green Apple Mint Lemon') };
+});
+var MODES = {
+  off: { label: 'Private Labeling: OFF (Barakat House Brands)', streams: ['Barakat','Thrill','EKFC'] },
+  on:  { label: 'Private Labeling: ON (Contract Brands)', streams: ['Viva','ADNOC Oasis','Talabat','Calo Smoothies','Carrefour','Etihad'] }
+};
+var STREAMS = MODES.off.streams.concat(MODES.on.streams);
+var TOL = { brix: 0.2, ph: 0.1 };
+
+function subsOf(stream) { var a = []; SKUS.forEach(function (s) { if (s.stream === stream && a.indexOf(s.sub) < 0) a.push(s.sub); }); return a; }
+function pool(stream, sub) {
+  var subs = subsOf(stream);
+  return SKUS.filter(function (s) { return s.stream === stream && (subs.length <= 1 || !sub || s.sub === sub); });
+}
+
+// ---------- Tolerance engine (never produces NaN) ----------
+function num(x){ if (x === null || x === undefined || x === '' || x === 'No_Limit') return null; var n = Number(x); return isFinite(n) ? n : null; }
+function r3(x){ return Math.round(x * 1000) / 1000; }
+function limits(sku, kind) {
+  var lo, hi;
+  if (kind === 'brix') {
+    lo = num(sku.minBrix); hi = num(sku.maxBrix);
+    if (sku.rule === 'Min_Only_Plus4') { hi = (lo === null) ? null : r3(lo + 4); }
+    if (sku.rule === 'No_Limit') { lo = null; hi = null; }
+  } else { lo = num(sku.minPH); hi = num(sku.maxPH); }
+  return { lo: lo, hi: hi };
+}
+function specText(sku, kind) {
+  var l = limits(sku, kind);
+  if (l.lo === null && l.hi === null) return (sku.pending && kind === 'brix') || (sku.pending && kind === 'ph') ? 'N/A (spec pending)' : 'N/A (No_Limit)';
+  var f = function (v) { return v === null ? '—' : v.toFixed(1); };
+  return f(l.lo) + '–' + f(l.hi) + (kind === 'brix' && sku.rule === 'Min_Only_Plus4' ? ' (Min+4)' : '');
+}
+function evaluate(value, lo, hi, tol) {
+  var v = num(value);
+  if (lo === null && hi === null) return { status: 'NA', diff: 0 };
+  if (v === null) return { status: 'MISSING', diff: 0 };
+  var d = 0;
+  if (lo !== null && v < lo) d = lo - v; else if (hi !== null && v > hi) d = v - hi;
+  d = r3(d);
+  if (d === 0) return { status: 'GREEN', diff: 0 };
+  return { status: d <= tol ? 'AMBER' : 'RED', diff: d };
+}
+function overall(bs, ps, hold) {
+  var all = [bs, ps];
+  if (hold || all.indexOf('RED') >= 0) return 'RED';
+  if (all.indexOf('AMBER') >= 0) return 'AMBER';
+  if (all.indexOf('GREEN') >= 0) return 'GREEN';
+  return 'NA';
+}
+var MANUAL_SKU = { stream:'', sub:'Unlisted', name:'', aliases:[], minPH:NL, maxPH:NL, minBrix:NL, maxBrix:NL, rule:'No_Limit', pending:false };
+function assess(sku, brix, ph, hold) {
+  var bl = limits(sku, 'brix'), pl = limits(sku, 'ph');
+  var b = evaluate(brix, bl.lo, bl.hi, TOL.brix), p = evaluate(ph, pl.lo, pl.hi, TOL.ph);
+  return { brix: b.status, ph: p.status, overall: overall(b.status, p.status, hold),
+           brixSpec: specText(sku, 'brix'), phSpec: specText(sku, 'ph') };
+}
+
+// ---------- Spoken number & decimal normalizer ----------
+var ONES = {zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19};
+var TENS = {twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};
+function isDigits(t){ return /^\d+$/.test(t); }
+function readInt(tokens, i) {
+  var t = tokens[i];
+  if (t === undefined) return null;
+  if (/^\d+(\.\d+)?$/.test(t)) return { s: t, next: i + 1 };
+  if (TENS.hasOwnProperty(t)) {
+    var n = TENS[t], nx = tokens[i + 1];
+    if (nx !== undefined && ONES.hasOwnProperty(nx) && ONES[nx] >= 1 && ONES[nx] <= 9) return { s: String(n + ONES[nx]), next: i + 2 };
+    return { s: String(n), next: i + 1 };
+  }
+  if (ONES.hasOwnProperty(t)) return { s: String(ONES[t]), next: i + 1 };
+  return null;
+}
+function normalizeSpeech(text) {
+  var t = String(text || '').toLowerCase()
+    .replace(/\bp\.?\s?h\b\.?/g, ' ph ')
+    .replace(/\bph(?=\d)/g, 'ph ')
+    .replace(/\b(brix|bricks|brick)(?=\d)/g, '$1 ')
+    .replace(/\.(?=\s|$)/g, ' ')            // trailing periods: "3.8." -> "3.8", "two. ph" -> "two ph"
+    .replace(/[,;:!?]/g, ' ')
+    .replace(/(\d)\s*%/g, '$1')
+    .replace(/\s+/g, ' ').trim();
+  var tokens = t.split(' ').filter(Boolean), out = [], i = 0;
+  while (i < tokens.length) {
+    var a = readInt(tokens, i);
+    if (!a) { out.push(tokens[i]); i++; continue; }
+    var s = a.s, j = a.next;
+    if (/^\d+\.\d+$/.test(s)) { out.push(s); i = j; continue; }
+    if (tokens[j] === 'point' || tokens[j] === 'dot' || tokens[j] === 'decimal') {
+      var k = j + 1, dec = '';
+      while (k < tokens.length) {
+        var tk = tokens[k];
+        if (isDigits(tk)) { dec += tk; k++; }
+        else if (tk === 'oh' || tk === 'o') { dec += '0'; k++; }
+        else if (ONES.hasOwnProperty(tk) && ONES[tk] < 10) { dec += String(ONES[tk]); k++; }
+        else if (TENS.hasOwnProperty(tk)) { var n2 = tokens[k + 1]; if (n2 !== undefined && ONES.hasOwnProperty(n2) && ONES[n2] >= 1 && ONES[n2] <= 9) { dec += String(TENS[tk] + ONES[n2]); k += 2; } else { dec += String(TENS[tk]); k++; } }
+        else if (ONES.hasOwnProperty(tk)) { dec += String(ONES[tk]); k++; }
+        else break;
+      }
+      if (dec) { out.push(s + '.' + dec); i = k; continue; }
+      out.push(s); i = j + 1; continue;
+    }
+    out.push(s); i = j;
+  }
+  return out.join(' ');
+}
+
+// ---------- Field extraction ----------
+var BRIX_LABEL = '(?:brix|bricks|brick|brics|brixs)';
+function extractReadings(norm) {
+  var warnings = [], ph = null, brix = null;
+  var tokens = norm.split(' ').filter(Boolean);
+  var isNum = function (t) { return /^\d+(\.\d+)?$/.test(t || ''); };
+  var isPh = function (t) { return t === 'ph'; };
+  var isBx = function (t) { return new RegExp('^' + BRIX_LABEL + '$').test(t || ''); };
+  var fill = { is:1, at:1, of:1, was:1, reading:1, equals:1, value:1, level:1, '=':1, ':':1 };
+  var used = {};
+  var after = function (idx) { var j = idx + 1; while (tokens[j] !== undefined && fill[tokens[j]]) j++; return isNum(tokens[j]) && !used[j] ? j : -1; };
+  var before = function (idx) { var j = idx - 1; while (j >= 0 && fill[tokens[j]]) j--; return j >= 0 && isNum(tokens[j]) && !used[j] ? j : -1; };
+  var labels = [];
+  tokens.forEach(function (t, i) { if (isPh(t)) labels.push({ k:'ph', i:i }); else if (isBx(t)) labels.push({ k:'brix', i:i }); });
+  var got = { ph: null, brix: null };
+  var numberFirst = labels.length > 0 && before(labels[0].i) >= 0;
+  var order = numberFirst ? [before, after] : [after, before];
+  order.forEach(function (fn) {
+    labels.forEach(function (L) { if (got[L.k] !== null) return; var j = fn(L.i); if (j >= 0) { got[L.k] = tokens[j]; used[j] = true; } });
+  });
+  var spare = []; tokens.forEach(function (t, i) { if (isNum(t) && !used[i]) spare.push(t); });
+  var hasPhLabel = labels.some(function (L) { return L.k === 'ph'; });
+  if (got.brix === null && got.ph === null) {
+    if (spare.length >= 2) { got.brix = spare[0]; got.ph = spare[1]; }
+    else if (spare.length === 1) { got.brix = spare[0]; }
+  } else if (got.brix === null && spare.length) { got.brix = spare[0]; }
+  else if (got.ph === null && spare.length && !hasPhLabel && Number(spare[0]) <= 14) { got.ph = spare[0]; }
+  if (got.ph !== null) {
+    var s = got.ph, v = Number(s);
+    if (s.indexOf('.') < 0) {
+      if (v >= 10 && v <= 99) { v = v / 10; warnings.push('pH "' + s + '" read as ' + v.toFixed(1) + ' (decimal restored)'); }
+      else if (v >= 100 && v <= 999) { v = v / 100; warnings.push('pH "' + s + '" read as ' + v.toFixed(2) + ' (decimal restored)'); }
+    }
+    if (v >= 0 && v <= 14) ph = r3(v); else warnings.push('pH value ' + s + ' is outside 0–14 and was ignored');
+  }
+  if (got.brix !== null) {
+    var b = Number(got.brix);
+    if (got.brix.indexOf('.') < 0 && b >= 100 && b <= 999) { b = b / 10; warnings.push('Brix "' + got.brix + '" read as ' + b.toFixed(1) + ' (decimal restored)'); }
+    if (b >= 0 && b <= 100) brix = r3(b); else warnings.push('Brix value ' + got.brix + ' is outside 0–100 and was ignored');
+  }
+  return { brix: brix, ph: ph, warnings: warnings };
+}
+
+// ---------- Organoleptic dictionary ----------
+var DICT = [
+  { re: /\b(normal|ok|okay|good|pass|passed|fine|acceptable)\b/, text: 'Organoleptic parameters (Color, Taste, Odor, Appearance) acceptable', hold: false },
+  { re: /\b(watery|thin)\b/, text: 'Slightly watery consistency', hold: false },
+  { re: /\b(pulpy|thick)\b/, text: 'Excessive pulp / thick consistency', hold: false },
+  { re: /\b(sour|acidic|acid)\b/, text: 'High acidity / sharp sour note', hold: false },
+  { re: /\b(fermented|fermentation|off smell|off odou?r|bad smell|bad odou?r)\b/, text: 'Off-odor / early fermentation detected — HOLD', hold: true },
+  { re: /\b(pale|dark|discolou?red|discoloration)\b/, text: 'Color deviation from standard', hold: false }
+];
+function parseRemarks(norm) {
+  var texts = [], hold = false;
+  DICT.forEach(function (d) { if (d.re.test(norm)) { texts.push(d.text); if (d.hold) hold = true; } });
+  if (texts.length > 1) texts = texts.filter(function (x) { return x.indexOf('acceptable') < 0; });
+  return { text: texts.join('; '), hold: hold };
+}
+
+// ---------- Batch / shift extraction ----------
+function extractMeta(norm) {
+  var batch = '', shift = '', s = norm;
+  var m = s.match(/\bbatch(?: code| number| no| id)?\s+([a-z0-9][a-z0-9\-\/]*)/);
+  if (m) { batch = m[1].toUpperCase(); s = s.replace(m[0], ' '); }
+  var sm = s.match(/\bshift\s+(morning|day|afternoon|evening|night)\b/);
+  if (sm) { shift = ({ morning:'Morning', day:'Morning', afternoon:'Afternoon', evening:'Afternoon', night:'Night' })[sm[1]]; s = s.replace(sm[0], ' '); }
+  return { batch: batch, shift: shift, rest: s.replace(/\s+/g, ' ').trim() };
+}
+
+// ---------- Fuzzy SKU matcher (searches ONLY the supplied pool) ----------
+var STREAM_KW = {
+  thrill: 'Thrill', viva: 'Viva', cipri: 'Viva', cipriani: 'Viva', cipriany: 'Viva',
+  adnoc: 'ADNOC Oasis', adnock: 'ADNOC Oasis', oasis: 'ADNOC Oasis', patnock: 'ADNOC Oasis',
+  talabat: 'Talabat', talabaat: 'Talabat', ekfc: 'EKFC', ekmt: 'EKFC', emirates: 'EKFC',
+  barakat: 'Barakat', calo: 'Calo Smoothies', carrefour: 'Carrefour', etihad: 'Etihad'
+};
+var STOP = {};
+('juice fresh hpp pl ml the a an and with of to_ is at point ph brix bricks brick brics brixs batch shift operator remark remarks value level reading sample degrees degree ' +
+ 'normal ok okay good pass passed fine acceptable watery thin pulpy thick sour acidic acid fermented fermentation off smell odor odour bad pale dark discolored discoloured discoloration')
+  .split(' ').forEach(function (w) { STOP[w] = 1; });
+function lev(a, b) {
+  var m = a.length, n = b.length, d = [], i, j;
+  for (i = 0; i <= m; i++) { d[i] = [i]; }
+  for (j = 1; j <= n; j++) d[0][j] = j;
+  for (i = 1; i <= m; i++) for (j = 1; j <= n; j++)
+    d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+  return d[m][n];
+}
+function stem(w) { return (w.length > 4 && /s$/.test(w) && !/ss$|us$|is$/.test(w)) ? w.slice(0, -1) : w; }
+function toks(str) {
+  return String(str).toLowerCase().replace(/&/g, ' ').split(/[^a-z0-9]+/).filter(Boolean)
+    .filter(function (w) { return !STOP[w] && !STREAM_KW[w] && !/^\d+ml$/.test(w) && !/^\d+(\.\d+)?$/.test(w) && w.length > 1; })
+    .map(stem);
+}
+function tokSim(a, b) {
+  if (a === b) return 1;
+  var m = Math.max(a.length, b.length);
+  if (a.length >= 4 && b.length >= 4 && (a.indexOf(b) === 0 || b.indexOf(a) === 0)) return 0.9;
+  if (m >= 4 && 1 - lev(a, b) / m >= 0.8) return 0.85;
+  return 0;
+}
+function dice(q, c) {
+  if (!q.length || !c.length) return 0;
+  var used = {}, sum = 0;
+  q.forEach(function (qt) {
+    var best = 0, bi = -1;
+    c.forEach(function (ct, i) { if (used[i]) return; var s = tokSim(qt, ct); if (s > best) { best = s; bi = i; } });
+    if (bi >= 0) { used[bi] = 1; sum += best; }
+  });
+  return sum / ((q.length + c.length) / 2);
+}
+function heardStream(norm) {
+  var found = null;
+  norm.split(' ').forEach(function (w) {
+    if (found) return;
+    if (STREAM_KW[w]) { found = STREAM_KW[w]; return; }
+    if (w.length >= 5) Object.keys(STREAM_KW).forEach(function (k) { if (!found && k.length >= 5 && lev(w, k) <= 1) found = STREAM_KW[k]; });
+  });
+  return found;
+}
+// Category-locked: candidates come ONLY from pool(stream, sub). Never switches stream.
+function matchSku(text, stream, sub) {
+  var norm = normalizeSpeech(text);
+  var meta = extractMeta(norm);
+  var qTokens = toks(meta.rest);
+  var cands = pool(stream, sub);
+  var scored = cands.map(function (s) {
+    var best = 0;
+    [s.name].concat(s.aliases).forEach(function (n) { best = Math.max(best, dice(qTokens, toks(n))); });
+    return { sku: s, score: best };
+  }).sort(function (a, b) { return b.score - a.score; });
+  var top = scored[0], second = scored[1];
+  var ok = !!top && qTokens.length > 0 && top.score >= 0.5;
+  var ambiguous = ok && second && second.score > 0 && (top.score - second.score) < 0.05;
+  return { stream: stream, sku: ok ? top.sku : null, score: top ? top.score : 0, ambiguous: ambiguous, spoke: qTokens.length > 0,
+           candidates: scored.filter(function (x) { return x.score >= 0.4; }).slice(0, 4).map(function (x) { return x.sku; }) };
+}
+
+// ---------- Full transcript parse (category-locked) ----------
+function parseTranscript(text, ctx) {
+  ctx = ctx || {};
+  var norm = normalizeSpeech(text);
+  var meta = extractMeta(norm);
+  var readings = extractReadings(meta.rest);
+  var rem = parseRemarks(meta.rest);
+  var m = matchSku(text, ctx.stream, ctx.sub);
+  var heard = heardStream(meta.rest);
+  return { norm: norm, batch: meta.batch, shift: meta.shift, brix: readings.brix, ph: readings.ph,
+           warnings: readings.warnings, remark: rem.text, hold: rem.hold, match: m,
+           ignoredStream: (heard && heard !== ctx.stream) ? heard : null };
+}
+
+root.QC = { SKUS: SKUS, STREAMS: STREAMS, MODES: MODES, TOL: TOL, DICT: DICT, MANUAL_SKU: MANUAL_SKU,
+            subsOf: subsOf, pool: pool, assess: assess, evaluate: evaluate, limits: limits, specText: specText,
+            normalizeSpeech: normalizeSpeech, extractReadings: extractReadings, parseRemarks: parseRemarks, matchSku: matchSku,
+            parseTranscript: parseTranscript, extractMeta: extractMeta };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+
+<!-- ============ UI / VOICE / OFFLINE QUEUE ============ -->
+<script id="ui">
+(function () {
+'use strict';
+var CONFIG = {
+  WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbxCzLTa9OEeZqb9psrKV81W1oYXodIIAVRJ1Rcs1Uca6NADbfSu8Khs-A9hgmgypT5U/exec',
+  SILENCE_MS: 3000, INITIAL_GRACE_MS: 6000,
+  QUEUE_KEY: 'bqp_qc_queue_v1', RECENT_KEY: 'bqp_qc_recent_v1', UI_KEY: 'bqp_ui_v6', OP_KEY: 'bqp_op'
+};
+var Q = window.QC;
+var $ = function (id) { return document.getElementById(id); };
+var state = { mode: 'off', stream: 'Barakat', sub: 'Fresh Juices', sku: null, hold: false };
+
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function toast(msg, ms) { var t = $('toast'); t.textContent = msg; t.style.display = 'block'; clearTimeout(toast._t); toast._t = setTimeout(function(){ t.style.display = 'none'; }, ms || 3000); }
+function lsGet(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+function pad(n, w) { return String(n).padStart(w || 2, '0'); }
+function stamp(d) { return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()) + '.' + pad(d.getMilliseconds(), 3); }
+function dateOnly(d) { return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
+function defaultShift() { var h = new Date().getHours(); return h >= 6 && h < 14 ? 'Morning' : (h >= 14 && h < 22 ? 'Afternoon' : 'Night'); }
+function saveUi() { lsSet(CONFIG.UI_KEY, { mode: state.mode, stream: state.stream, sub: state.sub }); }
+
+// ---- pill rendering (always-visible selection) ----
+function pill(label, pressed, onTap, cls) {
+  var b = document.createElement('button'); b.type = 'button'; b.className = 'pill' + (cls ? ' ' + cls : '');
+  b.setAttribute('aria-pressed', pressed ? 'true' : 'false'); b.textContent = label; b.onclick = onTap; return b;
+}
+function renderMode() {
+  document.body.setAttribute('data-mode', state.mode);
+  $('modeOff').setAttribute('aria-pressed', state.mode === 'off' ? 'true' : 'false');
+  $('modeOn').setAttribute('aria-pressed', state.mode === 'on' ? 'true' : 'false');
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', state.mode === 'on' ? '#B84A62' : '#0E5A42');
+}
+function renderStreams() {
+  var box = $('stream'); box.innerHTML = '';
+  Q.MODES[state.mode].streams.forEach(function (s) {
+    var empty = Q.pool(s).length === 0;
+    box.appendChild(pill(s, s === state.stream, function () { setStream(s); }, empty ? 'empty' : ''));
+  });
+}
+function renderSubs() {
+  var subs = Q.subsOf(state.stream), box = $('sub'); box.innerHTML = '';
+  $('subWrap').classList.toggle('hide', subs.length <= 1);
+  if (subs.length > 1) subs.forEach(function (s) { box.appendChild(pill(s, s === state.sub, function () { setSub(s); })); });
+}
+function renderSkus(suggest) {
+  var list = Q.pool(state.stream, state.sub), box = $('sku'); box.innerHTML = '';
+  var none = list.length === 0;
+  $('manualWrap').classList.toggle('hide', !none);
+  if (none) $('streamNote').textContent = 'No SKUs loaded yet for ' + state.stream + ' — provide spec sheet to populate';
+  list.forEach(function (s) {
+    var cls = suggest && suggest.indexOf(s.name) >= 0 ? 'suggest' : '';
+    box.appendChild(pill(s.name, state.sku && state.sku.name === s.name, function () { selectSku(s); }, cls));
+  });
+}
+function setMode(m) {
+  state.mode = m;
+  var streams = Q.MODES[m].streams;
+  if (streams.indexOf(state.stream) < 0) { state.stream = streams[0]; state.sub = Q.subsOf(state.stream)[0] || ''; state.sku = null; }
+  renderMode(); renderStreams(); renderSubs(); renderSkus(); clearSuggest(); refresh(); saveUi();
+}
+function setStream(s) { state.stream = s; state.sub = Q.subsOf(s)[0] || ''; state.sku = null; renderStreams(); renderSubs(); renderSkus(); clearSuggest(); refresh(); saveUi(); }
+function setSub(s) { state.sub = s; state.sku = null; renderSubs(); renderSkus(); clearSuggest(); refresh(); saveUi(); }
+function selectSku(s) { state.sku = s; renderSkus(); clearSuggest(); refresh(); }
+function clearSuggest() { $('cands').innerHTML = ''; }
+
+// ---- assessment / UI refresh ----
+function activeSku() {
+  if (state.sku) return state.sku;
+  if (Q.pool(state.stream, state.sub).length === 0) { var m = {}; for (var k in Q.MANUAL_SKU) m[k] = Q.MANUAL_SKU[k]; m.stream = state.stream; m.name = $('manualSku').value.trim(); return m; }
+  return null;
+}
+function readNum(id) { var v = parseFloat(String($(id).value).replace(',', '.')); return isFinite(v) ? v : null; }
+function setBadge(id, st) { var el = $(id); el.className = 'badge ' + st; el.textContent = ({ GREEN:'PASS', AMBER:'RE-CHECK', RED:'OUT OF SPEC', NA:'N/A', MISSING:'—' })[st]; }
+function refresh() {
+  var sku = activeSku();
+  if (!sku) {
+    setBadge('bs', 'MISSING'); setBadge('ps', 'MISSING'); $('bspec').textContent = ''; $('pspec').textContent = '';
+    $('overall').className = 'NA'; $('overall').textContent = 'Select a SKU'; $('cawrap').classList.add('hide'); state.assess = null; return;
+  }
+  var a = Q.assess(sku, readNum('brix'), readNum('ph'), state.hold);
+  setBadge('bs', a.brix); setBadge('ps', a.ph);
+  $('bspec').textContent = 'Spec: ' + a.brixSpec; $('pspec').textContent = 'Spec: ' + a.phSpec;
+  var o = $('overall'); o.className = a.overall;
+  o.textContent = ({ GREEN:'GREEN – PASS', AMBER:'AMBER – RE-CHECK', RED:'RED – OUT OF SPEC / NCR', NA:'N/A – no limits / no reading' })[a.overall];
+  $('cawrap').classList.toggle('hide', a.overall !== 'RED');
+  state.assess = a;
+}
+
+// ---- parse transcript -> form (category-locked) ----
+function applyParse(text) {
+  if (!text || !text.trim()) return;
+  var p = Q.parseTranscript(text, { stream: state.stream, sub: state.sub });
+  var warns = p.warnings.slice(), suggest = null;
+  if (p.match.sku) { state.sku = p.match.sku; renderSkus(); }
+  else if (p.match.spoke) { warns.push('No match in ' + state.stream + (Q.subsOf(state.stream).length > 1 ? ' → ' + state.sub : '') + ' — tap the SKU pill.'); }
+  if (p.match.ambiguous) { suggest = p.match.candidates.map(function (s) { return s.name; }); warns.push('Close match — confirm the highlighted SKU.'); renderSkus(suggest); }
+  else if (!p.match.sku && p.match.candidates.length) { suggest = p.match.candidates.map(function (s) { return s.name; }); renderSkus(suggest); }
+  if (p.ignoredStream) warns.push('Heard "' + p.ignoredStream + '" — ignored; staying on ' + state.stream + '.');
+  if (p.brix !== null) $('brix').value = p.brix;
+  if (p.ph !== null) $('ph').value = p.ph;
+  if (p.batch) $('batch').value = p.batch;
+  if (p.shift) $('shift').value = p.shift;
+  if (p.remark) $('remark').value = p.remark;
+  state.hold = p.hold || state.hold;
+  var w = $('vwarn'); if (warns.length) { w.innerHTML = warns.map(esc).join('<br>'); w.classList.remove('hide'); } else w.classList.add('hide');
+  refresh();
+}
+
+// ---- voice engine ----
+var rec = null, silenceTimer = null, finalText = '', listening = false;
+function micUI(on) { listening = on; $('mic').classList.toggle('live', on); $('mic').innerHTML = on ? '&#9209; Listening… (auto-stops after 3 s)' : '&#127908; Tap to Speak'; }
+function startVoice() {
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast('Voice not supported here — use Chrome, or type the transcript.', 4500); $('parse').classList.remove('hide'); return; }
+  if (listening) { try { rec.stop(); } catch (e) {} return; }
+  rec = new SR(); rec.continuous = true; rec.interimResults = true; rec.lang = $('lang').value; rec.maxAlternatives = 1;
+  finalText = '';
+  rec.onresult = function (e) {
+    clearTimeout(silenceTimer);
+    var interim = '';
+    for (var i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) finalText += e.results[i][0].transcript + ' '; else interim += e.results[i][0].transcript;
+    }
+    $('tx').value = (finalText + interim).trim();
+    silenceTimer = setTimeout(function () { try { rec.stop(); } catch (e2) {} }, CONFIG.SILENCE_MS);
+  };
+  rec.onerror = function (e) { if (e.error !== 'no-speech' && e.error !== 'aborted') toast('Mic error: ' + e.error, 4000); };
+  rec.onend = function () { clearTimeout(silenceTimer); micUI(false); if ($('tx').value.trim()) { applyParse($('tx').value); if (navigator.vibrate) navigator.vibrate(60); } };
+  try { rec.start(); micUI(true); silenceTimer = setTimeout(function () { try { rec.stop(); } catch (e3) {} }, CONFIG.INITIAL_GRACE_MS); }
+  catch (err) { toast('Could not start mic: ' + err.message, 4000); }
+}
+
+// ---- offline queue + posting ----
+function getQueue() { return lsGet(CONFIG.QUEUE_KEY, []); }
+function setQueue(q) { lsSet(CONFIG.QUEUE_KEY, q); renderNet(); }
+function renderNet() {
+  var q = getQueue().length, online = navigator.onLine !== false;
+  $('net').textContent = online ? 'Online' : 'Offline'; $('net').className = 'tag' + (online ? '' : ' off');
+  $('qn').textContent = 'Queue ' + q; $('qn').classList.toggle('hide', q === 0);
+  $('retry').classList.toggle('hide', q === 0);
+}
+function postRecords(records) {
+  return fetch(CONFIG.WEB_APP_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ records: records }) })
+    .then(function (r) { return r.json(); })
+    .then(function (j) { if (!j || j.status !== 'success') throw new Error((j && j.message) || 'Server error'); return j; });
+}
+function flushQueue(silent) {
+  var q = getQueue(); if (!q.length) return Promise.resolve();
+  return postRecords(q).then(function () { setQueue([]); if (!silent) toast('Queued entries sent (' + q.length + ')'); })
+    .catch(function () { if (!silent) toast('Still offline — entries kept in queue.'); });
+}
+function addRecent(r) { var a = lsGet(CONFIG.RECENT_KEY, []); a.unshift({ t: r.Timestamp, sku: r.SKU_Name, st: r.Overall_Status }); lsSet(CONFIG.RECENT_KEY, a.slice(0, 3)); renderRecent(); }
+function renderRecent() {
+  var a = lsGet(CONFIG.RECENT_KEY, []);
+  $('recent').innerHTML = a.length ? a.map(function (x) { return '<div class="rec"><span>' + esc(x.t.slice(11, 16)) + ' ' + esc(x.sku) + '</span><span class="badge ' + esc(x.st === 'N/A' ? 'NA' : x.st) + '" style="margin:0;padding:2px 10px">' + esc(x.st) + '</span></div>'; }).join('') : '<span style="color:var(--mute);font-size:14px">No entries yet.</span>';
+}
+
+function logResult() {
+  var sku = activeSku();
+  if (!sku) { toast('Tap a SKU first.'); return; }
+  if (!sku.name) { toast('Type the SKU name for manual entry.'); $('manualSku').focus(); return; }
+  var brix = readNum('brix'), ph = readNum('ph');
+  if (brix === null && ph === null && !$('remark').value.trim()) { toast('Enter Brix, pH or an organoleptic remark.'); return; }
+  var a = Q.assess(sku, brix, ph, state.hold);
+  var remark = $('remark').value.trim();
+  if (a.overall === 'RED') {
+    var ca = $('ca').value.trim();
+    if (ca.length < 3) { toast('RED result: enter the corrective action / HOLD before logging.', 4500); $('ca').focus(); return; }
+    remark = (remark ? remark + ' | ' : '') + 'CORRECTIVE ACTION/HOLD: ' + ca;
+  }
+  var now = new Date();
+  var rec = {
+    Timestamp: stamp(now), Date: dateOnly(now), Shift: $('shift').value, Operator: $('op').value.trim(), Batch_Code: $('batch').value.trim(),
+    Stream: sku.stream || state.stream, Sub_Category: sku.sub, SKU_Name: sku.name,
+    Measured_Brix: brix === null ? '' : brix, Brix_Spec: a.brixSpec, Brix_Status: (a.brix === 'MISSING' || a.brix === 'NA') ? 'N/A' : a.brix,
+    Measured_pH: ph === null ? '' : ph, pH_Spec: a.phSpec, pH_Status: (a.ph === 'MISSING' || a.ph === 'NA') ? 'N/A' : a.ph,
+    Overall_Status: a.overall === 'NA' ? 'N/A' : a.overall, Organoleptic_Remark: remark, Raw_Transcript: $('tx').value.trim()
+  };
+  lsSet(CONFIG.OP_KEY, rec.Operator);
+  $('log').disabled = true;
+  postRecords([rec]).then(function () { toast('Logged ✓ ' + rec.SKU_Name + ' – ' + rec.Overall_Status); addRecent(rec); flushQueue(true); })
+    .catch(function () { var q = getQueue(); q.push(rec); setQueue(q); addRecent(rec); toast('Saved offline – will send when online.'); })
+    .then(function () { $('log').disabled = false; resetEntry(true); });
+}
+function resetEntry(afterLog) {
+  ['tx','brix','ph','remark','ca'].forEach(function (id) { $(id).value = ''; });
+  $('manualSku').value = '';
+  state.hold = false; clearSuggest(); $('vwarn').classList.add('hide');
+  if (afterLog) { state.sku = null; renderSkus(); }   // force a fresh SKU tap so a reading is never logged against the previous SKU
+  refresh(); renderNet();
+}
+
+// ---- init ----
+function init() {
+  var saved = lsGet(CONFIG.UI_KEY, null);
+  if (saved && Q.MODES[saved.mode]) {
+    state.mode = saved.mode;
+    if (Q.MODES[saved.mode].streams.indexOf(saved.stream) >= 0) { state.stream = saved.stream; state.sub = Q.subsOf(saved.stream).indexOf(saved.sub) >= 0 ? saved.sub : (Q.subsOf(saved.stream)[0] || ''); }
+    else { state.stream = Q.MODES[saved.mode].streams[0]; state.sub = Q.subsOf(state.stream)[0] || ''; }
+  }
+  $('shift').value = defaultShift(); $('op').value = lsGet(CONFIG.OP_KEY, '') || '';
+  var chips = [['OK','normal'],['Watery','watery'],['Pulpy','pulpy'],['Sour','sour'],['Fermented – HOLD','fermented'],['Color off','discolored']];
+  chips.forEach(function (c) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = c[0];
+    b.onclick = function () { var r = Q.parseRemarks(c[1]); var cur = $('remark').value.trim(); if (r.text && cur.indexOf(r.text) < 0) $('remark').value = cur ? cur + '; ' + r.text : r.text; if (r.hold) state.hold = true; refresh(); };
+    $('remchips').appendChild(b);
+  });
+  $('modeOff').onclick = function () { setMode('off'); }; $('modeOn').onclick = function () { setMode('on'); };
+  $('brix').oninput = refresh; $('ph').oninput = refresh; $('manualSku').oninput = refresh;
+  $('remark').oninput = function () { state.hold = /HOLD/.test($('remark').value); refresh(); };
+  $('mic').onclick = startVoice; $('parse').onclick = function () { applyParse($('tx').value); };
+  $('tx').onchange = function () { applyParse($('tx').value); };
+  $('log').onclick = logResult; $('clearBtn').onclick = function () { resetEntry(false); }; $('retry').onclick = function () { flushQueue(false); };
+  window.addEventListener('online', function () { renderNet(); flushQueue(true); }); window.addEventListener('offline', renderNet);
+  renderMode(); renderStreams(); renderSubs(); renderSkus(); renderNet(); renderRecent(); refresh(); flushQueue(true);
+  try { if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js'); } catch (e) {}
+}
+init();
+})();
+</script>
+</body>
+</html>

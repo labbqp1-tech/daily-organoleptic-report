@@ -1,9 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <style id="qc-design-tokens">/* Shared Daily QC tokens; embedded in this file (no external package). Palette: Barakat Fresh Leaf #2E9E40 / Deep Orchard #1B6E2A / Mint Wash #EAF8ED; ON = Pomegranate Ruby #9F1239. Light only. */
+:root {
+  --qc-color-primary: #1B6E2A;
+  --qc-color-primary-rgb: 27, 110, 42;
+  --qc-color-primary-foreground: #FFFFFF;
+  --qc-color-primary-foreground-rgb: 255, 255, 255;
+  --qc-color-secondary: #EAF8ED;
+  --qc-color-secondary-rgb: 234, 248, 237;
+  --qc-color-secondary-foreground: #1B6E2A;
+  --qc-color-secondary-foreground-rgb: 27, 110, 42;
+  --qc-color-accent: #9F1239;
+  --qc-color-accent-rgb: 159, 18, 57;
+  --qc-color-accent-foreground: #FFFFFF;
+  --qc-color-accent-foreground-rgb: 255, 255, 255;
+  --qc-color-background: #F5F7F5;
+  --qc-color-background-rgb: 245, 247, 245;
+  --qc-color-foreground: #0F172A;
+  --qc-color-foreground-rgb: 15, 23, 42;
+  --qc-color-card: #FFFFFF;
+  --qc-color-card-rgb: 255, 255, 255;
+  --qc-color-card-foreground: #0F172A;
+  --qc-color-card-foreground-rgb: 15, 23, 42;
+  --qc-color-popover: #FFFFFF;
+  --qc-color-popover-rgb: 255, 255, 255;
+  --qc-color-popover-foreground: #0F172A;
+  --qc-color-popover-foreground-rgb: 15, 23, 42;
+  --qc-color-muted: #F1F5F9;
+  --qc-color-muted-rgb: 241, 245, 249;
+  --qc-color-muted-foreground: #64748B;
+  --qc-color-muted-foreground-rgb: 100, 116, 139;
+  --qc-color-destructive: #DC2626;
+  --qc-color-destructive-rgb: 220, 38, 38;
+  --qc-color-destructive-foreground: #FFFFFF;
+  --qc-color-destructive-foreground-rgb: 255, 255, 255;
+  --qc-color-border: #DCE5DD;
+  --qc-color-border-rgb: 220, 229, 221;
+  --qc-color-input: #DCE5DD;
+  --qc-color-input-rgb: 220, 229, 221;
+  --qc-color-ring: #2E9E40;
+  --qc-color-ring-rgb: 46, 158, 64;
+  --qc-color-chart1: #16A34A;
+  --qc-color-chart1-rgb: 22, 163, 74;
+  --qc-color-chart2: #15803D;
+  --qc-color-chart2-rgb: 21, 128, 61;
+  --qc-color-chart3: #92400E;
+  --qc-color-chart3-rgb: 146, 64, 14;
+  --qc-color-chart4: #DC2626;
+  --qc-color-chart4-rgb: 220, 38, 38;
+  --qc-color-chart5: #64748B;
+  --qc-color-chart5-rgb: 100, 116, 139;
+  --qc-color-sidebar: #FFFFFF;
+  --qc-color-sidebar-rgb: 255, 255, 255;
+  --qc-color-sidebar-foreground: #0F172A;
+  --qc-color-sidebar-foreground-rgb: 15, 23, 42;
+  --qc-color-sidebar-border: #DCE5DD;
+  --qc-color-sidebar-border-rgb: 220, 229, 221;
+  --qc-color-sidebar-primary: #1B6E2A;
+  --qc-color-sidebar-primary-rgb: 27, 110, 42;
+  --qc-color-sidebar-primary-foreground: #FFFFFF;
+  --qc-color-sidebar-primary-foreground-rgb: 255, 255, 255;
+  --qc-color-sidebar-accent: #EAF8ED;
+  --qc-color-sidebar-accent-rgb: 234, 248, 237;
+  --qc-color-sidebar-accent-foreground: #1B6E2A;
+  --qc-color-sidebar-accent-foreground-rgb: 27, 110, 42;
+  --qc-color-sidebar-ring: #2E9E40;
+  --qc-color-sidebar-ring-rgb: 46, 158, 64;
+  --qc-state-pass: #16A34A;
+  --qc-state-pass-rgb: 22, 163, 74;
+  --qc-state-pass-bg: #DCFCE7;
+  --qc-state-pass-bg-rgb: 220, 252, 231;
+  --qc-state-pass-fg: #166534;
+  --qc-state-pass-fg-rgb: 22, 101, 52;
+  --qc-state-tol-bg: #F0FDF4;
+  --qc-state-tol-bg-rgb: 240, 253, 244;
+  --qc-state-tol-fg: #15803D;
+  --qc-state-tol-fg-rgb: 21, 128, 61;
+  --qc-state-tol-bd: #86EFAC;
+  --qc-state-tol-bd-rgb: 134, 239, 172;
+  --qc-state-out: #DC2626;
+  --qc-state-out-rgb: 220, 38, 38;
+  --qc-state-out-bg: #FEE2E2;
+  --qc-state-out-bg-rgb: 254, 226, 226;
+  --qc-state-out-fg: #B91C1C;
+  --qc-state-out-fg-rgb: 185, 28, 28;
+  --qc-state-pending-bg: #FEF3C7;
+  --qc-state-pending-bg-rgb: 254, 243, 199;
+  --qc-state-pending-fg: #92400E;
+  --qc-state-pending-fg-rgb: 146, 64, 14;
+  --qc-state-neutral: #94A3B8;
+  --qc-state-neutral-rgb: 148, 163, 184;
+  --qc-state-neutral-bg: #F1F5F9;
+  --qc-state-neutral-bg-rgb: 241, 245, 249;
+  --qc-state-neutral-fg: #475569;
+  --qc-state-neutral-fg-rgb: 71, 85, 105;
+  --qc-state-well: #F8FAF8;
+  --qc-state-well-rgb: 248, 250, 248;
+  --qc-state-hover-border: #C3D3C6;
+  --qc-state-hover-border-rgb: 195, 211, 198;
+  --qc-state-off-soft: #EAF8ED;
+  --qc-state-off-soft-rgb: 234, 248, 237;
+  --qc-state-on-soft: #FFF1F2;
+  --qc-state-on-soft-rgb: 255, 241, 242;
+  --qc-state-captured-border: #8FD39B;
+  --qc-state-captured-border-rgb: 143, 211, 155;
+  --qc-state-on-captured-border: #F4A3B5;
+  --qc-state-on-captured-border-rgb: 244, 163, 181;
+  --qc-state-hold-bg: #7F1D1D;
+  --qc-state-hold-bg-rgb: 127, 29, 29;
+  --qc-state-hold-fg: #FFFFFF;
+  --qc-state-hold-fg-rgb: 255, 255, 255;
+  --qc-state-shadow: #000000;
+  --qc-state-shadow-rgb: 0, 0, 0;
+  --qc-state-blink-border: #FCA5A5;
+  --qc-state-blink-border-rgb: 252, 165, 165;
+  --qc-font-sans: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --qc-radius: 0.75rem;
+  --qc-space: 0.125rem;
+  color-scheme: light;
+}</style>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0E5A42">
+<meta name="theme-color" content="#0D2F2B" data-qc-off="#0D2F2B" data-qc-on="#0D2F2B">
+<meta name="description" content="Offline-ready Daily Organoleptic Report for lab quality control, Brix, pH and organoleptic checks.">
+<meta property="og:title" content="Daily Organoleptic Report">
+<meta property="og:description" content="Capture quality-control readings reliably, online or offline.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Daily Organoleptic">
@@ -13,143 +136,351 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{
-  --canvas:#FAF8F5; --card:#FFFFFF; --bd:#E7E2DA; --ink:#1F1B16; --mute:#6B645A;
-  --emerald:#0E5A42; --emerald-soft:#E8F3EE; --rose:#B84A62; --rose-soft:#FDF2F5;
-  --accent:var(--emerald); --accent-soft:var(--emerald-soft); --r:14px;
-  --g-bg:#E4F3EA; --g-fg:#1B6B45; --a-bg:#FFF1D6; --a-fg:#8A5A00; --r-bg:#FCE4E8; --r-fg:#A3162F; --n-bg:#EFEBE5; --n-fg:#5B554C;
+  /* Native aliases consume the shared package; no forked palette or reset. */
+  --canvas:var(--qc-color-background); --card:var(--qc-color-card); --bd:var(--qc-color-border);
+  --ink:var(--qc-color-foreground); --mute:var(--qc-color-muted-foreground);
+  --shadow:0 1px 3px rgba(var(--qc-color-foreground-rgb),.05);
+  --emerald:var(--qc-color-primary); --emerald-soft:var(--qc-color-secondary);
+  --rose:var(--qc-color-accent); --rose-soft:var(--qc-state-on-soft);
+  --accent:var(--emerald); --accent-ink:var(--qc-color-primary-foreground); --accent-soft:var(--emerald-soft); --r:var(--qc-radius);
+  --g:var(--qc-state-pass); --g-bg:var(--qc-state-pass-bg); --g-fg:var(--qc-state-pass-fg);
+  --t-bg:var(--qc-state-tol-bg); --t-fg:var(--qc-state-tol-fg); --t-bd:var(--qc-state-tol-bd);
+  --a-bg:var(--qc-state-pending-bg); --a-fg:var(--qc-state-pending-fg);
+  --r-c:var(--qc-state-out); --r-bg:var(--qc-state-out-bg); --r-fg:var(--qc-state-out-fg);
+  --n:var(--qc-state-neutral); --n-bg:var(--qc-state-neutral-bg); --n-fg:var(--qc-state-neutral-fg);
 }
-body[data-mode="on"]{ --accent:var(--rose); --accent-soft:var(--rose-soft); }
+body[data-mode="on"]{ --accent:var(--rose); --accent-ink:var(--qc-color-accent-foreground); --accent-soft:var(--rose-soft); }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
-body{background:var(--canvas);color:var(--ink);font:16px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:var(--canvas);color:var(--ink);font:16px/1.3 var(--qc-font-sans);-webkit-tap-highlight-color:transparent}
 button,select,input,textarea{font:inherit;color:inherit}
+.num,.tabnum,input#brix,input#ph,.rec{font-variant-numeric:tabular-nums}
 #app{display:flex;flex-direction:column;min-height:100dvh}
-.strip{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 12px;background:var(--card);border-bottom:1px solid var(--bd)}
-.strip h1{font-size:18px;margin:0 auto 0 0;color:var(--emerald);white-space:nowrap}
-body[data-mode="on"] .strip h1{color:var(--rose)}
-.strip select,.strip input{height:44px;border:1.5px solid var(--bd);border-radius:12px;padding:0 10px;background:#fff;font-size:16px}
-#shift{width:118px}#op{width:150px}#batch{width:150px;text-transform:uppercase}
+.strip{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:6px 14px;background:var(--card);border-bottom:1px solid var(--bd)}
+.strip h1{font-size:18px;margin:0 auto 0 0;color:var(--accent);white-space:nowrap}
+.strip select,.strip input{height:44px;border:1.5px solid var(--bd);border-radius:calc(var(--r) - var(--qc-space));padding:0 calc(5 * var(--qc-space));background:var(--card);font-size:16px}
+#op{width:150px}#batch{width:150px;text-transform:uppercase}
+#op.need{border-color:var(--r-c);box-shadow:0 0 0 3px var(--r-bg)}
 .tag{border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;background:var(--emerald-soft);color:var(--emerald)}
 .tag.off{background:var(--r-bg);color:var(--r-fg)}
 .tag.q{background:var(--a-bg);color:var(--a-fg)}
 .hide{display:none!important}
-.seg{display:grid;grid-template-columns:1fr 1fr;margin:10px 12px 0;border:1.5px solid var(--bd);border-radius:var(--r);overflow:hidden;background:#fff}
-.seg button{border:0;background:#fff;min-height:54px;padding:6px 10px;text-align:center;cursor:pointer;line-height:1.15}
-.seg button b{display:block;font-size:17px}.seg button span{font-size:14px;color:var(--mute)}
-.seg button[aria-pressed="true"]{color:#fff}.seg button[aria-pressed="true"] span{color:#fff;opacity:.9}
+.seg{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--bd);border-radius:var(--r);overflow:hidden;background:var(--card)}
+.seg button{border:0;background:var(--card);min-height:54px;padding:calc(3 * var(--qc-space)) calc(5 * var(--qc-space));text-align:center;cursor:pointer;line-height:1.15}
+.seg button b{display:block;font-size:16px}.seg button span{font-size:13px;color:var(--mute)}
+.seg button[aria-pressed="true"]{color:var(--accent-ink)}.seg button[aria-pressed="true"] span{color:var(--accent-ink);opacity:.92}
 #modeOff[aria-pressed="true"]{background:var(--emerald)}#modeOn[aria-pressed="true"]{background:var(--rose)}
-main{flex:1;display:flex;flex-direction:column;gap:10px;padding:10px 12px 12px}
+main{flex:1;display:flex;flex-direction:column;gap:12px;padding:10px 14px 12px}
 .col{display:flex;flex-direction:column;gap:10px;min-height:0}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:10px 12px}
-.lbl{font-size:13px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.capture{display:flex;flex-direction:column;gap:10px;min-height:0}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:10px 12px;box-shadow:var(--shadow)}
+.lbl{font-size:12px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
 .pills{display:flex;flex-wrap:wrap;gap:8px}
-.pill{min-height:44px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--bd);background:#fff;font-weight:600;font-size:16px;cursor:pointer;text-align:center;line-height:1.15}
-.pill[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.pill{min-height:44px;padding:calc(4 * var(--qc-space)) calc(7 * var(--qc-space));border-radius:999px;border:1.5px solid var(--bd);background:var(--card);font-weight:600;font-size:16px;cursor:pointer;text-align:center;line-height:1.15}
+.pill[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .pill.suggest{outline:3px solid var(--a-fg);outline-offset:1px}
 .pill.empty{color:var(--mute);border-style:dashed}
-#sku .pill{border-radius:12px}
+/* SKU tile matrix: 3 columns, name + micro-spec caption */
+#sku{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.tile{min-height:46px;padding:calc(3 * var(--qc-space)) calc(4 * var(--qc-space));text-align:left;border-radius:calc(var(--r) - var(--qc-space));border:1.5px solid var(--bd);background:var(--card);cursor:pointer;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.tile .n{font-size:13px;font-weight:700;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tile .c{font-size:10.5px;color:var(--mute);line-height:1.2;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.tile[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.tile[aria-pressed="true"] .c{color:var(--accent-ink);opacity:.88}
+.tile.suggest{outline:3px solid var(--a-fg);outline-offset:1px}
 .skuwrap{min-height:0}
-.note{background:var(--a-bg);color:var(--a-fg);border-radius:12px;padding:10px 12px;font-size:15px;font-weight:600}
+.note{background:var(--a-bg);color:var(--a-fg);border-radius:calc(var(--r) - var(--qc-space));padding:calc(4 * var(--qc-space)) calc(5 * var(--qc-space));font-size:14px;font-weight:600}
+/* capture indicator pills */
+.caps{display:flex;gap:6px;margin-top:8px}
+.cap{flex:1;text-align:center;border-radius:999px;padding:4px 6px;font-size:12px;font-weight:800;letter-spacing:.04em;background:var(--n-bg);color:var(--n-fg);border:1px solid var(--bd)}
+.cap.on{background:var(--emerald-soft);color:var(--emerald);border-color:var(--qc-state-captured-border)}
+body[data-mode="on"] .cap.on{background:var(--rose-soft);color:var(--rose);border-color:var(--qc-state-on-captured-border)}
+/* instrument wells */
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.reading label{display:block}
-.reading input{width:100%;height:52px;font-size:30px;font-weight:700;text-align:center;border:1.5px solid var(--bd);border-radius:12px;background:#fff}
-.reading input:focus,.tx:focus,textarea:focus{outline:3px solid var(--accent-soft);border-color:var(--accent)}
-.badge{display:inline-block;margin-top:6px;border-radius:999px;padding:5px 12px;font-size:14px;font-weight:800}
-.spec{font-size:14px;color:var(--mute);margin-top:4px;min-height:18px}
-.GREEN{background:var(--g-bg);color:var(--g-fg)}.AMBER{background:var(--a-bg);color:var(--a-fg)}.RED{background:var(--r-bg);color:var(--r-fg)}.NA,.MISSING{background:var(--n-bg);color:var(--n-fg)}
-#overall{border-radius:12px;text-align:center;font-weight:900;font-size:22px;padding:12px 8px}
+.well{background:var(--qc-state-well);border:1px solid var(--bd);border-radius:calc(var(--r) - var(--qc-space));padding:calc(4 * var(--qc-space)) calc(5 * var(--qc-space));box-shadow:inset 0 1px 2px rgba(var(--qc-color-foreground-rgb),.06)}
+.well .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.well .top .lbl{margin:0}
+.well input{width:100%;height:50px;font-size:32px;font-weight:800;text-align:center;border:1.5px solid var(--bd);border-radius:calc(var(--r) - var(--qc-space));background:var(--card)}
+.well input.bad{border-color:var(--r-c);background:var(--r-bg)}
+.well input:focus,textarea:focus{outline:3px solid var(--accent-soft);border-color:var(--accent)}
+.badge{display:inline-block;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:800;white-space:nowrap}
+.spec{font-size:12.5px;color:var(--mute);margin-top:3px;min-height:16px;font-variant-numeric:tabular-nums}
+.GREEN{background:var(--g-bg);color:var(--g-fg)}.TOL{background:var(--t-bg);color:var(--t-fg);border:1px dashed var(--t-bd)}
+.RED{background:var(--r-bg);color:var(--r-fg)}.NA,.MISSING{background:var(--n-bg);color:var(--n-fg)}
+/* verdict */
+#verdictCard{border-left:6px solid var(--n);padding:8px 12px}
+#verdictCard[data-state="green"]{border-left-color:var(--g)}
+#verdictCard[data-state="red"]{border-left-color:var(--r-c)}
+#overall{font-weight:900;font-size:20px;line-height:1.2}
+#overall.GREEN,#overall.TOL,#overall.RED,#overall.NA{background:none;border:0;padding:0}
+#overall.GREEN,#overall.TOL{color:var(--g-fg)}#overall.RED{color:var(--r-fg)}#overall.NA{color:var(--n-fg)}
+#variance{font-size:13px;color:var(--mute);margin-top:2px;font-variant-numeric:tabular-nums}
+@keyframes blinkRed{0%,100%{border-color:var(--r-c);box-shadow:0 0 0 0 rgba(var(--qc-color-destructive-rgb),0)}50%{border-color:var(--qc-state-blink-border);box-shadow:0 0 0 5px rgba(var(--qc-color-destructive-rgb),.35)}}
+.blink{animation:blinkRed .9s infinite;border:2px solid var(--r-c)!important}
+#verdictCard.blink{border-left-width:6px!important}
+@media (prefers-reduced-motion:reduce){.blink{animation:none;box-shadow:0 0 0 4px rgba(var(--qc-color-destructive-rgb),.35)}}
+/* voice deck */
 .voice{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-#mic{height:52px;border:0;border-radius:var(--r);background:var(--accent);color:#fff;font-size:19px;font-weight:800;cursor:pointer}
-#mic.live{background:var(--r-fg);animation:pulse 1s infinite}
+#mic{height:50px;border:0;border-radius:var(--r);background:var(--accent);color:var(--accent-ink);font-size:18px;font-weight:800;cursor:pointer}
+#mic.live{background:var(--r-c);animation:pulse 1s infinite}
 @keyframes pulse{50%{opacity:.75}}
-#lang{height:52px;border:1.5px solid var(--bd);border-radius:12px;padding:0 8px;background:#fff}
-textarea{width:100%;border:1.5px solid var(--bd);border-radius:12px;padding:10px;background:#fff;resize:none;font-size:17px}
-#tx{height:48px;margin-top:8px}#remark{height:48px}#ca{height:48px}
-#vwarn{margin-top:8px}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-.chip{min-height:44px;padding:6px 14px;border-radius:999px;border:1.5px solid var(--bd);background:var(--card);font-weight:600;cursor:pointer}
+#lang{height:50px;border:1.5px solid var(--bd);border-radius:calc(var(--r) - var(--qc-space));padding:0 calc(4 * var(--qc-space));background:var(--card)}
+textarea{width:100%;border:1.5px solid var(--bd);border-radius:calc(var(--r) - var(--qc-space));padding:calc(4 * var(--qc-space)) calc(5 * var(--qc-space));background:var(--card);resize:none;font-size:16px}
+#tx{height:40px;margin-top:8px}#remark{height:44px}#ca{height:44px}
+#vwarn{margin-top:8px;font-size:13.5px}
+#vwarn.alert{background:var(--qc-state-hold-bg);color:var(--qc-state-hold-fg);border:2px solid var(--r-c)}
+#vwarn.info{background:var(--a-bg);color:var(--a-fg)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 6px}
+.chip{min-height:44px;padding:6px 12px;border-radius:999px;border:1.5px solid var(--bd);background:var(--card);font-weight:600;font-size:15px;cursor:pointer}
 .actions{display:grid;grid-template-columns:1fr 2fr;gap:10px}
-.actions button{height:56px;border-radius:var(--r);font-size:19px;font-weight:800;cursor:pointer;border:1.5px solid var(--bd);background:#fff}
-#log{background:var(--accent);border-color:var(--accent);color:#fff}
+.actions button{height:54px;border-radius:var(--r);font-size:18px;font-weight:800;cursor:pointer;border:1.5px solid var(--bd);background:var(--card)}
+#log{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 #log:disabled{opacity:.4}
-.link{height:44px;border:1.5px solid var(--bd);border-radius:12px;background:#fff;padding:0 14px;font-weight:700;cursor:pointer}
-.rec{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:3px 0;border-bottom:1px solid var(--bd)}
+.link{height:44px;border:1.5px solid var(--bd);border-radius:calc(var(--r) - var(--qc-space));background:var(--card);padding:0 calc(7 * var(--qc-space));font-weight:700;cursor:pointer}
+/* Saved QC log */
+.savedlog{display:flex;flex-direction:column;min-height:115px;max-height:195px;flex:1}
+#recent{overflow-y:auto;flex:1;min-height:0}
+.rec{padding:4px 0;border-bottom:1px solid var(--bd);font-size:13px}
 .rec:last-child{border:0}
-#manualWrap input{width:100%;height:48px;border:1.5px solid var(--bd);border-radius:12px;padding:0 12px;font-size:17px;margin-top:8px}
-#toast{position:fixed;left:12px;right:12px;bottom:12px;background:#1F1B16;color:#fff;padding:14px;border-radius:12px;display:none;z-index:9;font-weight:700}
-/* Landscape / tablet workspace: fits one screen, no page scroll */
-@media (min-width:1024px){
-  html,body{overflow:hidden}
+.rec .l1{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;min-width:0}
+.rec .l1 .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+.rec .l2{color:var(--mute);font-size:12.5px;line-height:1.25}
+.rec .bp{background:var(--n-bg);color:var(--n-fg);border-radius:calc(var(--r) - 3 * var(--qc-space));padding:1px calc(3 * var(--qc-space));font-size:11.5px;font-weight:700}
+.rec .badge{padding:1px 8px;font-size:11px}
+.sync{font-size:11.5px;font-weight:700;white-space:nowrap}
+.sync.sending,.sync.queued{color:var(--a-fg)}.sync.synced{color:var(--g-fg)}
+#manualWrap input{width:100%;height:48px;border:1.5px solid var(--bd);border-radius:calc(var(--r) - var(--qc-space));padding:0 calc(6 * var(--qc-space));font-size:17px;margin-top:8px}
+#toast{position:fixed;left:12px;right:12px;bottom:12px;background:var(--ink);color:var(--qc-color-primary-foreground);padding:calc(7 * var(--qc-space));border-radius:var(--r);display:none;z-index:9;font-weight:700}
+#flash{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);background:var(--g);color:var(--qc-color-primary-foreground);font-weight:900;font-size:34px;padding:18px 36px;border-radius:calc(var(--r) + 3 * var(--qc-space));display:none;z-index:10;box-shadow:0 8px 30px rgba(var(--qc-state-shadow-rgb),.25)}
+/* Tablet landscape workspace (Tab A9+ 1280x800 / A7): fits one screen, no page scroll */
+@media (min-width:900px) and (orientation:landscape){
+  html,body{height:100dvh;overflow:hidden}
   #app{height:100dvh;min-height:0}
-  main{display:grid;grid-template-columns:5fr 6fr;min-height:0}
+  main{display:grid;grid-template-columns:45fr 55fr;gap:12px;padding:10px 14px 12px;min-height:0}
   .col{overflow:auto}
-  .actions{position:sticky;bottom:0;background:var(--canvas);padding-top:6px}
-  .card{padding:8px 12px}
+  .capturecol{overflow:hidden}
+  .capture{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:2px}
+  .capture>*{flex-shrink:0}
+  .capturecol>.savedlog{flex:0 0 clamp(130px,17dvh,170px)}
+  .capturecol>.actions{flex-shrink:0}
   .skuwrap{flex:1;overflow:auto}
+  .actions{position:sticky;bottom:0;background:var(--canvas);padding-top:4px}
 }
-@media (max-width:679px){
+@media (max-width:899px),(orientation:portrait){
   .strip h1{font-size:16px;flex-basis:100%}
-  #shift,#op,#batch{flex:1 1 30%;width:auto}
-  .seg button b{font-size:15px}.seg button span{font-size:12px}
-  .reading input{font-size:28px}
+  #op,#batch{flex:1 1 40%;width:auto}
+  #sku{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .savedlog{max-height:260px}
 }
+/* ---- refinement layer ---- */
+.strip{padding:8px 14px;gap:10px}
+.strip h1{font-weight:800;letter-spacing:-.01em}
+.lbl{letter-spacing:.07em}
+button,.tile,.pill,.chip{transition:background-color .15s,border-color .15s,transform .08s}
+.pill:hover,.tile:hover,.chip:hover,.link:hover,.seg button:hover,#clearBtn:hover{border-color:var(--qc-state-hover-border);background:var(--qc-state-well)}
+.pill[aria-pressed="true"]:hover,.tile[aria-pressed="true"]:hover{background:var(--accent);border-color:var(--accent)}
+#modeOff[aria-pressed="true"]:hover{background:var(--emerald)}#modeOn[aria-pressed="true"]:hover{background:var(--rose)}
+button:active:not(:disabled),.tile:active{transform:scale(.98)}
+:focus{outline:none}
+:focus-visible,.strip input:focus,#manualWrap input:focus,select:focus{outline:3px solid var(--accent);outline-offset:2px}
+.well input:focus,textarea:focus{outline:3px solid var(--accent-soft);outline-offset:0;border-color:var(--accent)}
+#log:hover:not(:disabled){filter:brightness(1.08)}
+#log:disabled{cursor:not-allowed}
+#toast{white-space:pre-line}
+#net,#qn{cursor:pointer}
+#storageWarning{flex-shrink:0;border-radius:0;background:var(--qc-state-hold-bg);color:var(--qc-state-hold-fg)}
+#syncError{font-size:12px;color:var(--r-fg);margin:0 0 6px;overflow-wrap:anywhere}
+.actions{z-index:2}
+.loghead{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:6px}
+.loghead .lbl{margin:0}
+.scope{font-size:11px;color:var(--mute);font-weight:600;white-space:nowrap}
+.sumstrip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:6px}
+.sum{display:flex;align-items:baseline;justify-content:space-between;gap:4px;border:1px solid var(--bd);border-radius:calc(var(--r) - 2 * var(--qc-space));padding:3px calc(4 * var(--qc-space));background:var(--qc-state-well);min-width:0}
+.sum span{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--mute)}
+.sum output{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+.sum.ok output{color:var(--g-fg)}.sum.bad output{color:var(--r-fg)}.sum.q output{color:var(--a-fg)}
+.pwa{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:11;display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--bd);border-left:5px solid var(--emerald);border-radius:var(--r);padding:8px 10px 8px 14px;box-shadow:0 6px 20px rgba(var(--qc-color-foreground-rgb),.12);font-size:14px;font-weight:600;max-width:calc(100vw - 24px)}
+.pwa button{min-height:44px;padding:0 16px;border-radius:calc(var(--r) - var(--qc-space));border:0;background:var(--emerald);color:var(--qc-color-primary-foreground);font-weight:800;cursor:pointer}
+@media (max-width:899px),(orientation:portrait){
+  html,body{height:auto;min-height:100%;overflow-x:clip}
+  .sumstrip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .loghead{flex-wrap:wrap}
+}
+
+/* ---- v10 Barakat fresh-lab layer ---- */
+:root{--leaf:#2E9E40;--orchard:#1B6E2A;--mint:#EAF8ED;--ruby:#9F1239;--line:#DCE5DD}
+body[data-mode="on"]{--leaf:var(--ruby)}
+.strip{border-bottom:2px solid var(--leaf);padding-top:6px;padding-bottom:6px}
+.strip .brand{height:34px;width:auto;flex:0 0 auto;display:block}
+.strip h1{padding-left:12px;border-left:1.5px solid var(--line);font-size:17px}
+.card,.strip,.seg,.well,.tile,.pill,.chip,.sum{border-color:var(--line)}
+.card{border:1px solid #DCE5DD}
+.well{background:#F8FAF8}
+#tx{height:44px}
+.num,.tabnum,.rec,.spec,#variance,.sum output,.tile .c,.rec .l1 .tabnum,input#brix,input#ph{font-variant-numeric:tabular-nums}
+/* fruit-category dot */
+.tile{position:relative}
+.tile .n{padding-right:10px}
+.tile .fd{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--fruit,#CBD5E1);box-shadow:0 0 0 1.5px #fff}
+.tile[aria-pressed="true"] .fd{box-shadow:0 0 0 1.5px rgba(255,255,255,.95)}
+/* status badges (spec colours) */
+.badge.GREEN{background:#DCFCE7;color:#16A34A;border:0}
+.badge.TOL{background:#FEF3C7;color:#D97706;border:0}
+.badge.RED{background:#FEE2E2;color:#DC2626;border:0}
+.badge.NA,.badge.MISSING{background:#F1F5F9;color:#475569;border:0}
+#overall.TOL{color:var(--qc-state-pending-fg)}
+.sum.q output{color:#B45309}
+.pill.empty[aria-pressed="true"]{color:var(--accent-ink);border-style:solid}
+/* action dock stays reachable on portrait phones too */
+@media (max-width:899px),(orientation:portrait){
+  .actions{position:sticky;bottom:0;z-index:5;background:var(--canvas);padding:8px 0 calc(8px + env(safe-area-inset-bottom));box-shadow:0 -8px 10px -8px rgba(15,23,42,.22)}
+  .strip .brand{height:30px}.strip h1{flex-basis:auto;margin-right:auto;font-size:15px}
+}
+
+/* ================= v11 VERDANT ATELIER (visual layer only) ================= */
+:root{
+  --hdr-1:#0D2F2B;--hdr-2:#174238;--hdr-3:#1B4B40;
+  --canvas:#F1F3ED;--card:#FBFCF8;--accent:#214F43;--accent-ink:#FBFCF8;--accent-soft:#E3EBDD;
+  --sage-glow:#D4DFA0;--ink:#1C2B26;--mute:#5B6B63;--bd:#DCE4DC;--line:#DCE4DC;--well:#EDF2EC;
+  --emerald:#214F43;--emerald-soft:#E3EBDD;--rose:#6B1D3A;--rose-soft:#FDF2F6;
+  --qc-state-well:#EDF2EC;--qc-state-hover-border:#C5D1C5;--qc-state-captured-border:#9DB8A6;--qc-state-on-captured-border:#D9A5BB;
+  --leaf:#D4DFA0;
+}
+body[data-mode="on"]{--accent:#6B1D3A;--accent-ink:#FBFCF8;--accent-soft:#FDF2F6;--leaf:#D4DFA0}
+body{background:var(--canvas)}
+.card{background:var(--card);border:1px solid var(--bd)}
+.well{background:var(--well)}
+.well input,.pill,.tile,.seg,.seg button,.chip,.link,#lang,textarea,#manualWrap input,.actions button{background:var(--card)}
+.seg button[aria-pressed="true"],.pill[aria-pressed="true"],.tile[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+#modeOff[aria-pressed="true"]{background:#214F43}#modeOn[aria-pressed="true"]{background:#6B1D3A}
+#log{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+/* tiles: porcelain, selected = Deep Jade + 6px Citrus Sage active dot; no per-fruit colours */
+.tile .fd{display:none;background:var(--sage-glow);box-shadow:none}
+.tile[aria-pressed="true"] .fd{display:block;box-shadow:0 0 0 1.5px rgba(13,47,43,.35)}
+/* QC status badges - WCAG AA */
+.badge.GREEN{background:#DCFCE7;color:#166534}
+.badge.TOL{background:#FEF3C7;color:#92400E}
+.badge.RED{background:#FEE2E2;color:#B91C1C}
+.badge.NA,.badge.MISSING{background:#F1F5F9;color:#475569}
+/* ---- dark botanical header ---- */
+.strip{
+  background:
+    radial-gradient(560px 150px at 14% -20%,rgba(212,223,160,.12),transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27520%27 height=%27120%27 viewBox=%270 0 520 120%27 fill=%27none%27 stroke=%27%23D4DFA0%27 stroke-width=%271.2%27 opacity=%27.04%27%3E%3Ccircle cx=%27430%27 cy=%2760%27 r=%2714%27/%3E%3Ccircle cx=%27430%27 cy=%2760%27 r=%2730%27/%3E%3Ccircle cx=%27430%27 cy=%2760%27 r=%2746%27/%3E%3Ccircle cx=%27430%27 cy=%2760%27 r=%2762%27/%3E%3Ccircle cx=%27430%27 cy=%2760%27 r=%2778%27/%3E%3Ccircle cx=%27430%27 cy=%2760%27 r=%2794%27/%3E%3Ccircle cx=%27430%27 cy=%2760%27 r=%27110%27/%3E%3Cpath d=%27M430 60 L560 60%27/%3E%3Cpath d=%27M430 60 L542 124%27/%3E%3Cpath d=%27M430 60 L495 172%27/%3E%3Cpath d=%27M430 60 L430 189%27/%3E%3Cpath d=%27M430 60 L365 172%27/%3E%3Cpath d=%27M430 60 L317 125%27/%3E%3Cpath d=%27M430 60 L300 60%27/%3E%3Cpath d=%27M430 60 L317 -4%27/%3E%3Cpath d=%27M430 60 L364 -52%27/%3E%3Cpath d=%27M430 60 L429 -69%27/%3E%3Cpath d=%27M430 60 L494 -52%27/%3E%3Cpath d=%27M430 60 L542 -5%27/%3E%3Cpath d=%27M300 118 C330 70 372 52 420 48 C392 70 360 96 300 118Z%27/%3E%3Cpath d=%27M120 8 C150 40 190 52 236 52 C206 28 168 10 120 8Z%27/%3E%3C/svg%3E") right 24px center/auto 120% no-repeat,
+    linear-gradient(100deg,var(--hdr-1) 0%,var(--hdr-2) 55%,var(--hdr-3) 100%);
+  border-bottom:1px solid rgba(212,223,160,.32);color:#FBFCF8;position:relative}
+.strip h1{color:#FBFCF8;border-left:1.5px solid rgba(212,223,160,.35)}
+.brandwrap{position:relative;display:block;flex:0 0 auto}
+.brandwrap::after{content:"";position:absolute;left:2px;bottom:-3px;width:46%;height:2px;border-radius:2px;background:var(--sage-glow);opacity:.85}
+.strip select,.strip input{background:rgba(251,252,248,.10);border:1.5px solid rgba(212,223,160,.28);color:#FBFCF8}
+.strip input::placeholder{color:rgba(251,252,248,.62)}
+.strip input:focus,.strip select:focus,.strip :focus-visible{outline:3px solid var(--sage-glow);outline-offset:2px;border-color:var(--sage-glow)}
+#op.need{border-color:#FCA5A5;box-shadow:0 0 0 3px rgba(252,165,165,.30)}
+.strip .tag{background:rgba(251,252,248,.10);color:#FBFCF8;border:1px solid rgba(212,223,160,.28)}
+.strip .tag.off{background:rgba(254,202,202,.16);color:#FECACA;border-color:rgba(252,165,165,.5)}
+.strip .tag.q{background:rgba(253,230,138,.16);color:#FDE68A;border-color:rgba(253,230,138,.45)}
+.strip .link{background:rgba(251,252,248,.10);border:1.5px solid rgba(212,223,160,.28);color:#FBFCF8}
+/* ---- botanical-aurora mic orb + equalizer (overlays: micUI() rewrites #mic.innerHTML) ---- */
+.voice{align-items:center}
+.micwrap{position:relative;min-width:0}
+#mic{width:100%;height:50px;font-size:0;line-height:0;display:flex;align-items:center;justify-content:center;background:var(--accent);color:var(--accent-ink);overflow:hidden;
+  background-image:linear-gradient(115deg,rgba(255,255,255,0) 40%,rgba(212,223,160,.14));transition:box-shadow .2s}
+#mic::after{content:"Tap to Speak";font-size:18px;line-height:1.2;font-weight:800;letter-spacing:.01em}
+#mic.live{animation:none;background-color:var(--accent);box-shadow:0 0 0 3px rgba(212,223,160,.5)}
+#mic.live::after{content:"Listening\2026"}
+.orb{position:absolute;left:16px;top:11px;width:28px;height:28px;border-radius:50%;pointer-events:none;z-index:2;
+  box-shadow:0 0 0 1.5px rgba(212,223,160,.6),0 0 0 4px rgba(212,223,160,.14),0 0 12px rgba(212,223,160,.35)}
+.orb::before{content:"";position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 0deg,#D4DFA0,#34D399,#214F43,#D4DFA0 55%,#34D399 80%,#D4DFA0);animation:orbspin 3.2s linear infinite;animation-play-state:paused;will-change:transform}
+.orb::after{content:"";position:absolute;inset:6px;border-radius:50%;
+  background:radial-gradient(circle at 34% 30%,#FBFCF8 0,#D4DFA0 36%,#34D399 68%,#214F43 100%);box-shadow:0 0 8px rgba(212,223,160,.7)}
+.orb i{position:absolute;inset:-7px;border-radius:50%;border:1.5px solid rgba(212,223,160,.5);opacity:0;pointer-events:none}
+#mic.live ~ .orb::before{animation-play-state:running}
+#mic.live ~ .orb i{animation:orbring 1.6s ease-out infinite;will-change:transform,opacity}
+@keyframes orbspin{to{transform:rotate(360deg)}}
+@keyframes orbring{0%{transform:scale(.8);opacity:.7}100%{transform:scale(1.45);opacity:0}}
+.eq{position:absolute;right:16px;top:50%;margin-top:-13px;height:26px;display:flex;align-items:center;gap:3px;pointer-events:none;z-index:2}
+.eq i{display:block;width:3px;height:26px;border-radius:2px;background:var(--sage-glow);opacity:.8;transform:scaleY(var(--s,.25));transform-origin:center;will-change:transform}
+#mic.live ~ .eq i{opacity:1;animation:eqbar 900ms ease-in-out infinite;animation-delay:calc(var(--i) * -130ms)}
+.micwrap.hot #mic.live ~ .eq i{animation-duration:520ms;background:#FBFCF8}
+@keyframes eqbar{0%,100%{transform:scaleY(var(--s,.25))}50%{transform:scaleY(var(--m,1))}}
+@media (prefers-reduced-motion:reduce){.orb::before,#mic.live ~ .orb i,#mic.live ~ .eq i{animation:none!important}#mic.live ~ .eq i{transform:scaleY(.8)}}
+@media (max-width:899px),(orientation:portrait){#mic::after{font-size:16px}.orb{left:12px}.eq{right:12px}}
+/* ---- selective glass: sticky action dock only ---- */
+.actions{background:rgba(251,252,248,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid #DCE4DC}
+@supports not (backdrop-filter:blur(1px)){.actions{background:#FBFCF8}}
+@media (max-width:899px),(orientation:portrait){.actions{background:rgba(251,252,248,.88);border-top:1px solid #DCE4DC;box-shadow:0 -8px 10px -8px rgba(13,47,43,.22)}
+  @supports not (backdrop-filter:blur(1px)){.actions{background:#FBFCF8}}}
 </style>
 </head>
 <body data-mode="off">
 <div id="app">
   <div class="strip">
+    <span class="brandwrap">
+    <svg id="brandLogo" class="brand" role="img" aria-label="Barakat" viewBox="0 0 399.75 132.75" xmlns="http://www.w3.org/2000/svg"><path fill="#FBFCF8" fill-rule="evenodd" d="M0.47 132.34C-0.11 131.64 -0.12 56.11 0.46 54.96C0.92 54.03 0.78 54.06 8.00 53.13C9.72 52.91 11.63 52.62 12.25 52.49C12.87 52.35 14.61 52.08 16.12 51.88C19.61 51.43 22.06 51.07 24.75 50.62C31.02 49.58 36.03 49.19 39.12 49.49C42.14 49.79 45.29 50.63 46.49 51.44C46.84 51.68 47.41 52.00 47.76 52.15C50.03 53.15 53.36 57.63 54.68 61.46C56.00 65.30 55.49 71.95 53.61 75.54C52.50 77.66 50.69 80.15 49.11 81.76C48.26 82.62 48.49 83.08 50.21 84.00C57.05 87.65 60.35 96.14 58.80 106.14C58.67 106.97 58.04 109.19 57.41 111.07C55.80 115.80 53.95 118.26 48.94 122.28C47.64 123.32 42.46 126.10 40.98 126.55C38.69 127.25 35.12 128.00 34.12 128.00C33.59 128.00 32.82 128.11 32.39 128.24C31.97 128.37 30.27 128.66 28.62 128.88C26.98 129.10 25.23 129.38 24.75 129.51C24.27 129.63 22.36 129.91 20.50 130.12C18.64 130.34 16.79 130.62 16.38 130.74C15.96 130.87 14.05 131.15 12.12 131.38C6.56 132.02 4.96 132.23 3.68 132.50C1.93 132.86 0.86 132.81 0.47 132.34ZM83.38 120.96C79.31 120.50 74.65 118.61 72.55 116.56C71.88 115.91 70.93 115.07 70.44 114.70C69.48 113.97 67.82 111.89 66.60 109.88C64.09 105.75 62.54 100.20 62.32 94.55C62.04 87.54 63.20 81.97 65.96 76.98C66.53 75.96 67.26 74.56 67.59 73.88C68.32 72.34 72.51 67.79 74.31 66.57C75.03 66.08 75.91 65.44 76.25 65.14C77.91 63.70 82.60 61.35 84.83 60.85C85.68 60.66 86.99 60.33 87.75 60.12C88.51 59.90 90.54 59.66 92.26 59.58C97.62 59.32 101.43 60.20 105.76 62.69C106.49 63.11 106.54 63.11 106.87 62.66C107.08 62.38 107.17 61.90 107.09 61.49C106.90 60.57 107.42 59.06 108.02 58.74C108.47 58.50 117.26 57.02 120.52 56.64C121.67 56.50 121.98 56.55 122.27 56.90C122.78 57.51 122.81 114.04 122.30 114.55C122.12 114.73 120.72 115.06 119.18 115.29C117.64 115.52 115.36 115.88 114.12 116.08C108.54 117.00 107.25 116.83 107.25 115.15C107.25 113.65 106.58 113.35 105.51 114.35C104.51 115.28 98.89 118.70 97.44 119.25C95.12 120.14 92.05 120.77 88.80 121.00C87.05 121.13 85.57 121.22 85.50 121.21C85.43 121.20 84.47 121.08 83.38 120.96ZM331.00 116.72C325.55 116.45 317.34 115.39 313.00 114.39C310.38 113.79 304.74 112.34 303.25 111.89C302.49 111.65 301.26 111.31 300.50 111.12C298.95 110.74 297.24 110.16 296.12 109.63C294.95 109.09 289.48 107.00 289.22 107.00C289.09 107.00 286.59 105.82 283.68 104.39C279.13 102.14 277.08 101.01 271.92 97.88C271.46 97.60 270.53 96.98 269.84 96.50C269.16 96.02 267.87 95.15 266.98 94.57C263.66 92.39 255.81 86.00 252.08 82.41C248.07 78.56 247.96 78.47 247.62 78.75C247.39 78.94 247.31 80.80 247.29 85.94C247.27 89.76 247.26 93.41 247.25 94.07C247.25 95.74 246.63 96.31 244.38 96.71C240.58 97.38 238.26 97.72 235.75 97.99C234.31 98.15 232.89 98.37 232.60 98.49C231.41 98.98 231.38 98.79 231.38 90.82C231.38 35.12 231.50 18.55 231.94 18.04C232.31 17.61 233.11 17.43 237.12 16.89C239.74 16.54 242.64 16.14 243.57 16.00C245.82 15.67 246.93 15.68 247.17 16.06C247.28 16.23 247.38 24.72 247.38 34.92C247.38 49.14 247.45 53.54 247.68 53.78C247.92 54.02 248.20 53.87 249.01 53.10C250.29 51.88 256.26 45.54 258.75 42.75C259.78 41.59 261.43 39.80 262.41 38.76C263.39 37.72 264.57 36.45 265.03 35.94C265.96 34.90 265.94 34.91 272.47 34.11C274.17 33.91 276.09 33.62 276.72 33.48C277.74 33.24 281.24 32.73 284.51 32.33C285.37 32.23 285.73 32.29 285.98 32.60C286.27 32.95 286.04 33.26 284.22 35.06C283.07 36.20 281.94 37.41 281.72 37.75C281.50 38.09 280.20 39.56 278.82 41.00C277.45 42.44 275.79 44.24 275.13 45.00C274.47 45.76 273.62 46.66 273.25 47.00C272.59 47.60 271.34 48.93 266.76 53.93C265.60 55.20 264.55 56.44 264.42 56.68C264.30 56.93 263.22 58.09 262.03 59.26C257.60 63.64 257.53 63.76 258.81 65.27C260.50 67.27 266.70 73.50 268.50 75.02C269.53 75.89 271.61 77.68 273.12 78.99C274.64 80.31 276.16 81.59 276.50 81.82C276.84 82.05 277.90 82.78 278.85 83.44C279.80 84.09 281.00 84.91 281.51 85.25C282.02 85.59 282.76 86.09 283.16 86.36C287.21 89.09 290.56 91.06 294.00 92.74C295.17 93.32 296.35 93.99 296.62 94.24C296.90 94.48 297.57 94.83 298.12 95.01C298.68 95.18 299.35 95.46 299.62 95.64C299.90 95.81 300.57 96.08 301.12 96.26C301.68 96.43 302.57 96.82 303.12 97.14C303.68 97.45 304.52 97.82 305.00 97.97C305.48 98.11 306.83 98.58 308.00 99.00C309.17 99.43 310.51 99.88 310.98 100.00C311.45 100.12 312.18 100.38 312.60 100.59C314.24 101.38 315.99 102.00 316.60 102.00C316.95 102.00 317.66 102.17 318.18 102.37C319.31 102.81 326.47 104.50 327.22 104.50C327.51 104.50 328.22 104.61 328.81 104.74C330.79 105.18 334.61 105.74 337.38 106.00C345.39 106.74 346.70 106.80 352.75 106.66C358.65 106.53 365.98 105.90 369.00 105.26C369.62 105.13 370.63 104.95 371.25 104.87C373.22 104.60 377.58 103.75 378.88 103.38C379.56 103.18 381.48 102.68 383.12 102.25C384.77 101.83 388.43 100.69 391.25 99.72C398.26 97.30 398.62 97.28 399.43 99.23C399.76 100.00 399.75 100.14 399.31 100.73C398.75 101.48 393.93 103.98 388.12 106.52C385.93 107.49 383.76 108.44 383.30 108.64C382.85 108.84 382.34 109.00 382.18 109.00C382.01 109.00 381.45 109.22 380.93 109.50C380.42 109.78 379.84 110.00 379.64 110.00C379.44 110.00 378.40 110.33 377.33 110.73C376.25 111.13 374.02 111.81 372.38 112.24C370.73 112.67 368.80 113.19 368.10 113.39C367.40 113.59 365.99 113.91 364.97 114.10C363.96 114.29 362.23 114.62 361.12 114.83C352.63 116.51 341.15 117.23 331.00 116.72ZM21.50 114.50C21.95 114.37 23.24 114.14 24.35 114.00C26.34 113.74 29.41 113.14 32.88 112.34C36.22 111.57 40.25 109.10 40.25 107.82C40.25 107.64 40.59 106.82 41.00 106.00C42.02 103.97 42.10 100.14 41.15 98.10C39.97 95.56 37.06 94.07 33.88 94.38C30.72 94.69 26.07 95.26 24.88 95.48C24.19 95.61 22.16 95.90 20.38 96.13C18.08 96.43 17.03 96.67 16.81 96.95C16.58 97.25 16.50 99.43 16.50 105.87C16.50 112.36 16.57 114.48 16.81 114.72C17.15 115.08 19.96 114.94 21.50 114.50ZM127.76 113.39C127.55 113.14 127.49 105.48 127.52 84.72L127.56 56.40L128.26 55.70C128.83 55.13 129.19 55.00 130.17 54.99C130.83 54.99 132.44 54.82 133.75 54.61C135.06 54.41 136.98 54.14 138.03 54.02C139.08 53.89 140.44 53.71 141.06 53.62C142.31 53.43 143.00 53.99 143.00 55.19C143.00 56.26 143.67 56.05 145.91 54.24C148.20 52.39 150.61 51.00 151.50 51.00C151.79 51.00 152.27 50.85 152.57 50.66C154.15 49.69 163.59 49.26 164.88 50.10C165.57 50.56 165.67 51.55 165.24 53.88C165.04 54.97 164.27 62.91 164.26 64.04C164.24 65.00 163.57 65.26 161.17 65.21C158.55 65.16 153.87 66.02 152.60 66.78C152.17 67.04 151.67 67.25 151.49 67.25C151.14 67.25 148.27 69.62 147.91 70.21C147.79 70.41 147.33 70.97 146.88 71.47C146.44 71.97 145.74 73.16 145.32 74.12C144.63 75.73 144.34 76.79 143.74 80.00C143.62 80.62 143.52 87.83 143.51 96.02C143.50 109.89 143.47 110.95 143.06 111.31C142.62 111.70 139.81 112.34 137.25 112.63C136.49 112.71 134.86 112.94 133.62 113.12C129.87 113.69 128.08 113.77 127.76 113.39ZM184.12 105.62C183.57 105.43 182.34 105.06 181.38 104.78C178.80 104.05 177.21 103.43 176.43 102.87C171.64 99.43 169.38 96.98 168.00 93.72C167.56 92.71 167.05 91.54 166.87 91.12C164.72 86.41 163.68 79.31 164.27 73.35C164.61 69.93 165.84 65.14 166.60 64.27C166.94 63.87 167.99 61.74 168.49 60.41C168.80 59.59 169.04 59.27 172.08 55.56C173.30 54.08 174.82 52.42 175.46 51.86C176.98 50.53 181.32 47.67 183.03 46.88C183.77 46.53 184.54 46.15 184.75 46.02C186.04 45.24 191.97 44.45 196.49 44.46C199.70 44.47 200.02 44.52 202.62 45.38C204.14 45.89 205.97 46.63 206.69 47.04C208.76 48.22 209.10 48.03 209.26 45.66C209.43 43.25 209.57 43.13 212.24 42.91C213.34 42.81 215.84 42.46 217.81 42.12C221.73 41.44 223.74 41.34 224.20 41.80C224.58 42.18 224.64 98.52 224.26 99.22C224.09 99.55 223.45 99.75 221.83 99.98C220.62 100.16 219.06 100.40 218.38 100.53C217.69 100.66 216.22 100.87 215.12 101.01C214.03 101.14 212.53 101.37 211.80 101.52C210.01 101.89 209.31 101.46 209.20 99.94C209.10 98.57 208.42 98.40 207.21 99.44C205.98 100.51 203.39 102.21 201.92 102.92C201.21 103.27 200.18 103.78 199.62 104.06C197.30 105.25 193.17 105.99 189.00 105.98C186.41 105.97 184.79 105.85 184.12 105.62ZM93.54 105.25C94.41 104.98 95.35 104.75 95.62 104.75C96.25 104.75 100.96 101.70 102.58 100.25C103.85 99.12 104.49 97.99 105.88 94.48C107.18 91.16 107.33 90.32 107.20 86.80C107.07 83.32 106.39 81.34 104.30 78.43C102.66 76.15 98.31 74.26 94.68 74.25C92.85 74.25 89.04 75.17 88.36 75.79C88.08 76.04 87.76 76.25 87.65 76.25C86.85 76.25 83.46 79.30 82.23 81.12C81.77 81.81 81.23 82.57 81.03 82.81C80.14 83.90 78.81 87.70 78.52 90.00C78.19 92.62 79.14 97.41 80.30 98.97C80.55 99.30 80.75 99.74 80.75 99.95C80.75 101.01 84.34 104.15 86.33 104.83C86.91 105.03 87.71 105.30 88.12 105.44C89.39 105.87 91.84 105.79 93.54 105.25ZM198.00 89.39C199.30 88.87 200.60 88.23 200.87 87.96C201.15 87.70 202.08 86.92 202.94 86.23C204.82 84.72 206.83 82.09 207.40 80.38C207.63 79.69 207.91 79.00 208.03 78.86C208.76 77.93 209.37 72.29 209.01 69.83C208.41 65.76 205.20 61.28 202.24 60.38C201.90 60.28 201.27 59.98 200.85 59.72C199.82 59.10 194.99 59.04 193.59 59.62C193.09 59.83 192.52 60.00 192.31 60.00C190.49 60.00 185.46 63.65 184.37 65.76C184.18 66.13 183.76 66.60 183.44 66.81C182.85 67.19 182.07 68.96 181.02 72.27C179.25 77.85 181.84 85.92 186.32 88.79C189.45 90.81 193.88 91.03 198.00 89.39ZM301.38 88.58C299.43 88.33 296.98 87.65 295.50 86.95C294.61 86.53 293.41 85.98 292.84 85.74C292.26 85.49 291.14 84.72 290.34 84.02C285.60 79.92 282.86 75.39 280.96 68.50C280.09 65.32 280.09 56.05 280.96 52.50C281.76 49.27 282.40 47.49 283.61 45.12C285.27 41.89 286.19 40.51 288.63 37.60C289.66 36.38 290.82 35.15 291.21 34.88C291.61 34.60 292.54 33.95 293.28 33.44C294.02 32.92 295.19 32.09 295.88 31.58C297.31 30.52 301.58 28.58 303.25 28.24C303.87 28.11 305.11 27.83 306.00 27.61C309.07 26.85 314.13 26.85 316.76 27.60C318.00 27.96 319.15 28.25 319.30 28.25C319.45 28.25 320.15 28.52 320.85 28.85C324.32 30.49 325.00 30.57 325.00 29.32C325.01 27.80 325.33 26.71 325.88 26.35C326.49 25.95 335.75 24.45 339.24 24.19C340.80 24.07 340.73 22.56 340.67 53.64C340.62 84.68 340.72 82.75 339.10 82.75C338.64 82.75 337.50 82.86 336.57 82.99C329.61 83.99 327.51 84.26 326.73 84.25C325.63 84.25 325.00 83.63 325.00 82.54C325.00 81.47 324.34 81.49 322.86 82.62C322.23 83.11 321.59 83.50 321.43 83.50C321.28 83.50 320.92 83.71 320.64 83.97C319.75 84.79 315.70 86.90 313.88 87.49C310.70 88.54 304.93 89.04 301.38 88.58ZM20.60 81.23C21.85 81.09 23.55 80.80 24.38 80.61C25.20 80.41 27.47 79.98 29.42 79.65C33.41 78.97 34.37 78.54 36.34 76.54C38.19 74.65 38.91 71.58 38.21 68.54C37.89 67.16 36.36 65.71 34.71 65.24C33.37 64.85 30.33 64.97 27.38 65.51C25.86 65.79 22.98 66.27 20.96 66.58C18.95 66.89 17.12 67.30 16.90 67.48C16.38 67.91 16.29 80.69 16.80 81.20C17.17 81.57 17.70 81.57 20.60 81.23ZM367.12 78.98C363.74 78.44 362.97 78.23 361.78 77.59C361.08 77.21 360.50 76.83 360.50 76.74C360.50 76.66 359.94 76.22 359.27 75.78C357.26 74.48 355.68 71.99 354.43 68.12C353.07 63.96 352.75 60.00 352.75 47.60C352.75 41.09 352.66 37.29 352.49 36.98C352.16 36.37 351.14 36.36 347.62 36.91C346.19 37.13 344.86 37.25 344.67 37.17C344.12 36.97 344.01 35.81 343.98 29.81C343.94 23.33 344.03 23.00 345.77 23.00C346.32 23.00 347.58 22.84 348.57 22.64C349.56 22.45 350.86 22.21 351.45 22.12C353.08 21.87 353.09 21.85 353.20 11.62L353.29 2.61L354.33 2.28C354.91 2.10 356.44 1.80 357.75 1.60C359.06 1.41 361.14 1.09 362.38 0.88C367.46 0.01 368.32 -0.01 368.66 0.70C368.77 0.93 368.90 5.09 368.95 9.94C369.03 18.48 369.04 18.76 369.53 19.02C370.06 19.30 374.71 18.96 376.50 18.51C376.98 18.38 378.84 18.10 380.62 17.87C382.41 17.64 384.35 17.33 384.92 17.18C385.71 16.97 386.13 16.98 386.64 17.21L387.31 17.52L387.20 23.87C387.07 31.79 387.47 31.11 382.50 31.75C380.47 32.01 377.07 32.52 373.12 33.16C371.75 33.38 370.26 33.71 369.81 33.89L369.00 34.22L369.00 45.55C369.00 62.23 369.37 63.50 374.23 63.50C375.95 63.50 379.16 62.39 381.09 61.12C381.69 60.73 384.69 59.50 385.04 59.50C385.24 59.50 388.25 65.50 388.25 65.89C388.25 66.11 389.35 68.56 389.89 69.54C390.57 70.79 390.16 71.94 388.70 72.83C388.21 73.13 387.32 73.70 386.72 74.11C385.18 75.14 381.90 76.75 380.53 77.15C379.90 77.33 378.54 77.77 377.52 78.12C375.94 78.66 370.08 79.39 368.62 79.22C368.49 79.20 367.81 79.10 367.12 78.98ZM313.38 72.48C314.93 71.90 317.87 70.16 318.80 69.27C321.22 66.96 321.90 66.14 322.84 64.45C324.66 61.15 325.32 58.35 325.13 54.75C324.88 49.77 323.49 46.85 320.20 44.31C316.32 41.32 310.94 41.13 305.69 43.80C303.99 44.66 300.11 48.33 299.27 49.88C298.97 50.42 298.57 51.16 298.38 51.50C295.87 56.03 295.99 63.72 298.62 67.62C299.50 68.91 302.58 71.72 303.75 72.30C305.86 73.33 310.84 73.43 313.38 72.48Z"/></svg></span>
     <h1>Daily Organoleptic Report</h1>
-    <select id="shift" aria-label="Shift"><option>Morning</option><option>Afternoon</option><option>Night</option></select>
-    <input id="op" placeholder="QA operator" autocomplete="off" aria-label="QA operator">
+    <input id="op" placeholder="QA inspector" autocomplete="off" aria-label="QA inspector">
     <input id="batch" placeholder="Batch code" autocomplete="off" autocapitalize="characters" aria-label="Batch code">
     <span id="net" class="tag">Online</span>
     <span id="qn" class="tag q hide">Queue 0</span>
     <button id="retry" type="button" class="link hide">Retry</button>
   </div>
-  <div class="seg" role="group" aria-label="Private Labeling">
-    <button id="modeOff" type="button" aria-pressed="true"><b>Private Labeling: OFF</b><span>Barakat House Brands</span></button>
-    <button id="modeOn" type="button" aria-pressed="false"><b>Private Labeling: ON</b><span>Contract Brands</span></button>
-  </div>
   <main>
     <div class="col">
+      <div class="seg" role="group" aria-label="Private Labeling">
+        <button id="modeOff" type="button" aria-pressed="true"><b>Private Labeling: OFF</b><span>Barakat House Brands</span></button>
+        <button id="modeOn" type="button" aria-pressed="false"><b>Private Labeling: ON</b><span>Contract Brands</span></button>
+      </div>
       <div class="card"><div class="lbl">Stream</div><div id="stream" class="pills"></div>
-        <div id="subWrap" style="margin-top:10px"><div class="lbl">Sub-category</div><div id="sub" class="pills"></div></div></div>
+        <div id="subWrap" style="margin-top:8px"><div class="lbl">Sub-category</div><div id="sub" class="pills"></div></div></div>
       <div class="card skuwrap"><div class="lbl">SKU &mdash; tap, or read the name aloud</div>
-        <div id="sku" class="pills"></div>
+        <div id="sku"></div>
         <div id="manualWrap" class="hide"><div id="streamNote" class="note"></div>
           <input id="manualSku" placeholder="SKU name (manual entry, no limits)" autocomplete="off" aria-label="Manual SKU name"></div>
         <div id="cands" class="pills" style="margin-top:8px"></div></div>
-      <div class="card"><div class="lbl">Recent (this device)</div><div id="recent"></div></div>
     </div>
-    <div class="col">
+    <div class="col capturecol">
+      <div class="capture">
       <div class="card">
-        <div class="voice"><button id="mic" type="button">&#127908; Tap to Speak</button>
+        <div class="voice"><div class="micwrap"><button id="mic" type="button">&#127908; Tap to Speak</button><span class="orb" aria-hidden="true"><i></i></span><span class="eq" aria-hidden="true"><i style="--i:0;--s:0.22;--m:0.75"></i><i style="--i:1;--s:0.38;--m:1"></i><i style="--i:2;--s:0.28;--m:0.85"></i><i style="--i:3;--s:0.5;--m:1"></i><i style="--i:4;--s:0.3;--m:0.9"></i><i style="--i:5;--s:0.4;--m:1"></i><i style="--i:6;--s:0.22;--m:0.7"></i></span></div>
           <select id="lang" aria-label="Language"><option value="en-AE">EN (UAE)</option><option value="en-GB">EN (UK)</option><option value="en-US">EN (US)</option></select></div>
-        <textarea id="tx" class="tx" placeholder='Say: "Green Apple Mint Lemon brix 11.2 ph 3.8 normal"' aria-label="Transcript"></textarea>
+        <div class="caps"><span id="capSku" class="cap">SKU</span><span id="capBrix" class="cap">BRIX</span><span id="capPh" class="cap">pH</span><span id="capRemark" class="cap">REMARK</span></div>
+        <textarea id="tx" class="tx" placeholder='Say: "Orange juice brix 11.2 ph 3.8"' aria-label="Transcript"></textarea>
         <div id="vwarn" class="note hide"></div>
-        <button id="parse" type="button" class="link hide">Parse</button>
+        <button id="parse" type="button" class="link hide" style="margin-top:6px">Parse</button>
       </div>
-      <div class="card">
-        <div class="row2">
-          <div class="reading"><div class="lbl">Brix</div><input id="brix" inputmode="decimal" autocomplete="off" aria-label="Brix">
-            <span id="bs" class="badge NA">&mdash;</span><div id="bspec" class="spec"></div></div>
-          <div class="reading"><div class="lbl">pH</div><input id="ph" inputmode="decimal" autocomplete="off" aria-label="pH">
-            <span id="ps" class="badge NA">&mdash;</span><div id="pspec" class="spec"></div></div>
-        </div>
+      <div class="row2">
+        <div class="well"><div class="top"><div class="lbl">Brix &deg;Bx</div><span id="bs" class="badge NA">&mdash;</span></div>
+          <input id="brix" inputmode="decimal" autocomplete="off" aria-label="Brix"><div id="bspec" class="spec"></div></div>
+        <div class="well"><div class="top"><div class="lbl">pH</div><span id="ps" class="badge NA">&mdash;</span></div>
+          <input id="ph" inputmode="decimal" autocomplete="off" aria-label="pH"><div id="pspec" class="spec"></div></div>
       </div>
-      <div id="verdictCard" class="card"><div class="lbl">QC Evaluation Verdict</div><div id="overall" class="NA">&mdash;</div></div>
+      <div id="verdictCard" class="card" data-state="na"><div class="lbl" style="margin-bottom:2px">QC Evaluation Verdict</div>
+        <div id="overall" class="NA">&mdash;</div><div id="variance"></div></div>
       <div class="card">
         <div class="lbl">Organoleptic</div>
-        <div id="remchips" class="chips" style="margin-top:0"></div>
+        <div id="remchips" class="chips"></div>
         <textarea id="remark" aria-label="Organoleptic remark" placeholder="Remark"></textarea>
-        <div id="cawrap" class="hide"><div class="lbl" style="color:var(--r-fg);margin-top:8px">Corrective action / HOLD (required for RED)</div>
+        <div id="cawrap" class="hide"><div class="lbl" style="color:var(--r-fg);margin:6px 0 4px">Corrective action / HOLD (required for RED)</div>
+          <div id="holdchips" class="chips" style="margin-bottom:4px"></div>
           <textarea id="ca" placeholder="e.g. Batch on HOLD, re-tested, QA notified"></textarea></div>
       </div>
+      </div>
       <div class="actions"><button id="clearBtn" type="button">Clear</button><button id="log" type="button">Log QC Result</button></div>
+      <div class="card savedlog"><div class="loghead"><div class="lbl">Saved QC Log (This Device)</div><span class="scope">Last 30 on this device</span></div>
+        <div class="sumstrip" aria-label="Saved log summary">
+          <div class="sum"><span>Total</span><output id="sumTotal">0</output></div>
+          <div class="sum ok"><span>PASS</span><output id="sumPass">0</output></div>
+          <div class="sum bad"><span>OUT</span><output id="sumOut">0</output></div>
+          <div class="sum q"><span>Unsynced</span><output id="sumUnsynced">0</output></div>
+        </div>
+        <p id="syncError" class="hide" role="status"></p><div id="recent"></div></div>
     </div>
   </main>
 </div>
+<div id="pwaUpdate" class="pwa hide" role="status" aria-live="polite"><span>A new version is available.</span><button id="reloadApp" type="button">Reload</button></div>
 <div id="toast"></div>
+<div id="flash">SAVED &#10003;</div>
 
 <!-- ============ LOGIC (pure, testable) ============ -->
 <script id="logic">
@@ -196,7 +527,6 @@ var SKUS = [
 ['Thrill','Fresh Juices','Pineapple Juice','Pineapple',3.5,4.5,9.5,13.0,'Range'],
 ['Thrill','Fresh Juices','Orange Juice','Orange, OJ',3.5,4.5,10.0,12.5,'Range'],
 ['Thrill','Fresh Juices','Green Juice','Green, Greens',3.5,4.5,8.5,10.5,'Range'],
-['Thrill','Fresh Juices','Green Apple Mint Lemon','Apple Mint Lemon, Green Apple, Mint Lemon',NL,NL,NL,NL,'Range'], // combined limits NOT verified -> N/A (spec pending)
 ['Thrill','Functional & Shots','Pombeet Shine','Pom Beets Shine, Pombeet',3.0,4.0,9.0,11.5,'Range'],
 ['Thrill','Functional & Shots','Burn Stubborn','Burns Stubborn',4.0,5.0,10.0,12.0,'Range'],
 ['Thrill','Functional & Shots','Green Goodness','Green Goodness',3.5,4.5,9.0,11.5,'Range'],
@@ -236,19 +566,31 @@ var SKUS = [
 ['Talabat','Fresh Juices','Cucumber juice (Talabat)','Cucumber',NL,NL,NL,NL,'No_Limit'],
 // ---- Calo Smoothies (2) ----
 ['Calo Smoothies','Smoothies','Protein Vanilla Milk Shake','Vanilla Milk Shake, Protein Vanilla, Vanilla Shake',NL,NL,18.0,19.0,'Range'],
-['Calo Smoothies','Smoothies','Protein Chocolate Milk Shake','Chocolate Milk Shake, Protein Chocolate, Chocolate Shake',NL,NL,18.0,19.0,'Range']
-// Carrefour and Etihad: intentionally NO SKUs (no spec sheet provided).
+['Calo Smoothies','Smoothies','Protein Chocolate Milk Shake','Chocolate Milk Shake, Protein Chocolate, Chocolate Shake',NL,NL,18.0,19.0,'Range'],
+// ---- Carrefour (11) - base Brix per supplied spec; pH not specified ----
+['Carrefour','Fresh Juices','Orange Juice','Orange, Fresh Orange, OJ',NL,NL,10.0,14.0,'Min_Only_Plus4'],
+['Carrefour','Fresh Juices','Watermelon Juice','Watermelon, Fresh Watermelon',NL,NL,6.5,10.5,'Min_Only_Plus4'],
+['Carrefour','Fresh Juices','Carrot Juice','Carrot, Fresh Carrot',NL,NL,6.5,7.0,'Range'],
+['Carrefour','Fresh Juices','Carrot & Orange Juice','Carrot Orange, Orange Carrot, Carrot And Orange',NL,NL,8.0,12.0,'Min_Only_Plus4'],
+['Carrefour','Fresh Juices','Beetroot & Orange Juice','Beetroot Orange, Beet Orange, Beetroot And Orange',NL,NL,8.5,12.5,'Min_Only_Plus4'],
+['Carrefour','Fresh Juices','Green Apple Juice','Green Apple, Apple Green',NL,NL,10.5,12.0,'Range'],
+['Carrefour','Fresh Juices','Pomegranate Juice','Pomegranate, Pom Juice',NL,NL,11.5,15.5,'Min_Only_Plus4'],
+['Carrefour','Fresh Juices','Pineapple Juice','Pineapple, Fresh Pineapple',NL,NL,11.0,12.0,'Range'],
+['Carrefour','Fresh Juices','Coconut Water','Coconut, Fresh Coconut Water',NL,NL,5.0,9.0,'Min_Only_Plus4'],
+['Carrefour','Shots','Ginger Juice with Apple & Hibiscus','Ginger Apple Hibiscus, Ginger Shot, Hibiscus',NL,NL,8.0,12.0,'Min_Only_Plus4'],
+['Carrefour','Shots','Coconut Water with Turmeric','Coconut Turmeric, Turmeric Shot',NL,NL,6.0,10.0,'Min_Only_Plus4']
+// Etihad: intentionally NO SKUs (idle / manual entry) - the pill stays under Private Labeling: ON.
 ].map(function (r) {
   return { stream:r[0], sub:r[1], name:r[2], aliases:r[3].split(',').map(function(s){return s.trim();}).filter(Boolean),
-           minPH:r[4], maxPH:r[5], minBrix:r[6], maxBrix:r[7], rule:r[8],
-           pending: (r[0] === 'Thrill' && r[2] === 'Green Apple Mint Lemon') };
+           minPH:r[4], maxPH:r[5], minBrix:r[6], maxBrix:r[7], rule:r[8] };
 });
 var MODES = {
   off: { label: 'Private Labeling: OFF (Barakat House Brands)', streams: ['Barakat','Thrill','EKFC'] },
   on:  { label: 'Private Labeling: ON (Contract Brands)', streams: ['Viva','ADNOC Oasis','Talabat','Calo Smoothies','Carrefour','Etihad'] }
 };
 var STREAMS = MODES.off.streams.concat(MODES.on.streams);
-var TOL = { brix: 0.2, ph: 0.1 };
+var TOL = { brix: 0.5, ph: 0.2 };          // quiet-lab tolerance band (outside [min,max] but within this = TOLERANCE)
+var MATCH_MIN = 0.65;                      // minimum candidate-token coverage for a SKU match
 
 function subsOf(stream) { var a = []; SKUS.forEach(function (s) { if (s.stream === stream && a.indexOf(s.sub) < 0) a.push(s.sub); }); return a; }
 function pool(stream, sub) {
@@ -260,43 +602,76 @@ function pool(stream, sub) {
 function num(x){ if (x === null || x === undefined || x === '' || x === 'No_Limit') return null; var n = Number(x); return isFinite(n) ? n : null; }
 function r3(x){ return Math.round(x * 1000) / 1000; }
 function limits(sku, kind) {
-  var lo, hi;
+  var lo, hi, auto = false;
   if (kind === 'brix') {
     lo = num(sku.minBrix); hi = num(sku.maxBrix);
-    if (sku.rule === 'Min_Only_Plus4') { hi = (lo === null) ? null : r3(lo + 4); }
     if (sku.rule === 'No_Limit') { lo = null; hi = null; }
+    else if (lo !== null && (hi === null || sku.rule === 'Min_Only_Plus4')) { hi = r3(lo + 4); auto = true; }   // automatic +4 upper Brix rule
   } else { lo = num(sku.minPH); hi = num(sku.maxPH); }
-  return { lo: lo, hi: hi };
+  return { lo: lo, hi: hi, auto: auto };
 }
 function specText(sku, kind) {
   var l = limits(sku, kind);
-  if (l.lo === null && l.hi === null) return (sku.pending && kind === 'brix') || (sku.pending && kind === 'ph') ? 'N/A (spec pending)' : 'N/A (No_Limit)';
+  if (l.lo === null && l.hi === null) return 'N/A (No_Limit)';
   var f = function (v) { return v === null ? '—' : v.toFixed(1); };
-  return f(l.lo) + '–' + f(l.hi) + (kind === 'brix' && sku.rule === 'Min_Only_Plus4' ? ' (Min+4)' : '');
+  return f(l.lo) + '–' + f(l.hi) + (l.auto ? ' (Min+4)' : '');
 }
+// status: GREEN (STRICT or TOLERANCE) | RED (OUT) | NA | MISSING ; dir: HIGH | LOW | null ; band: STRICT | TOLERANCE | OUT | null
 function evaluate(value, lo, hi, tol) {
   var v = num(value);
-  if (lo === null && hi === null) return { status: 'NA', diff: 0 };
-  if (v === null) return { status: 'MISSING', diff: 0 };
-  var d = 0;
-  if (lo !== null && v < lo) d = lo - v; else if (hi !== null && v > hi) d = v - hi;
+  if (lo === null && hi === null) return { status: 'NA', diff: 0, dir: null, band: null };
+  if (v === null) return { status: 'MISSING', diff: 0, dir: null, band: null };
+  var d = 0, dir = null;
+  if (lo !== null && v < lo) { d = lo - v; dir = 'LOW'; } else if (hi !== null && v > hi) { d = v - hi; dir = 'HIGH'; }
   d = r3(d);
-  if (d === 0) return { status: 'GREEN', diff: 0 };
-  return { status: d <= tol ? 'AMBER' : 'RED', diff: d };
+  if (d === 0) return { status: 'GREEN', diff: 0, dir: null, band: 'STRICT' };
+  return d <= tol ? { status: 'GREEN', diff: d, dir: dir, band: 'TOLERANCE' } : { status: 'RED', diff: d, dir: dir, band: 'OUT' };
 }
 function overall(bs, ps, hold) {
   var all = [bs, ps];
   if (hold || all.indexOf('RED') >= 0) return 'RED';
-  if (all.indexOf('AMBER') >= 0) return 'AMBER';
   if (all.indexOf('GREEN') >= 0) return 'GREEN';
   return 'NA';
 }
-var MANUAL_SKU = { stream:'', sub:'Unlisted', name:'', aliases:[], minPH:NL, maxPH:NL, minBrix:NL, maxBrix:NL, rule:'No_Limit', pending:false };
+var MANUAL_SKU = { stream:'', sub:'Unlisted', name:'', aliases:[], minPH:NL, maxPH:NL, minBrix:NL, maxBrix:NL, rule:'No_Limit' };
 function assess(sku, brix, ph, hold) {
   var bl = limits(sku, 'brix'), pl = limits(sku, 'ph');
   var b = evaluate(brix, bl.lo, bl.hi, TOL.brix), p = evaluate(ph, pl.lo, pl.hi, TOL.ph);
-  return { brix: b.status, ph: p.status, overall: overall(b.status, p.status, hold),
+  return { brix: b.status, ph: p.status, brixBand: b.band, phBand: p.band, brixDir: b.dir, phDir: p.dir, brixDiff: b.diff, phDiff: p.diff,
+           overall: overall(b.status, p.status, hold), hold: !!hold,
            brixSpec: specText(sku, 'brix'), phSpec: specText(sku, 'ph') };
+}
+// Automatic organoleptic remark: GREEN strict / GREEN tolerance / RED fault prefix (operator must complete it)
+function autoRemark(a, hasBrix, hasPh) {
+  if (a.overall === 'RED') {
+    var pre = '';
+    if (a.brixBand === 'OUT') pre += 'Brix too ' + (a.brixDir === 'HIGH' ? 'high' : 'low') + ' — ';
+    if (a.phBand === 'OUT') pre += 'pH too ' + (a.phDir === 'HIGH' ? 'high' : 'low') + ' — ';
+    return pre;
+  }
+  if (a.overall !== 'GREEN') return '';
+  var tol = [];
+  if (a.brixBand === 'TOLERANCE') tol.push('Brix ' + (a.brixDir === 'HIGH' ? 'upper' : 'lower') + ' tolerance');
+  if (a.phBand === 'TOLERANCE') tol.push('pH ' + (a.phDir === 'HIGH' ? 'upper' : 'lower') + ' tolerance');
+  if (tol.length) return 'Slight variation noticed (' + tol.join(', ') + '), acceptable taste';
+  var meas = [];
+  if (hasBrix && a.brix === 'GREEN') meas.push('Brix');
+  if (hasPh && a.ph === 'GREEN') meas.push('pH');
+  if (!meas.length) return '';
+  return meas.length === 2 ? 'Within limit, acceptable taste, Brix and pH' : 'Within limit, acceptable taste and ' + meas[0];
+}
+// Remark text minus the auto fault prefixes ("Brix too high — ") - a RED needs real fault text beyond them.
+function stripFaultPrefix(t) { return String(t || '').replace(/(Brix|pH) too (high|low)\s*—\s*/g, '').trim(); }
+// Human-readable variance for the verdict card
+function varianceText(a) {
+  var parts = [];
+  function one(name, band, dir, diff) {
+    if (!band) return;
+    if (band === 'STRICT') parts.push(name + ' in range');
+    else parts.push(name + ' ' + (dir === 'HIGH' ? '+' : '−') + diff.toFixed(1) + ' ' + (dir === 'HIGH' ? 'above max' : 'below min') + (band === 'TOLERANCE' ? ' (TOL)' : ''));
+  }
+  one('Brix', a.brixBand, a.brixDir, a.brixDiff); one('pH', a.phBand, a.phDir, a.phDiff);
+  return parts.join(' · ');
 }
 
 // ---------- Spoken number & decimal normalizer ----------
@@ -320,7 +695,9 @@ function normalizeSpeech(text) {
     .replace(/\bp\.?\s?h\b\.?/g, ' ph ')
     .replace(/\bph(?=\d)/g, 'ph ')
     .replace(/\b(brix|bricks|brick)(?=\d)/g, '$1 ')
-    .replace(/\.(?=\s|$)/g, ' ')            // trailing periods: "3.8." -> "3.8", "two. ph" -> "two ph"
+    .replace(/(\d)\.\s+(\d)/g, '$1.$2')       // "3. 8" -> "3.8"  (before trailing-period stripping)
+    .replace(/\b\d+(?:\.\d+)?\s*ml\b/g, ' ')   // "330 ml" / "330ml" are pack sizes, never readings
+    .replace(/\.(?=\s|$)/g, ' ')               // trailing periods: "3.8." -> "3.8", "two. ph" -> "two ph"
     .replace(/[,;:!?]/g, ' ')
     .replace(/(\d)\s*%/g, '$1')
     .replace(/\s+/g, ' ').trim();
@@ -349,10 +726,11 @@ function normalizeSpeech(text) {
   return out.join(' ');
 }
 
-// ---------- Field extraction ----------
+// ---------- Field extraction (pH only from an explicit "ph" label) ----------
+var BRIX_MAX = 50, PH_MAX = 14;                 // physical limits: pocket refractometer 0-50 Bx, pH 0-14
 var BRIX_LABEL = '(?:brix|bricks|brick|brics|brixs)';
 function extractReadings(norm) {
-  var warnings = [], ph = null, brix = null;
+  var warnings = [], ph = null, brix = null, invalidBrix = null;
   var tokens = norm.split(' ').filter(Boolean);
   var isNum = function (t) { return /^\d+(\.\d+)?$/.test(t || ''); };
   var isPh = function (t) { return t === 'ph'; };
@@ -361,6 +739,15 @@ function extractReadings(norm) {
   var used = {};
   var after = function (idx) { var j = idx + 1; while (tokens[j] !== undefined && fill[tokens[j]]) j++; return isNum(tokens[j]) && !used[j] ? j : -1; };
   var before = function (idx) { var j = idx - 1; while (j >= 0 && fill[tokens[j]]) j--; return j >= 0 && isNum(tokens[j]) && !used[j] ? j : -1; };
+  (function mergeDigitRuns() {                       // 2-3 single digits right after a label are one number said digit by digit
+    for (var i = 0; i < tokens.length; i++) {
+      if (!(isPh(tokens[i]) || isBx(tokens[i]))) continue;
+      var j = i + 1; while (tokens[j] !== undefined && fill[tokens[j]]) j++;
+      var start = j, run = [];
+      while (run.length < 3 && /^\d$/.test(tokens[j] || '')) { run.push(tokens[j]); j++; }
+      if (run.length >= 2) tokens.splice(start, run.length, run.join(''));
+    }
+  })();
   var labels = [];
   tokens.forEach(function (t, i) { if (isPh(t)) labels.push({ k:'ph', i:i }); else if (isBx(t)) labels.push({ k:'brix', i:i }); });
   var got = { ph: null, brix: null };
@@ -370,12 +757,9 @@ function extractReadings(norm) {
     labels.forEach(function (L) { if (got[L.k] !== null) return; var j = fn(L.i); if (j >= 0) { got[L.k] = tokens[j]; used[j] = true; } });
   });
   var spare = []; tokens.forEach(function (t, i) { if (isNum(t) && !used[i]) spare.push(t); });
-  var hasPhLabel = labels.some(function (L) { return L.k === 'ph'; });
-  if (got.brix === null && got.ph === null) {
-    if (spare.length >= 2) { got.brix = spare[0]; got.ph = spare[1]; }
-    else if (spare.length === 1) { got.brix = spare[0]; }
-  } else if (got.brix === null && spare.length) { got.brix = spare[0]; }
-  else if (got.ph === null && spare.length && !hasPhLabel && Number(spare[0]) <= 14) { got.ph = spare[0]; }
+  // Unlabelled number: may only ever be Brix (never guessed as pH)
+  if (got.brix === null && spare.length) { got.brix = spare.shift(); }
+  if (spare.length) warnings.push('Unlabelled number ' + spare.join(', ') + ' ignored — say "pH" before pH values.');
   if (got.ph !== null) {
     var s = got.ph, v = Number(s);
     if (s.indexOf('.') < 0) {
@@ -386,15 +770,15 @@ function extractReadings(norm) {
   }
   if (got.brix !== null) {
     var b = Number(got.brix);
-    if (got.brix.indexOf('.') < 0 && b >= 100 && b <= 999) { b = b / 10; warnings.push('Brix "' + got.brix + '" read as ' + b.toFixed(1) + ' (decimal restored)'); }
-    if (b >= 0 && b <= 100) brix = r3(b); else warnings.push('Brix value ' + got.brix + ' is outside 0–100 and was ignored');
+    if (got.brix.indexOf('.') < 0 && b >= 100 && b <= 500) { b = b / 10; warnings.push('Brix "' + got.brix + '" read as ' + b.toFixed(1) + ' (decimal restored)'); }
+    if (b >= 0 && b <= BRIX_MAX) brix = r3(b);
+    else { invalidBrix = b; warnings.push('Brix ' + got.brix + ' is outside the 0\u2013' + BRIX_MAX + ' refractometer range — re-enter before logging.'); }
   }
-  return { brix: brix, ph: ph, warnings: warnings };
+  return { brix: brix, ph: ph, invalidBrix: invalidBrix, warnings: warnings };
 }
 
-// ---------- Organoleptic dictionary ----------
+// ---------- Organoleptic defect dictionary (pass words are NOT remarks: GREEN gets an auto-remark) ----------
 var DICT = [
-  { re: /\b(normal|ok|okay|good|pass|passed|fine|acceptable)\b/, text: 'Organoleptic parameters (Color, Taste, Odor, Appearance) acceptable', hold: false },
   { re: /\b(watery|thin)\b/, text: 'Slightly watery consistency', hold: false },
   { re: /\b(pulpy|thick)\b/, text: 'Excessive pulp / thick consistency', hold: false },
   { re: /\b(sour|acidic|acid)\b/, text: 'High acidity / sharp sour note', hold: false },
@@ -404,30 +788,30 @@ var DICT = [
 function parseRemarks(norm) {
   var texts = [], hold = false;
   DICT.forEach(function (d) { if (d.re.test(norm)) { texts.push(d.text); if (d.hold) hold = true; } });
-  if (texts.length > 1) texts = texts.filter(function (x) { return x.indexOf('acceptable') < 0; });
   return { text: texts.join('; '), hold: hold };
 }
+function stripDefects(s) { DICT.forEach(function (d) { s = s.replace(new RegExp(d.re.source, 'g'), ' '); }); return s.replace(/\s+/g, ' ').trim(); }
 
-// ---------- Batch / shift extraction ----------
+// ---------- Batch extraction ----------
 function extractMeta(norm) {
-  var batch = '', shift = '', s = norm;
+  var batch = '', s = norm;
   var m = s.match(/\bbatch(?: code| number| no| id)?\s+([a-z0-9][a-z0-9\-\/]*)/);
   if (m) { batch = m[1].toUpperCase(); s = s.replace(m[0], ' '); }
-  var sm = s.match(/\bshift\s+(morning|day|afternoon|evening|night)\b/);
-  if (sm) { shift = ({ morning:'Morning', day:'Morning', afternoon:'Afternoon', evening:'Afternoon', night:'Night' })[sm[1]]; s = s.replace(sm[0], ' '); }
-  return { batch: batch, shift: shift, rest: s.replace(/\s+/g, ' ').trim() };
+  s = s.replace(/\bshift\s+(?:morning|day|afternoon|evening|night)\b/g, ' ').replace(/\bshift\b/g, ' ');   // shift is no longer logged: never let it become a remark
+  return { batch: batch, rest: s.replace(/\s+/g, ' ').trim() };
 }
 
-// ---------- Fuzzy SKU matcher (searches ONLY the supplied pool) ----------
+// ---------- Strict SKU matcher (category-locked; cross-sub-category = suggestion only) ----------
 var STREAM_KW = {
   thrill: 'Thrill', viva: 'Viva', cipri: 'Viva', cipriani: 'Viva', cipriany: 'Viva',
   adnoc: 'ADNOC Oasis', adnock: 'ADNOC Oasis', oasis: 'ADNOC Oasis', patnock: 'ADNOC Oasis',
   talabat: 'Talabat', talabaat: 'Talabat', ekfc: 'EKFC', ekmt: 'EKFC', emirates: 'EKFC',
   barakat: 'Barakat', calo: 'Calo Smoothies', carrefour: 'Carrefour', etihad: 'Etihad'
 };
+// Words that are never SKU/comment content: units, labels, fillers, neutral pass words.
 var STOP = {};
-('juice fresh hpp pl ml the a an and with of to_ is at point ph brix bricks brick brics brixs batch shift operator remark remarks value level reading sample degrees degree ' +
- 'normal ok okay good pass passed fine acceptable watery thin pulpy thick sour acidic acid fermented fermentation off smell odor odour bad pale dark discolored discoloured discoloration')
+('juice fresh hpp pl ml the a an and with of is at was were it its point ph brix bricks brick brics brixs batch shift operator remark remarks value level reading equals sample degrees degree ' +
+ 'normal ok okay good fine acceptable pass passed alright')
   .split(' ').forEach(function (w) { STOP[w] = 1; });
 function lev(a, b) {
   var m = a.length, n = b.length, d = [], i, j;
@@ -443,22 +827,55 @@ function toks(str) {
     .filter(function (w) { return !STOP[w] && !STREAM_KW[w] && !/^\d+ml$/.test(w) && !/^\d+(\.\d+)?$/.test(w) && w.length > 1; })
     .map(stem);
 }
+// Token similarity: exact, or close spelling (>= 0.8). NO prefix rule ("water" must never match "watermelon").
 function tokSim(a, b) {
   if (a === b) return 1;
   var m = Math.max(a.length, b.length);
-  if (a.length >= 4 && b.length >= 4 && (a.indexOf(b) === 0 || b.indexOf(a) === 0)) return 0.9;
   if (m >= 4 && 1 - lev(a, b) / m >= 0.8) return 0.85;
   return 0;
 }
-function dice(q, c) {
-  if (!q.length || !c.length) return 0;
-  var used = {}, sum = 0;
-  q.forEach(function (qt) {
-    var best = 0, bi = -1;
-    c.forEach(function (ct, i) { if (used[i]) return; var s = tokSim(qt, ct); if (s > best) { best = s; bi = i; } });
-    if (bi >= 0) { used[bi] = 1; sum += best; }
+// Spoken product-ish words of an utterance: [{w: original word, t: stemmed token}]
+function prodWords(rest) {
+  var out = [];
+  rest.split(' ').filter(Boolean).forEach(function (w) { toks(w).forEach(function (t) { out.push({ w: w, t: t }); }); });
+  return out;
+}
+function scoreSku(qp, s) {
+  var best = null;
+  [s.name].concat(s.aliases).forEach(function (n) {
+    var ct = toks(n); if (!ct.length) return;
+    var used = {}, matched = 0, sum = 0, qIdx = [];
+    ct.forEach(function (c) {
+      var bi = -1, bs = 0;
+      qp.forEach(function (q, i) { if (used[i]) return; var sc = tokSim(q.t, c); if (sc > bs) { bs = sc; bi = i; } });
+      if (bi >= 0) { used[bi] = 1; matched++; sum += bs; qIdx.push(bi); }
+    });
+    var cand = { cov: sum / ct.length, matched: matched, sum: sum, len: ct.length, qIdx: qIdx };
+    if (!best || cand.cov > best.cov || (cand.cov === best.cov && cand.sum > best.sum)) best = cand;
   });
-  return sum / ((q.length + c.length) / 2);
+  return best || { cov: 0, matched: 0, sum: 0, len: 0, qIdx: [] };
+}
+function rank(qp, list) {
+  return list.map(function (s) { return { sku: s, sc: scoreSku(qp, s) }; })
+    .filter(function (x) { return x.sc.matched >= 1 && x.sc.cov >= MATCH_MIN; })
+    .sort(function (a, b) { return b.sc.sum - a.sc.sum || b.sc.cov - a.sc.cov; });
+}
+function hints(qp, list) {
+  return list.map(function (s) { return { sku: s, sc: scoreSku(qp, s) }; })
+    .filter(function (x) { return x.sc.matched >= 1 && x.sc.cov >= 0.4; })
+    .sort(function (a, b) { return b.sc.sum - a.sc.sum; }).slice(0, 4).map(function (x) { return x.sku; });
+}
+// Returns { sku, dym, ambiguous, candidates, explained[] }  - sku only ever comes from pool(stream, sub); dym is a SUGGESTION in another sub-category.
+function matchCore(qp, stream, sub) {
+  var subs = subsOf(stream), act = pool(stream, sub), all = SKUS.filter(function (s) { return s.stream === stream; });
+  var ra = rank(qp, act), rl = subs.length > 1 ? rank(qp, all) : ra;
+  var topA = ra[0] || null, topL = rl[0] || null, dym = null;
+  if (topL && subs.length > 1 && topL.sku.sub !== sub && (!topA || topL.sc.sum > topA.sc.sum + 0.05)) dym = topL.sku;
+  if (dym) return { sku: null, dym: dym, ambiguous: false, candidates: [], explained: [] };
+  var amb = !!(topA && ra[1] && (topA.sc.sum - ra[1].sc.sum) < 0.05 && Math.abs(topA.sc.cov - ra[1].sc.cov) < 0.05);
+  return { sku: topA ? topA.sku : null, dym: null, ambiguous: amb,
+           candidates: topA ? ra.slice(0, 4).map(function (x) { return x.sku; }) : hints(qp, act),
+           explained: topA ? topA.sc.qIdx : [] };
 }
 function heardStream(norm) {
   var found = null;
@@ -469,78 +886,280 @@ function heardStream(norm) {
   });
   return found;
 }
-// Category-locked: candidates come ONLY from pool(stream, sub). Never switches stream.
+function sentenceCase(words) { var t = words.join(' ').trim(); return t ? t.charAt(0).toUpperCase() + t.slice(1) : ''; }
+// Public wrapper (text in)
 function matchSku(text, stream, sub) {
-  var norm = normalizeSpeech(text);
-  var meta = extractMeta(norm);
-  var qTokens = toks(meta.rest);
-  var cands = pool(stream, sub);
-  var scored = cands.map(function (s) {
-    var best = 0;
-    [s.name].concat(s.aliases).forEach(function (n) { best = Math.max(best, dice(qTokens, toks(n))); });
-    return { sku: s, score: best };
-  }).sort(function (a, b) { return b.score - a.score; });
-  var top = scored[0], second = scored[1];
-  var ok = !!top && qTokens.length > 0 && top.score >= 0.5;
-  var ambiguous = ok && second && second.score > 0 && (top.score - second.score) < 0.05;
-  return { stream: stream, sku: ok ? top.sku : null, score: top ? top.score : 0, ambiguous: ambiguous, spoke: qTokens.length > 0,
-           candidates: scored.filter(function (x) { return x.score >= 0.4; }).slice(0, 4).map(function (x) { return x.sku; }) };
+  var meta = extractMeta(normalizeSpeech(text));
+  var qp = prodWords(stripDefects(meta.rest));
+  var m = matchCore(qp, stream, sub);
+  m.spoke = qp.length > 0; m.stream = stream;
+  return m;
 }
 
-// ---------- Full transcript parse (category-locked) ----------
+// ---------- Full transcript parse ----------
+// ctx: { stream, sub, hasSku }.  kind: none | matched | dym | unmatched | comment | manual
 function parseTranscript(text, ctx) {
   ctx = ctx || {};
   var norm = normalizeSpeech(text);
   var meta = extractMeta(norm);
   var readings = extractReadings(meta.rest);
   var rem = parseRemarks(meta.rest);
-  var m = matchSku(text, ctx.stream, ctx.sub);
   var heard = heardStream(meta.rest);
-  return { norm: norm, batch: meta.batch, shift: meta.shift, brix: readings.brix, ph: readings.ph,
-           warnings: readings.warnings, remark: rem.text, hold: rem.hold, match: m,
+  var qp = prodWords(stripDefects(meta.rest));
+  var isManualStream = pool(ctx.stream, ctx.sub).length === 0;
+  var m = isManualStream ? { sku: null, dym: null, ambiguous: false, candidates: [], explained: [] } : matchCore(qp, ctx.stream, ctx.sub);
+  var kind = 'none', comment = '', manualName = '';
+  var left = function (explained) { return qp.filter(function (q, i) { return explained.indexOf(i) < 0; }).map(function (q) { return q.w; }); };
+  if (qp.length) {
+    if (isManualStream) { kind = 'manual'; manualName = sentenceCase(qp.map(function (q) { return q.w; })); }
+    else if (m.sku) { kind = 'matched'; comment = sentenceCase(left(m.explained)); }
+    else if (m.dym) kind = 'dym';
+    else if (ctx.hasSku) { kind = 'comment'; comment = sentenceCase(qp.map(function (q) { return q.w; })); }   // a SKU is already selected: leftover words are remarks
+    else kind = 'unmatched';
+  }
+  m.spoke = qp.length > 0; m.stream = ctx.stream;
+  return { norm: norm, kind: kind, batch: meta.batch, brix: readings.brix, ph: readings.ph, invalidBrix: readings.invalidBrix,
+           warnings: readings.warnings, defectText: rem.text, hold: rem.hold, comment: comment, manualName: manualName, match: m,
            ignoredStream: (heard && heard !== ctx.stream) ? heard : null };
 }
 
-root.QC = { SKUS: SKUS, STREAMS: STREAMS, MODES: MODES, TOL: TOL, DICT: DICT, MANUAL_SKU: MANUAL_SKU,
+root.QC = { SKUS: SKUS, STREAMS: STREAMS, MODES: MODES, TOL: TOL, BRIX_MAX: BRIX_MAX, PH_MAX: PH_MAX, DICT: DICT, MANUAL_SKU: MANUAL_SKU, MATCH_MIN: MATCH_MIN,
             subsOf: subsOf, pool: pool, assess: assess, evaluate: evaluate, limits: limits, specText: specText,
+            autoRemark: autoRemark, stripFaultPrefix: stripFaultPrefix, varianceText: varianceText,
             normalizeSpeech: normalizeSpeech, extractReadings: extractReadings, parseRemarks: parseRemarks, matchSku: matchSku,
             parseTranscript: parseTranscript, extractMeta: extractMeta };
 })(typeof window !== 'undefined' ? window : globalThis);
 </script>
 
-<!-- ============ UI / VOICE / OFFLINE QUEUE ============ -->
+<!-- ============ UI ============ -->
 <script id="ui">
 (function () {
 'use strict';
 var CONFIG = {
   WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbxCzLTa9OEeZqb9psrKV81W1oYXodIIAVRJ1Rcs1Uca6NADbfSu8Khs-A9hgmgypT5U/exec',
-  SILENCE_MS: 3000, INITIAL_GRACE_MS: 6000,
-  QUEUE_KEY: 'bqp_qc_queue_v1', RECENT_KEY: 'bqp_qc_recent_v1', UI_KEY: 'bqp_ui_v6', OP_KEY: 'bqp_op'
+  SILENCE_MS: 2000, INITIAL_GRACE_MS: 5000, WATCHDOG_MS: 15000, FETCH_TIMEOUT_MS: 8000, RETRY_MS: 30000,
+  QUEUE_KEY: 'bqp_qc_queue_v1', RECENT_KEY: 'bqp_qc_recent_v2', UI_KEY: 'bqp_ui_v6', OP_KEY: 'bqp_op', RECENT_MAX: 30
 };
 var Q = window.QC;
 var $ = function (id) { return document.getElementById(id); };
-var state = { mode: 'off', stream: 'Barakat', sub: 'Fresh Juices', sku: null, hold: false };
+var state = {
+  mode: 'off', stream: 'Barakat', sub: 'Fresh Juices', sku: null,
+  manual: { brix: false, ph: false },
+  remarkSrc: 'none',                 // none | auto | voice | manual | cleared
+  voiceText: '', voiceHold: false,
+  flag: { alerts: [], infos: [] },
+  assess: null, busy: false, flushing: false, memQ: [],
+  ready: false, store: { queue: [], recent: [] }, diag: []
+};
 
-function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-function toast(msg, ms) { var t = $('toast'); t.textContent = msg; t.style.display = 'block'; clearTimeout(toast._t); toast._t = setTimeout(function(){ t.style.display = 'none'; }, ms || 3000); }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]; }); }
+function toast(msg, ms) { var t = $('toast'); t.textContent = msg; t.style.display = 'block'; clearTimeout(toast._t); toast._t = setTimeout(function () { t.style.display = 'none'; }, ms || 3000); }
+function flash() { var f = $('flash'); f.style.display = 'block'; clearTimeout(flash._t); flash._t = setTimeout(function () { f.style.display = 'none'; }, 900); }
+function newId() {
+  var d = new Date(), suffix;
+  try { suffix = crypto.randomUUID().replace(/-/g, ''); }
+  catch (e) { suffix = Date.now().toString(16) + Math.random().toString(16).slice(2) + (++newId.seq).toString(16); }
+  return 'QC-' + d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds()) + '-' + suffix;
+}
+newId.seq = 0;
+function recordKey(row) { return row.Record_ID || row.id || 'TS:' + (row.Timestamp || row.ts); }
+function logDiag(type, detail) {
+  state.diag.push({ at: new Date().toTimeString().slice(0, 8), type: type, detail: String(detail || '').slice(0, 180) });
+  if (state.diag.length > 40) state.diag.shift();
+}
+function showDiagnostics() {
+  var head = 'Storage: ' + (qcDb ? 'IndexedDB' : (state.memQ.length ? 'MEMORY ONLY' : 'localStorage')) + ' · Pending: ' + getQueue().length;
+  toast(head + '\n' + state.diag.slice(-8).map(function (d) { return d.at + ' ' + d.type + (d.detail ? ': ' + d.detail : ''); }).join('\n'), 10000);
+}
+function storageWarning() {
+  var n = $('storageWarning');
+  if (!n) { n = document.createElement('div'); n.id = 'storageWarning'; n.className = 'note alert'; n.setAttribute('role', 'alert'); $('app').insertBefore(n, $('app').firstChild); }
+  n.textContent = 'Device storage unavailable — unsent entries are in memory only. Keep this page open and restore the connection. Do not reload.';
+}
+var SNAPSHOT_KEY = 'bqp_qc_snapshot_v1', qcDb = null, storeChain = Promise.resolve();
+function cloneStore(data) { return JSON.parse(JSON.stringify(data)); }
+function legacyId(row) {
+  var s = JSON.stringify(row), h = 2166136261;
+  for (var i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
+  return 'QC-LEGACY-' + String(row.Timestamp || row.ts || '').replace(/\D/g, '') + '-' + (h >>> 0).toString(16);
+}
+function normalizeStore(data) {
+  var out = { queue: [], recent: [] }, ids = {};
+  (data.queue || []).forEach(function (r) {
+    var row = Object.assign({}, r);
+    if (!row.Record_ID) row.Record_ID = legacyId(row);
+    if (row.QA_Inspector === undefined) row.QA_Inspector = row.Operator || '';
+    delete row.Operator; delete row.Shift;
+    if (!ids[row.Record_ID]) { out.queue.push(row); ids[row.Record_ID] = true; }
+  });
+  ids = {};
+  (data.recent || []).forEach(function (r) {
+    var x = Object.assign({}, r), q = out.queue.find(function (v) { return v.Timestamp === x.ts; });
+    x.id = x.id || (q && q.Record_ID) || legacyId(x);
+    if (x.sync !== 'synced') x.sync = out.queue.some(function (v) { return recordKey(v) === x.id; }) ? 'queued' : 'synced';
+    if (!ids[x.id]) { out.recent.push(x); ids[x.id] = true; }
+  });
+  out.recent = out.recent.slice(0, CONFIG.RECENT_MAX);
+  return out;
+}
+function openStore() {
+  return new Promise(function (resolve) {
+    var settled = false, timer = setTimeout(function () { settled = true; resolve(null); }, 3000);
+    try {
+      var req = indexedDB.open('bqp_qc_db_v1', 1);
+      req.onupgradeneeded = function () { if (!req.result.objectStoreNames.contains('kv')) req.result.createObjectStore('kv'); };
+      req.onerror = req.onblocked = function () { clearTimeout(timer); settled = true; resolve(null); };
+      req.onsuccess = function () {
+        clearTimeout(timer);
+        if (settled) { req.result.close(); return; }
+        settled = true; resolve(req.result);
+      };
+    } catch (e) { clearTimeout(timer); resolve(null); }
+  });
+}
+function readSnapshot(db) {
+  return new Promise(function (resolve, reject) {
+    try {
+      var tx = db.transaction('kv', 'readonly'), req = tx.objectStore('kv').get('state');
+      tx.oncomplete = function () { resolve(req.result || null); };
+      tx.onerror = tx.onabort = function () { reject(tx.error || new Error('Storage read failed')); };
+    } catch (e) { reject(e); }
+  });
+}
+// Import the supplied v8 mirror once, without making a new legacy database.
+function readLegacyMirror() {
+  return new Promise(function (resolve) {
+    var done = false, t = setTimeout(function () { done = true; resolve({}); }, 1000);
+    try {
+      var rq = indexedDB.open('bqp_qc', 1);
+      rq.onupgradeneeded = function () { rq.transaction.abort(); };
+      rq.onerror = rq.onblocked = function () { clearTimeout(t); resolve({}); };
+      rq.onsuccess = function () {
+        var db = rq.result;
+        if (done || !db.objectStoreNames.contains('kv')) { db.close(); clearTimeout(t); resolve({}); return; }
+        var tx = db.transaction('kv', 'readonly'), st = tx.objectStore('kv'), q = st.get('queue'), r = st.get('recent');
+        tx.oncomplete = function () { clearTimeout(t); db.close(); resolve({ queue: q.result || [], recent: r.result || [] }); };
+        tx.onerror = tx.onabort = function () { clearTimeout(t); db.close(); resolve({}); };
+      };
+    } catch (e) { clearTimeout(t); resolve({}); }
+  });
+}
+// One read/modify/write transaction commits the queue AND recent log together.
+// Transactions are serialized across tabs by IndexedDB, avoiding stale array writes.
+function commitStore(change) {
+  var task = storeChain.then(function () {
+    if (!qcDb) return fallback();
+    return new Promise(function (resolve, reject) {
+      try {
+        var tx = qcDb.transaction('kv', 'readwrite'), st = tx.objectStore('kv'), req = st.get('state'), next;
+        req.onsuccess = function () {
+          try { next = cloneStore(req.result || state.store); change(next); st.put(next, 'state'); }
+          catch (e) { tx.abort(); }
+        };
+        tx.oncomplete = function () {
+          state.store = next; state.memQ = []; state.memoryOnly = false;
+          lsSet(SNAPSHOT_KEY, next); resolve(true);
+        };
+        tx.onerror = tx.onabort = function () { reject(tx.error || new Error('Storage write failed')); };
+      } catch (e) { reject(e); }
+    }).catch(function () {
+      logDiag('storage-fallback', 'IndexedDB unavailable');
+      try { qcDb.close(); } catch (e) {} qcDb = null;
+      return fallback();
+    });
+    function fallback() {
+      var next = cloneStore(state.memoryOnly ? state.store : lsGet(SNAPSHOT_KEY, state.store));
+      change(next); state.store = next;
+      var persisted = lsSet(SNAPSHOT_KEY, next);
+      state.memoryOnly = !persisted;
+      state.memQ = persisted ? [] : next.queue.slice();
+      if (!persisted) { storageWarning(); logDiag('storage-memory', 'Keep page open'); }
+      return persisted;
+    }
+  });
+  storeChain = task.catch(function () {});
+  return task;
+}
+async function initStore() {
+  qcDb = await openStore();
+  var existing = null;
+  if (qcDb) {
+    qcDb.onversionchange = function () { qcDb.close(); qcDb = null; logDiag('storage-fallback', 'Database changed in another tab'); };
+    try { existing = await readSnapshot(qcDb); }
+    catch (e) { qcDb.close(); qcDb = null; }
+  }
+  if (!existing) existing = lsGet(SNAPSHOT_KEY, null);
+  if (!existing) {
+    var legacy = await readLegacyMirror();
+    existing = {
+      queue: lsGet(CONFIG.QUEUE_KEY, []).concat(legacy.queue || []),
+      recent: lsGet(CONFIG.RECENT_KEY, []).concat(legacy.recent || [])
+    };
+    logDiag('storage-migration', existing.queue.length + ' pending, ' + existing.recent.length + ' recent candidates');
+  }
+  state.store = normalizeStore(existing);
+  await commitStore(function (data) { var normalized = normalizeStore(data); data.queue = normalized.queue; data.recent = normalized.recent; });
+  if (qcDb) {
+    try { localStorage.removeItem(CONFIG.QUEUE_KEY); localStorage.removeItem(CONFIG.RECENT_KEY); } catch (e) {}
+  } else logDiag('storage-fallback', 'Using localStorage when available');
+  state.ready = true;
+  logDiag('storage-ready', qcDb ? 'IndexedDB' : 'Fallback');
+}
 function lsGet(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
-function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+// Write with read-back verification: returns true only if the value really persisted.
+function lsSet(k, v) { try { var s = JSON.stringify(v); localStorage.setItem(k, s); return localStorage.getItem(k) === s; } catch (e) { return false; } }
 function pad(n, w) { return String(n).padStart(w || 2, '0'); }
-function stamp(d) { return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()) + '.' + pad(d.getMilliseconds(), 3); }
-function dateOnly(d) { return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
-function defaultShift() { var h = new Date().getHours(); return h >= 6 && h < 14 ? 'Morning' : (h >= 14 && h < 22 ? 'Afternoon' : 'Night'); }
+function stamp(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()) + '.' + pad(d.getMilliseconds(), 3); }
+function dateOnly(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
 function saveUi() { lsSet(CONFIG.UI_KEY, { mode: state.mode, stream: state.stream, sub: state.sub }); }
 
-// ---- pill rendering (always-visible selection) ----
+// ---------- audio feedback (AudioContext is created/resumed inside the mic-tap gesture) ----------
+var actx = null;
+function ac() { try { var C = window.AudioContext || window.webkitAudioContext; if (!C) return null; if (!actx) actx = new C(); if (actx.state === 'suspended') actx.resume(); return actx; } catch (e) { return null; } }
+function tone(freq, t0, dur, type, vol) {
+  var c = ac(); if (!c) return;
+  try {
+    var o = c.createOscillator(), g = c.createGain(), t = c.currentTime + t0;
+    o.type = type || 'sine'; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.12, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(c.destination); o.start(t); o.stop(t + dur + 0.03);
+  } catch (e) {}
+}
+function chime() { tone(660, 0, 0.18, 'sine', 0.12); tone(880, 0.14, 0.22, 'sine', 0.12); tone(1175, 0.30, 0.32, 'sine', 0.10); }
+function beep2() { tone(880, 0, 0.16, 'square', 0.12); tone(880, 0.26, 0.16, 'square', 0.12); if (navigator.vibrate) { try { navigator.vibrate([90, 60, 90]); } catch (e) {} } }
+
+// ---------- selectors ----------
 function pill(label, pressed, onTap, cls) {
   var b = document.createElement('button'); b.type = 'button'; b.className = 'pill' + (cls ? ' ' + cls : '');
   b.setAttribute('aria-pressed', pressed ? 'true' : 'false'); b.textContent = label; b.onclick = onTap; return b;
+}
+var FRUIT = [   // [colour, keywords] - first keyword found in the SKU name wins (reading left to right)
+  ['#F59E0B', ['orange','mango','pineapple','lemon','lime','grapefruit','citrus']],
+  ['#EF4444', ['watermelon','pomegranate','strawberry','beetroot','raspberry']],
+  ['#22C55E', ['green','kiwi','mint','cucumber','coconut','wheatgrass']],
+  ['#8B5CF6', ['mixed berry','date','probiotic','turmeric','ginger']]
+];
+function fruitTone(name) {
+  var n = String(name).toLowerCase(), best = null, at = 1e9;
+  FRUIT.forEach(function (g) { g[1].forEach(function (k) {
+    var m = new RegExp('\\b' + k).exec(n);
+    if (m && m.index < at) { at = m.index; best = g[0]; }
+  }); });
+  return best;
+}
+function caption(s) {
+  var bs = Q.specText(s, 'brix'), ps = Q.specText(s, 'ph'), bn = bs.indexOf('N/A') === 0, pn = ps.indexOf('N/A') === 0;
+  if (bn && pn) return 'No limits';
+  var parts = [];
+  if (!bn) parts.push(bs.replace(' (Min+4)', '') + ' °Bx');
+  if (!pn) parts.push('pH ' + ps);
+  return parts.join(' · ');
 }
 function renderMode() {
   document.body.setAttribute('data-mode', state.mode);
   $('modeOff').setAttribute('aria-pressed', state.mode === 'off' ? 'true' : 'false');
   $('modeOn').setAttribute('aria-pressed', state.mode === 'on' ? 'true' : 'false');
-  document.querySelector('meta[name="theme-color"]').setAttribute('content', state.mode === 'on' ? '#B84A62' : '#0E5A42');
+  var theme = document.querySelector('meta[name="theme-color"]'); theme.setAttribute('content', theme.getAttribute('data-qc-' + state.mode));
 }
 function renderStreams() {
   var box = $('stream'); box.innerHTML = '';
@@ -560,149 +1179,383 @@ function renderSkus(suggest) {
   $('manualWrap').classList.toggle('hide', !none);
   if (none) $('streamNote').textContent = 'No SKUs loaded yet for ' + state.stream + ' — provide spec sheet to populate';
   list.forEach(function (s) {
-    var cls = suggest && suggest.indexOf(s.name) >= 0 ? 'suggest' : '';
-    box.appendChild(pill(s.name, state.sku && state.sku.name === s.name, function () { selectSku(s); }, cls));
+    var b = document.createElement('button'); b.type = 'button';
+    b.className = 'tile' + (suggest && suggest.indexOf(s.name) >= 0 ? ' suggest' : '');
+    b.setAttribute('aria-pressed', state.sku && state.sku.name === s.name ? 'true' : 'false');
+    var ft = fruitTone(s.name);
+    b.innerHTML = '<span class="n">' + esc(s.name) + '</span><span class="c">' + esc(caption(s)) + '</span>' + (ft ? '<i class="fd" aria-hidden="true" style="--fruit:' + ft + '"></i>' : '<i class="fd" aria-hidden="true"></i>');
+    b.onclick = function () { selectSku(s); };
+    box.appendChild(b);
   });
 }
 function setMode(m) {
   state.mode = m;
   var streams = Q.MODES[m].streams;
-  if (streams.indexOf(state.stream) < 0) { state.stream = streams[0]; state.sub = Q.subsOf(state.stream)[0] || ''; state.sku = null; }
-  renderMode(); renderStreams(); renderSubs(); renderSkus(); clearSuggest(); refresh(); saveUi();
+  if (streams.indexOf(state.stream) < 0) { state.stream = streams[0]; state.sub = Q.subsOf(state.stream)[0] || ''; }
+  state.sku = null; clearEntry(); renderMode(); renderStreams(); renderSubs(); renderSkus(); refresh(); saveUi();
 }
-function setStream(s) { state.stream = s; state.sub = Q.subsOf(s)[0] || ''; state.sku = null; renderStreams(); renderSubs(); renderSkus(); clearSuggest(); refresh(); saveUi(); }
-function setSub(s) { state.sub = s; state.sku = null; renderSubs(); renderSkus(); clearSuggest(); refresh(); saveUi(); }
-function selectSku(s) { state.sku = s; renderSkus(); clearSuggest(); refresh(); }
-function clearSuggest() { $('cands').innerHTML = ''; }
+function setStream(s) { state.stream = s; state.sub = Q.subsOf(s)[0] || ''; state.sku = null; clearEntry(); renderStreams(); renderSubs(); renderSkus(); refresh(); saveUi(); }
+function setSub(s) { state.sub = s; state.sku = null; clearEntry(); renderSubs(); renderSkus(); refresh(); saveUi(); }
+function selectSku(s) { state.sku = s; clearEntry(); renderSkus(); refresh(); }
 
-// ---- assessment / UI refresh ----
+// ---------- entry state ----------
+// Wipe measured values + remark + corrective action + voice-derived remark state. Does NOT touch the transcript box or SKU.
+function wipeFields() {
+  ['brix', 'ph', 'remark', 'ca'].forEach(function (id) { $(id).value = ''; });
+  state.manual = { brix: false, ph: false }; state.remarkSrc = 'none'; state.voiceText = ''; state.voiceHold = false;
+}
+// Full reset of the entry form (SKU selection is the caller's decision). Used by selectSku/setStream/setSub/setMode/Clear/after log.
+function clearEntry() {
+  wipeFields(); $('tx').value = ''; $('manualSku').value = '';
+  state.flag = { alerts: [], infos: [] }; $('cands').innerHTML = ''; $('op').classList.remove('need');
+}
+function resetEntry(afterLog) {
+  state.sku = null; clearEntry(); renderSkus(); refresh(); renderNet();
+}
 function activeSku() {
   if (state.sku) return state.sku;
   if (Q.pool(state.stream, state.sub).length === 0) { var m = {}; for (var k in Q.MANUAL_SKU) m[k] = Q.MANUAL_SKU[k]; m.stream = state.stream; m.name = $('manualSku').value.trim(); return m; }
   return null;
 }
-function readNum(id) { var v = parseFloat(String($(id).value).replace(',', '.')); return isFinite(v) ? v : null; }
-function setBadge(id, st) { var el = $(id); el.className = 'badge ' + st; el.textContent = ({ GREEN:'PASS', AMBER:'RE-CHECK', RED:'OUT OF SPEC', NA:'N/A', MISSING:'—' })[st]; }
+// Physical bounds: Brix 0-50 (pocket refractometer), pH 0-14. Out-of-range or non-numeric typed values read as null and are flagged via badInput().
+function readNum(id) {
+  var raw = String($(id).value).trim().replace(',', '.');
+  if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw)) return null;
+  var v = Number(raw);
+  if (!isFinite(v)) return null;
+  var max = id === 'brix' ? Q.BRIX_MAX : Q.PH_MAX;
+  return (v < 0 || v > max) ? null : v;
+}
+function badInput(id) { return String($(id).value).trim() !== '' && readNum(id) === null; }
+function badMsgs() {
+  var m = [];
+  if (badInput('brix')) m.push('Brix "' + $('brix').value + '" is outside the 0\u2013' + Q.BRIX_MAX + ' \u00B0Bx refractometer range \u2014 re-enter.');
+  if (badInput('ph')) m.push('pH "' + $('ph').value + '" is outside 0\u2013' + Q.PH_MAX + ' \u2014 re-enter.');
+  return m;
+}
+
+// ---------- verdict / badges / remark ----------
+function setBadge(id, st, band) {
+  var el = $(id), cls = st, txt = ({ GREEN: 'PASS', RED: 'OUT', NA: 'N/A', MISSING: '—' })[st];
+  if (st === 'GREEN' && band === 'TOLERANCE') { cls = 'TOL'; txt = 'PASS (TOL)'; }
+  el.className = 'badge ' + cls; el.textContent = txt;
+}
+function syncRemark(a) {
+  var r = $('remark'), src = state.remarkSrc, base = Q.autoRemark(a, readNum('brix') !== null, readNum('ph') !== null);
+  if (src === 'cleared' || src === 'manual') return;                 // operator-owned text is never overwritten
+  if (src === 'voice') { r.value = (a.overall === 'RED' ? base : '') + state.voiceText; return; }
+  r.value = base; state.remarkSrc = base ? 'auto' : 'none';
+}
+function redMessage(a) {
+  if (a.brixBand === 'OUT' || a.phBand === 'OUT') return 'OUT OF SPEC — confirm spoken value is correct, complete fault comment & HOLD, then tap Log QC Result';
+  return 'HOLD flagged (off-odor / fermentation) — enter the corrective action / HOLD, then tap Log QC Result';
+}
+function renderFlag(a) {
+  var alerts = badMsgs().concat(state.flag.alerts), infos = state.flag.infos.slice();
+  $('brix').classList.toggle('bad', badInput('brix')); $('ph').classList.toggle('bad', badInput('ph'));
+  $('brix').setAttribute('aria-invalid', String(badInput('brix'))); $('ph').setAttribute('aria-invalid', String(badInput('ph')));
+  $('log').disabled = !state.ready || state.busy || badInput('brix') || badInput('ph');
+  if (a && a.overall === 'RED') alerts.unshift(redMessage(a));
+  var w = $('vwarn'), vc = $('verdictCard');
+  if (alerts.length) {
+    w.className = 'note alert'; w.innerHTML = '<b>HOLD — NOT SAVED</b><br>' + alerts.concat(infos).map(esc).join('<br>');
+    w.classList.add('blink'); vc.classList.add('blink');
+  } else if (infos.length) {
+    w.className = 'note info'; w.innerHTML = infos.map(esc).join('<br>'); vc.classList.remove('blink');
+  } else { w.className = 'note hide'; w.innerHTML = ''; vc.classList.remove('blink'); }
+  if (alerts.length === 0) w.classList.remove('blink');
+}
 function refresh() {
-  var sku = activeSku();
+  var sku = activeSku(), o = $('overall'), vc = $('verdictCard');
+  $('capSku').classList.toggle('on', !!(sku && sku.name));
+  $('capBrix').classList.toggle('on', readNum('brix') !== null);
+  $('capPh').classList.toggle('on', readNum('ph') !== null);
   if (!sku) {
     setBadge('bs', 'MISSING'); setBadge('ps', 'MISSING'); $('bspec').textContent = ''; $('pspec').textContent = '';
-    $('overall').className = 'NA'; $('overall').textContent = 'Select a SKU'; $('cawrap').classList.add('hide'); state.assess = null; return;
+    o.className = 'NA'; o.textContent = 'Select a SKU'; $('variance').textContent = ''; vc.setAttribute('data-state', 'na');
+    $('cawrap').classList.add('hide'); state.wasRed = false; state.assess = null; $('capRemark').classList.toggle('on', !!$('remark').value.trim()); renderFlag(null); return;
   }
-  var a = Q.assess(sku, readNum('brix'), readNum('ph'), state.hold);
-  setBadge('bs', a.brix); setBadge('ps', a.ph);
-  $('bspec').textContent = 'Spec: ' + a.brixSpec; $('pspec').textContent = 'Spec: ' + a.phSpec;
-  var o = $('overall'); o.className = a.overall;
-  o.textContent = ({ GREEN:'GREEN – PASS', AMBER:'AMBER – RE-CHECK', RED:'RED – OUT OF SPEC / NCR', NA:'N/A – no limits / no reading' })[a.overall];
-  $('cawrap').classList.toggle('hide', a.overall !== 'RED');
+  var hold = state.voiceHold || /\bHOLD\b/.test($('remark').value);
+  var a = Q.assess(sku, readNum('brix'), readNum('ph'), hold);
   state.assess = a;
+  syncRemark(a);
+  setBadge('bs', a.brix, a.brixBand); setBadge('ps', a.ph, a.phBand);
+  $('bspec').textContent = 'Spec: ' + a.brixSpec; $('pspec').textContent = 'Spec: ' + a.phSpec;
+  var tol = a.brixBand === 'TOLERANCE' || a.phBand === 'TOLERANCE';
+  if (a.overall === 'GREEN') { o.className = tol ? 'TOL' : 'GREEN'; o.textContent = tol ? 'GREEN – PASS (TOL)' : 'GREEN – PASS'; }
+  else if (a.overall === 'RED') { o.className = 'RED'; o.textContent = 'RED – OUT OF SPEC / HOLD'; }
+  else { o.className = 'NA'; o.textContent = 'N/A – no limits / no reading'; }
+  vc.setAttribute('data-state', a.overall === 'GREEN' ? 'green' : (a.overall === 'RED' ? 'red' : 'na'));
+  $('variance').textContent = Q.varianceText(a);
+  $('cawrap').classList.toggle('hide', a.overall !== 'RED');
+  if (a.overall === 'RED' && !state.wasRed) setTimeout(function () { try { $('cawrap').scrollIntoView({ block: 'nearest' }); } catch (e) {} }, 0);   // RED adds the CA box: keep it on screen
+  state.wasRed = a.overall === 'RED';
+  if (a.overall !== 'RED') $('ca').value = '';      // a stale corrective action must never satisfy a later RED gate
+  $('capRemark').classList.toggle('on', !!$('remark').value.trim());
+  renderFlag(a);
 }
 
-// ---- parse transcript -> form (category-locked) ----
+// ---------- parse -> form ----------
+// Merge semantics: only what was spoken is overwritten. A DIFFERENT spoken SKU (or an unmatched/did-you-mean one while a SKU is active) wipes everything first.
+// Returns { save: bool, level: 'alert'|'info'|null }.
 function applyParse(text) {
-  if (!text || !text.trim()) return;
-  var p = Q.parseTranscript(text, { stream: state.stream, sub: state.sub });
-  var warns = p.warnings.slice(), suggest = null;
-  if (p.match.sku) { state.sku = p.match.sku; renderSkus(); }
-  else if (p.match.spoke) { warns.push('No match in ' + state.stream + (Q.subsOf(state.stream).length > 1 ? ' → ' + state.sub : '') + ' — tap the SKU pill.'); }
-  if (p.match.ambiguous) { suggest = p.match.candidates.map(function (s) { return s.name; }); warns.push('Close match — confirm the highlighted SKU.'); renderSkus(suggest); }
-  else if (!p.match.sku && p.match.candidates.length) { suggest = p.match.candidates.map(function (s) { return s.name; }); renderSkus(suggest); }
-  if (p.ignoredStream) warns.push('Heard "' + p.ignoredStream + '" — ignored; staying on ' + state.stream + '.');
-  if (p.brix !== null) $('brix').value = p.brix;
-  if (p.ph !== null) $('ph').value = p.ph;
+  if (!text || !text.trim()) return null;
+  var prev = state.sku;
+  var p = Q.parseTranscript(text, { stream: state.stream, sub: state.sub, hasSku: !!prev });
+  var alerts = [], infos = [], suggest = null, dym = null;
+  p.warnings.forEach(function (w) { alerts.push(w); });
+  if (p.ignoredStream) alerts.push('Heard "' + p.ignoredStream + '" — ignored; staying on ' + state.stream + '.');
+
+  if (p.kind === 'matched' && !p.match.ambiguous) {
+    if (!prev || prev.name !== p.match.sku.name) { if (prev) wipeFields(); state.sku = p.match.sku; }
+  } else if (p.kind === 'matched') {                                   // two near-identical matches: never guess
+    if (prev) wipeFields(); state.sku = null; suggest = p.match.candidates.map(function (s) { return s.name; });
+    alerts.push('Close match — confirm the highlighted SKU.');
+  } else if (p.kind === 'dym') {
+    if (prev) wipeFields(); state.sku = null; dym = p.match.dym;
+    alerts.push('Did you mean ' + dym.name + ' under ' + dym.sub + '? Tap the highlighted chip to confirm.');
+  } else if (p.kind === 'unmatched') {
+    if (prev) wipeFields(); state.sku = null; suggest = p.match.candidates.map(function (s) { return s.name; });
+    alerts.push('Couldn\'t match the item in ' + state.stream + (Q.subsOf(state.stream).length > 1 ? ' → ' + state.sub : '') + ' — tap the SKU pill or re-speak.');
+  } else if (p.kind === 'manual') {
+    $('manualSku').value = p.manualName;
+  }
+  renderSkus(suggest);
+  var cands = $('cands'); cands.innerHTML = '';
+  if (dym) {
+    var cp = pill('Did you mean ' + dym.name + ' (' + dym.sub + ')?', false, function () { confirmSuggestion(dym); }, 'suggest');
+    cands.appendChild(cp);
+  }
+
+  // readings (merge)
+  if (p.invalidBrix !== null && p.invalidBrix !== undefined) { $('brix').value = p.invalidBrix; state.manual.brix = false; logDiag('validation-block', 'Spoken Brix outside 0–50'); }
+  if (p.brix !== null) { $('brix').value = p.brix; state.manual.brix = false; }
+  if (p.ph !== null) { $('ph').value = p.ph; state.manual.ph = false; }
   if (p.batch) $('batch').value = p.batch;
-  if (p.shift) $('shift').value = p.shift;
-  if (p.remark) $('remark').value = p.remark;
-  state.hold = p.hold || state.hold;
-  var w = $('vwarn'); if (warns.length) { w.innerHTML = warns.map(esc).join('<br>'); w.classList.remove('hide'); } else w.classList.add('hide');
+
+  // remark text from speech (defect phrase + trigger-free leftover words)
+  var parts = []; if (p.defectText) parts.push(p.defectText); if (p.comment) parts.push(p.comment);
+  var heardText = parts.join('; ');
+  if (heardText) {
+    state.voiceText = heardText; state.voiceHold = p.hold; state.remarkSrc = 'voice';
+    alerts.push('Comment captured: "' + heardText + '" — review, then tap Log QC Result.');
+  }
   refresh();
+
+  var sku = activeSku(), a = state.assess, hasB = readNum('brix') !== null, hasP = readNum('ph') !== null;
+  var poolEmpty = Q.pool(state.stream, state.sub).length === 0;
+  if (p.kind === 'none' && !hasB && !hasP && !heardText && !p.batch && !sku) alerts.push('Didn\'t hear properly — nothing usable captured; tap the SKU pill or re-speak.');
+  if (!sku && p.kind !== 'unmatched' && p.kind !== 'dym' && !(p.kind === 'matched' && p.match.ambiguous) && (hasB || hasP)) infos.push('No SKU selected — tap a SKU pill or say the SKU name.');
+  if (sku && sku.name && !hasB && !hasP) infos.push('SKU selected — speak Brix or enter readings.');
+  else if (sku && sku.name && hasP && !hasB) infos.push('Brix not captured — speak Brix, or tap Log QC Result to save as is.');
+  if (sku && poolEmpty) infos.push('Manual-entry stream \u2014 no limits; review, then tap Log QC Result.');
+  else if (sku && a && a.overall === 'NA' && (hasB || hasP)) infos.push('No limits defined for this SKU — review, then tap Log QC Result.');
+  if (state.remarkSrc === 'voice' && !heardText) infos.push('A voice comment is still in Remark — review, then tap Log QC Result.');
+  var op = $('op').value.trim();
+  if (!op) { infos.push('Enter QA inspector, then tap Log QC Result.'); $('op').classList.add('need'); }
+  state.flag = { alerts: alerts, infos: infos };
+
+  var save = alerts.length === 0 && infos.length === 0 && !!sku && !!sku.name && !poolEmpty && !!a &&
+             a.overall === 'GREEN' && a.brix === 'GREEN' && !heardText && state.remarkSrc !== 'voice' && !state.voiceHold && !p.hold;
+  renderFlag(a);
+  var level = (alerts.length || (a && a.overall === 'RED')) ? 'alert' : (infos.length ? 'info' : null);
+  return { save: save, level: level };
+}
+function confirmSuggestion(s) {
+  state.sub = s.sub; state.sku = s; state.flag = { alerts: [], infos: [] }; $('cands').innerHTML = '';
+  renderSubs(); renderSkus(); refresh(); saveUi();
 }
 
-// ---- voice engine ----
-var rec = null, silenceTimer = null, finalText = '', listening = false;
-function micUI(on) { listening = on; $('mic').classList.toggle('live', on); $('mic').innerHTML = on ? '&#9209; Listening… (auto-stops after 3 s)' : '&#127908; Tap to Speak'; }
+// ---------- voice engine ----------
+var rec = null, silenceTimer = null, watchdog = null, listening = false, gotSpeech = false, chunks = [];
+function micUI(on) { listening = on; $('mic').classList.toggle('live', on); $('mic').innerHTML = on ? '&#9209; Listening… (auto-stops after 2 s of silence)' : '&#127908; Tap to Speak'; }
+function addFinal(t) {                                   // Android Chrome re-emits finals: drop exact repeats and cumulative restatements
+  t = t.trim(); if (!t) return;
+  var last = chunks.length ? chunks[chunks.length - 1] : '';
+  var a = last.toLowerCase(), b = t.toLowerCase();
+  if (last && (a === b || a.indexOf(b) === 0)) return;
+  if (last && b.indexOf(a) === 0 && a.length > 3) { chunks[chunks.length - 1] = t; return; }
+  chunks.push(t);
+}
+function stopRec() { try { rec.stop(); } catch (e) {} }
 function startVoice() {
+  ac();
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) { toast('Voice not supported here — use Chrome, or type the transcript.', 4500); $('parse').classList.remove('hide'); return; }
-  if (listening) { try { rec.stop(); } catch (e) {} return; }
+  if (listening) { stopRec(); return; }
   rec = new SR(); rec.continuous = true; rec.interimResults = true; rec.lang = $('lang').value; rec.maxAlternatives = 1;
-  finalText = '';
+  chunks = []; gotSpeech = false;
+  $('tx').value = ''; state.flag = { alerts: [], infos: [] }; $('cands').innerHTML = ''; renderSkus(); refresh();   // fields are KEPT; only transcript + flags reset
   rec.onresult = function (e) {
-    clearTimeout(silenceTimer);
+    clearTimeout(silenceTimer); gotSpeech = true;
     var interim = '';
     for (var i = e.resultIndex; i < e.results.length; i++) {
-      if (e.results[i].isFinal) finalText += e.results[i][0].transcript + ' '; else interim += e.results[i][0].transcript;
+      if (e.results[i].isFinal) addFinal(e.results[i][0].transcript); else interim += e.results[i][0].transcript;
     }
-    $('tx').value = (finalText + interim).trim();
-    silenceTimer = setTimeout(function () { try { rec.stop(); } catch (e2) {} }, CONFIG.SILENCE_MS);
+    $('tx').value = (chunks.join(' ') + ' ' + interim).trim();
+    silenceTimer = setTimeout(stopRec, CONFIG.SILENCE_MS);
   };
   rec.onerror = function (e) { if (e.error !== 'no-speech' && e.error !== 'aborted') toast('Mic error: ' + e.error, 4000); };
-  rec.onend = function () { clearTimeout(silenceTimer); micUI(false); if ($('tx').value.trim()) { applyParse($('tx').value); if (navigator.vibrate) navigator.vibrate(60); } };
-  try { rec.start(); micUI(true); silenceTimer = setTimeout(function () { try { rec.stop(); } catch (e3) {} }, CONFIG.INITIAL_GRACE_MS); }
+  rec.onend = function () {
+    clearTimeout(silenceTimer); clearTimeout(watchdog); micUI(false);
+    if (!gotSpeech || !$('tx').value.trim()) {
+      state.flag = { alerts: ['Didn\'t hear properly — tap the SKU pill or re-speak.'], infos: [] }; refresh(); beep2(); return;
+    }
+    var res = applyParse($('tx').value);
+    if (res && res.save) logResult(true);
+    else if (res && res.level === 'alert') beep2();
+  };
+  try { rec.start(); micUI(true); silenceTimer = setTimeout(stopRec, CONFIG.INITIAL_GRACE_MS); watchdog = setTimeout(stopRec, CONFIG.WATCHDOG_MS); }
   catch (err) { toast('Could not start mic: ' + err.message, 4000); }
 }
 
-// ---- offline queue + posting ----
-function getQueue() { return lsGet(CONFIG.QUEUE_KEY, []); }
-function setQueue(q) { lsSet(CONFIG.QUEUE_KEY, q); renderNet(); }
+// ---------- queue / network ----------
+function getQueue() {
+  return state.store.queue.slice();
+}
+function enqueue(row, assessment) {
+  return commitStore(function (data) {
+    if (data.queue.some(function (r) { return recordKey(r) === row.Record_ID; })) return;
+    data.queue.push(row);
+    data.recent.unshift(recentEntry(row, assessment, 'queued'));
+    data.recent = data.recent.slice(0, CONFIG.RECENT_MAX);
+  });
+}
+function removeSent(ids) {
+  return commitStore(function (data) {
+    data.queue = data.queue.filter(function (r) { return !ids[recordKey(r)]; });
+    data.recent.forEach(function (r) { if (ids[recordKey(r)]) r.sync = 'synced'; });
+  });
+}
 function renderNet() {
   var q = getQueue().length, online = navigator.onLine !== false;
+  if ($('storageWarning')) $('storageWarning').classList.toggle('hide', !(state.memoryOnly && q));
   $('net').textContent = online ? 'Online' : 'Offline'; $('net').className = 'tag' + (online ? '' : ' off');
   $('qn').textContent = 'Queue ' + q; $('qn').classList.toggle('hide', q === 0);
   $('retry').classList.toggle('hide', q === 0);
+  $('qn').setAttribute('aria-label', q + ' pending records. View diagnostics');
+  $('net').setAttribute('aria-label', (online ? 'Online' : 'Offline') + '. View diagnostics');
 }
-function postRecords(records) {
-  return fetch(CONFIG.WEB_APP_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ records: records }) })
-    .then(function (r) { return r.json(); })
-    .then(function (j) { if (!j || j.status !== 'success') throw new Error((j && j.message) || 'Server error'); return j; });
+async function postRecords(records) {
+  var ctl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+  var t;
+  var opts = { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ records: records }) };
+  if (ctl) opts.signal = ctl.signal;
+  return Promise.race([
+    fetch(CONFIG.WEB_APP_URL, opts).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }),
+    new Promise(function (_, reject) { t = setTimeout(function () { if (ctl) ctl.abort(); reject(new Error('Request timed out')); }, CONFIG.FETCH_TIMEOUT_MS); })
+  ]).then(function (j) {
+    if (!j || j.status !== 'success') throw new Error((j && j.message) || 'Server error');
+    var expected = records.map(recordKey);
+    if (Array.isArray(j.accepted_ids)) {                                    // qc-v9+ script: per-record acknowledgement
+      if (!expected.every(function (id) { return j.accepted_ids.indexOf(id) >= 0; })) throw new Error('Incomplete server acknowledgement; records retained');
+    } else if (j.written !== undefined || j.skipped !== undefined) {         // counts only
+      if (Number(j.written || 0) + Number(j.skipped || 0) !== records.length) throw new Error('Unverified server acknowledgement; records retained');
+    }                                                                        // older script: {status:'success'} is accepted (never blocks sync)
+    if (j.version !== 'qc-v9' && !postRecords.warned) { postRecords.warned = true; logDiag('backend-legacy', 'Server did not report qc-v9 - deploy extras/Code.gs for Record_ID dedupe'); }
+    return j;
+  }).finally(function () { clearTimeout(t); });
 }
-function flushQueue(silent) {
-  var q = getQueue(); if (!q.length) return Promise.resolve();
-  return postRecords(q).then(function () { setQueue([]); if (!silent) toast('Queued entries sent (' + q.length + ')'); })
-    .catch(function () { if (!silent) toast('Still offline — entries kept in queue.'); });
-}
-function addRecent(r) { var a = lsGet(CONFIG.RECENT_KEY, []); a.unshift({ t: r.Timestamp, sku: r.SKU_Name, st: r.Overall_Status }); lsSet(CONFIG.RECENT_KEY, a.slice(0, 3)); renderRecent(); }
-function renderRecent() {
-  var a = lsGet(CONFIG.RECENT_KEY, []);
-  $('recent').innerHTML = a.length ? a.map(function (x) { return '<div class="rec"><span>' + esc(x.t.slice(11, 16)) + ' ' + esc(x.sku) + '</span><span class="badge ' + esc(x.st === 'N/A' ? 'NA' : x.st) + '" style="margin:0;padding:2px 10px">' + esc(x.st) + '</span></div>'; }).join('') : '<span style="color:var(--mute);font-size:14px">No entries yet.</span>';
+async function flushQueue(silent) {
+  if (!state.ready || state.flushing || navigator.onLine === false) return;
+  state.flushing = true;
+  var q = [], success = false;
+  try {
+    await commitStore(function () {});  // refresh the current snapshot from other tabs
+    q = getQueue().slice(0, 100);
+    if (!q.length) return;
+    var sent = Object.create(null); q.forEach(function (r) { sent[recordKey(r)] = true; });
+    await commitStore(function (data) { data.recent.forEach(function (r) { if (sent[recordKey(r)]) r.sync = 'sending'; }); });
+    renderNet(); renderRecent();
+    logDiag('sync-start', q.length + ' records');
+    await postRecords(q);
+    await removeSent(sent); // Record_ID match, never timestamp; later entries survive.
+    success = true; state.syncError = ''; logDiag('sync-success', q.length + ' acknowledged');
+    if (!silent) toast('Queued entries sent (' + q.length + ')');
+  } catch (err) {
+    await commitStore(function (data) { data.recent.forEach(function (r) { if (r.sync === 'sending') r.sync = 'queued'; }); });
+    state.syncError = err.message || 'Network request failed';
+    logDiag('sync-error', state.syncError);
+    if (!silent) toast('Not synced — records kept. ' + (err.message || 'Connection failed'), 6000);
+  } finally {
+    state.flushing = false;
+    renderNet(); renderRecent();
+  }
+  if (success && getQueue().length) return flushQueue(true);
 }
 
-function logResult() {
+// ---------- Saved QC Log (this device, newest first) ----------
+function getRecent() { return state.store.recent.slice(); }
+function recentEntry(row, a, sync) {
+  return { id: row.Record_ID, ts: row.Timestamp, batch: row.Batch_Code, stream: row.Stream, sku: row.SKU_Name, status: row.Overall_Status,
+                tol: !!(a && (a.brixBand === 'TOLERANCE' || a.phBand === 'TOLERANCE')), brix: row.Measured_Brix, ph: row.Measured_pH,
+                remark: row.Organoleptic_Remark, sync: sync };
+}
+function renderRecent() {
+  var arr = getRecent();
+  $('syncError').textContent = state.syncError || '';
+  $('syncError').classList.toggle('hide', !state.syncError);
+  $('sumTotal').textContent = arr.length;
+  $('sumPass').textContent = arr.filter(function (x) { return x.status === 'GREEN'; }).length;
+  $('sumOut').textContent = arr.filter(function (x) { return x.status === 'RED'; }).length;
+  $('sumUnsynced').textContent = arr.filter(function (x) { return x.sync !== 'synced'; }).length;
+  $('sumUnsynced').title = getQueue().length + ' pending records in the full queue (not capped at 30)';
+  if (!arr.length) { $('recent').innerHTML = '<div class="rec"><span class="l2">No entries saved on this device yet.</span></div>'; return; }
+  var SY = { sending: '⏳ Sending...', queued: '⏳ Queued', synced: '✓ Synced' };
+  $('recent').innerHTML = arr.map(function (x) {
+    var cls = x.status === 'N/A' ? 'NA' : (x.status === 'GREEN' && x.tol ? 'TOL' : x.status), txt = (x.status === 'GREEN' && x.tol) ? 'PASS (TOL)' : x.status;
+    var bx = (x.brix === '' || x.brix === null || x.brix === undefined) ? '—' : x.brix, ph = (x.ph === '' || x.ph === null || x.ph === undefined) ? '—' : x.ph;
+    return '<div class="rec" data-ts="' + esc(x.ts) + '"><div class="l1"><span class="tabnum">' + esc(String(x.ts).slice(11, 16)) + '</span>' +
+      (x.batch ? '<span class="bp">' + esc(x.batch) + '</span>' : '') +
+      '<span class="nm">' + esc(x.stream) + ' · ' + esc(x.sku) + '</span><span class="badge ' + esc(cls) + '">' + esc(txt) + '</span>' +
+      '<span class="sync ' + esc(x.sync) + '">' + (SY[x.sync] || '') + '</span></div>' +
+      '<div class="l2">Brix ' + esc(bx) + ' · pH ' + esc(ph) + (x.remark ? ' · ' + esc(x.remark) : '') + '</div></div>';
+  }).join('');
+}
+
+// ---------- log ----------
+async function logResult(auto) {
+  if (state.busy || !state.ready) return;
   var sku = activeSku();
   if (!sku) { toast('Tap a SKU first.'); return; }
   if (!sku.name) { toast('Type the SKU name for manual entry.'); $('manualSku').focus(); return; }
-  var brix = readNum('brix'), ph = readNum('ph');
-  if (brix === null && ph === null && !$('remark').value.trim()) { toast('Enter Brix, pH or an organoleptic remark.'); return; }
-  var a = Q.assess(sku, brix, ph, state.hold);
-  var remark = $('remark').value.trim();
+  if (!$('op').value.trim()) { $('op').classList.add('need'); $('op').focus(); toast('Enter QA inspector name before logging.', 4000); return; }
+  if (badInput('brix') || badInput('ph')) { toast(badMsgs().join(' '), 4500); return; }
+  var brix = readNum('brix'), ph = readNum('ph'), remark = $('remark').value.trim();
+  if (brix === null && ph === null && (auto || !remark)) { toast('Enter or speak a Brix / pH reading before logging.'); return; }
+  var hold = state.voiceHold || /\bHOLD\b/.test(remark);
+  var a = Q.assess(sku, brix, ph, hold);
+  if (auto && (a.overall !== 'GREEN' || a.brix !== 'GREEN')) return;                // auto-save is GREEN-only, never RED
   if (a.overall === 'RED') {
+    if (Q.stripFaultPrefix(remark).length < 3) { toast('RED result: complete the fault comment in Remark before logging.', 4500); $('remark').focus(); return; }
     var ca = $('ca').value.trim();
     if (ca.length < 3) { toast('RED result: enter the corrective action / HOLD before logging.', 4500); $('ca').focus(); return; }
-    remark = (remark ? remark + ' | ' : '') + 'CORRECTIVE ACTION/HOLD: ' + ca;
+    remark += ' | CORRECTIVE ACTION/HOLD: ' + ca;
   }
   var now = new Date();
-  var rec = {
-    Timestamp: stamp(now), Date: dateOnly(now), Shift: $('shift').value, Operator: $('op').value.trim(), Batch_Code: $('batch').value.trim(),
+  var row = {
+    Timestamp: stamp(now), Date: dateOnly(now), QA_Inspector: $('op').value.trim(), Batch_Code: $('batch').value.trim(),
     Stream: sku.stream || state.stream, Sub_Category: sku.sub, SKU_Name: sku.name,
     Measured_Brix: brix === null ? '' : brix, Brix_Spec: a.brixSpec, Brix_Status: (a.brix === 'MISSING' || a.brix === 'NA') ? 'N/A' : a.brix,
     Measured_pH: ph === null ? '' : ph, pH_Spec: a.phSpec, pH_Status: (a.ph === 'MISSING' || a.ph === 'NA') ? 'N/A' : a.ph,
-    Overall_Status: a.overall === 'NA' ? 'N/A' : a.overall, Organoleptic_Remark: remark, Raw_Transcript: $('tx').value.trim()
+    Overall_Status: a.overall === 'NA' ? 'N/A' : a.overall, Organoleptic_Remark: remark, Raw_Transcript: $('tx').value.trim(), Record_ID: newId()
   };
-  lsSet(CONFIG.OP_KEY, rec.Operator);
-  $('log').disabled = true;
-  postRecords([rec]).then(function () { toast('Logged ✓ ' + rec.SKU_Name + ' – ' + rec.Overall_Status); addRecent(rec); flushQueue(true); })
-    .catch(function () { var q = getQueue(); q.push(rec); setQueue(q); addRecent(rec); toast('Saved offline – will send when online.'); })
-    .then(function () { $('log').disabled = false; resetEntry(true); });
-}
-function resetEntry(afterLog) {
-  ['tx','brix','ph','remark','ca'].forEach(function (id) { $(id).value = ''; });
-  $('manualSku').value = '';
-  state.hold = false; clearSuggest(); $('vwarn').classList.add('hide');
-  if (afterLog) { state.sku = null; renderSkus(); }   // force a fresh SKU tap so a reading is never logged against the previous SKU
-  refresh(); renderNet();
+  state.busy = true; refresh();
+  try {
+    var durable = await enqueue(row, a); // wait for atomic queue + recent transaction completion
+    lsSet(CONFIG.OP_KEY, row.QA_Inspector);
+    logDiag('record-queued', durable ? 'Persisted before form reset' : 'Memory only; keep page open');
+    resetEntry(true);
+    if (!durable) toast('Entry in MEMORY ONLY — keep this page open until synced.', 7000);
+    else if (auto) { flash(); chime(); } else toast('Logged · ' + row.SKU_Name + ' – ' + row.Overall_Status);
+  } catch (err) {
+    logDiag('save-error', 'Form retained');
+    toast('Could not queue this record. Your form has been retained.', 6000);
+  } finally { state.busy = false; refresh(); renderNet(); renderRecent(); }
+  flushQueue(true);
 }
 
-// ---- init ----
+// ---------- init ----------
 function init() {
   var saved = lsGet(CONFIG.UI_KEY, null);
   if (saved && Q.MODES[saved.mode]) {
@@ -710,24 +1563,90 @@ function init() {
     if (Q.MODES[saved.mode].streams.indexOf(saved.stream) >= 0) { state.stream = saved.stream; state.sub = Q.subsOf(saved.stream).indexOf(saved.sub) >= 0 ? saved.sub : (Q.subsOf(saved.stream)[0] || ''); }
     else { state.stream = Q.MODES[saved.mode].streams[0]; state.sub = Q.subsOf(state.stream)[0] || ''; }
   }
-  $('shift').value = defaultShift(); $('op').value = lsGet(CONFIG.OP_KEY, '') || '';
-  var chips = [['OK','normal'],['Watery','watery'],['Pulpy','pulpy'],['Sour','sour'],['Fermented – HOLD','fermented'],['Color off','discolored']];
+  $('op').value = lsGet(CONFIG.OP_KEY, '') || '';
+  $('op').oninput = function () { $('op').classList.remove('need'); };
+  var chips = [['OK', 'Acceptable taste and appearance', false], ['Watery', Q.DICT[0].text, false], ['Pulpy', Q.DICT[1].text, false], ['Sour', Q.DICT[2].text, false], ['Fermented – HOLD', Q.DICT[3].text, true], ['Color off', Q.DICT[4].text, false]];
   chips.forEach(function (c) {
     var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = c[0];
-    b.onclick = function () { var r = Q.parseRemarks(c[1]); var cur = $('remark').value.trim(); if (r.text && cur.indexOf(r.text) < 0) $('remark').value = cur ? cur + '; ' + r.text : r.text; if (r.hold) state.hold = true; refresh(); };
+    b.onclick = function () {
+      var src = state.remarkSrc;
+      if (src === 'manual' || src === 'cleared') { var cur = $('remark').value.trim(); if (cur.indexOf(c[1]) < 0) $('remark').value = cur ? cur + '; ' + c[1] : c[1]; state.remarkSrc = 'manual'; }
+      else { if ((';' + state.voiceText).indexOf(c[1]) < 0) state.voiceText = state.voiceText ? state.voiceText + '; ' + c[1] : c[1]; state.remarkSrc = 'voice'; }
+      if (c[2]) state.voiceHold = true;
+      refresh();
+    };
     $('remchips').appendChild(b);
   });
+  ['Batch on HOLD', 'Re-test sample', 'QA Supervisor notified'].forEach(function (t) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = t;
+    b.onclick = function () { var cur = $('ca').value.trim(); if (cur.indexOf(t) < 0) $('ca').value = cur ? cur + '; ' + t : t; refresh(); };
+    $('holdchips').appendChild(b);
+  });
   $('modeOff').onclick = function () { setMode('off'); }; $('modeOn').onclick = function () { setMode('on'); };
-  $('brix').oninput = refresh; $('ph').oninput = refresh; $('manualSku').oninput = refresh;
-  $('remark').oninput = function () { state.hold = /HOLD/.test($('remark').value); refresh(); };
+  $('brix').oninput = function () {
+    state.manual.brix = $('brix').value !== '';
+    state.flag.alerts = state.flag.alerts.filter(function (t) { return !/^Brix .*outside the/.test(t); });
+    if (badInput('brix')) logDiag('validation-block', 'Typed Brix outside 0–50 or invalid');
+    refresh();
+  };
+  $('ph').oninput = function () { state.manual.ph = $('ph').value !== ''; refresh(); };
+  $('manualSku').oninput = refresh;
+  $('remark').oninput = function () { state.remarkSrc = $('remark').value === '' ? 'cleared' : 'manual'; state.voiceText = ''; state.voiceHold = false; refresh(); };
   $('mic').onclick = startVoice; $('parse').onclick = function () { applyParse($('tx').value); };
   $('tx').onchange = function () { applyParse($('tx').value); };
-  $('log').onclick = logResult; $('clearBtn').onclick = function () { resetEntry(false); }; $('retry').onclick = function () { flushQueue(false); };
-  window.addEventListener('online', function () { renderNet(); flushQueue(true); }); window.addEventListener('offline', renderNet);
-  renderMode(); renderStreams(); renderSubs(); renderSkus(); renderNet(); renderRecent(); refresh(); flushQueue(true);
-  try { if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js'); } catch (e) {}
+  $('log').onclick = function () { logResult(false); };
+  $('clearBtn').onclick = function () { state.sku = null; clearEntry(); renderSkus(); refresh(); };
+  $('retry').onclick = function () { flushQueue(false); };
+  ['net', 'qn'].forEach(function (id) {
+    var el = $(id); el.tabIndex = 0; el.setAttribute('role', 'button'); el.onclick = showDiagnostics;
+    el.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showDiagnostics(); } };
+  });
+  window.addEventListener('online', function () { logDiag('network-online'); renderNet(); flushQueue(true); });
+  window.addEventListener('offline', function () { logDiag('network-offline'); renderNet(); });
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') { renderNet(); flushQueue(true); } });
+  setInterval(function () { flushQueue(true); }, CONFIG.RETRY_MS);
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {}); } catch (e) {}
+  logDiag('app-start', 'v10');
+  renderMode(); renderStreams(); renderSubs(); renderSkus(); renderNet(); renderRecent(); refresh();
+  initStore().then(function () {
+    renderNet(); renderRecent(); refresh(); flushQueue(true);
+  }).catch(function () {
+    logDiag('storage-init-error', 'Logging blocked to protect existing records');
+    toast('Could not recover device storage. Logging is blocked; keep this page open.', 10000);
+  });
+  $('reloadApp').onclick = async function () {
+    if (state.busy || !state.ready) { toast('Wait for the current save to finish.'); return; }
+    await storeChain;
+    if (state.memoryOnly && getQueue().length) { storageWarning(); toast('Reload blocked: unsent entries are in memory only.', 6000); return; }
+    location.reload();
+  };
+  try {
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+      var controlled = !!navigator.serviceWorker.controller;
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (controlled) { $('pwaUpdate').classList.remove('hide'); logDiag('pwa-update', 'Reload available'); }
+        controlled = true;
+      });
+      navigator.serviceWorker.register('./sw.js').catch(function () { logDiag('pwa-error', 'Service worker registration failed'); });
+    }
+  } catch (e) { logDiag('pwa-error', 'Service worker unavailable'); }
+  window.addEventListener('beforeunload', function (e) {
+    if (state.busy || (state.memoryOnly && getQueue().length)) { e.preventDefault(); e.returnValue = ''; }
+  });
 }
 init();
+})();
+</script>
+<script id="fx">
+/* visual-only: toggles .hot on .micwrap while the live transcript changes (no getUserMedia, no change to logic/ui) */
+(function () {
+  var m = document.getElementById('mic'), t = document.getElementById('tx'); if (!m || !t) return;
+  var wrap = m.parentNode, last = '', poll = null, off = null;
+  function tick() { if (t.value !== last) { last = t.value; wrap.classList.add('hot'); clearTimeout(off); off = setTimeout(function () { wrap.classList.remove('hot'); }, 450); } }
+  new MutationObserver(function () {
+    if (m.classList.contains('live')) { last = t.value; if (!poll) poll = setInterval(tick, 100); }
+    else { clearInterval(poll); poll = null; clearTimeout(off); wrap.classList.remove('hot'); }
+  }).observe(m, { attributes: true, attributeFilter: ['class'] });
 })();
 </script>
 </body>

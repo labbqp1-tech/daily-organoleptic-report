@@ -1,13 +1,15 @@
 {
+  "id": "./",
   "name": "Daily Organoleptic Report",
-  "short_name": "Daily Organoleptic",
-  "description": "Voice-to-text lab QC logger for Brix, pH and organoleptic checks",
-  "start_url": "./index.html",
+  "short_name": "Daily QC",
+  "description": "Offline-ready voice-entry organoleptic QC capture for Barakat Quality Plus (Brix, pH, remarks)",
+  "lang": "en",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#FAF8F5",
-  "theme_color": "#0E5A42",
+  "theme_color": "#0D2F2B",
+  "background_color": "#F1F3ED",
   "icons": [
     {
       "src": "icon-192.png",
@@ -16,19 +18,13 @@
       "purpose": "any"
     },
     {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icon-512.png",
+      "src": "icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

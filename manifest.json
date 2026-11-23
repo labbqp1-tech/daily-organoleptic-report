@@ -2,14 +2,14 @@
   "id": "./",
   "name": "Daily Organoleptic Report",
   "short_name": "Daily QC",
-  "description": "Offline-ready voice-entry organoleptic QC capture for Barakat Quality Plus (Brix, pH, remarks)",
+  "description": "Offline-ready voice-entry organoleptic QC capture for Barakat Quality Plus (Brix, pH, remarks) - v15",
   "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "any",
-  "theme_color": "#0D2F2B",
-  "background_color": "#F1F3ED",
+  "orientation": "landscape",
+  "theme_color": "#01130A",
+  "background_color": "#01130A",
   "icons": [
     {
       "src": "icon-192.png",

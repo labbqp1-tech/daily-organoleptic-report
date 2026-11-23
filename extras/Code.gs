@@ -1,11 +1,14 @@
 /**
- * Daily Organoleptic Report — Apps Script Web App v9 (used unchanged by app v10).
+ * Daily Organoleptic Report — Apps Script Web App qc-v9.1 (app v15.3).
+ * qc-v9.1: opens the Sheet by ID, so it works in the standalone project 'Barakat_Lab_QC_Logger'.
  * Header-name mapping, QA_Inspector only, Shift/Operator explicitly ignored.
  * Record_ID idempotency is checked across the complete log under a script lock.
  * This source must be installed and deployed in Apps Script before live use.
  * Keep the existing deployment: Manage deployments > Edit > New version.
  */
+var SS_ID = '1UtC7dmBxa05IVQs0Ap6Y_0x44yI-7M2c4ytX64P7KXk';   // spreadsheet 'Daily Organoleptic Report'
 var SHEET_NAME = 'QC_Logs';
+function book_() { return SS_ID ? SpreadsheetApp.openById(SS_ID) : SpreadsheetApp.getActive(); }
 // Headers the app sends (17). 'Shift' is intentionally absent.
 var REQUIRED = ['Timestamp','Date','QA_Inspector','Batch_Code','Stream','Sub_Category','SKU_Name','Measured_Brix','Brix_Spec','Brix_Status',
                 'Measured_pH','pH_Spec','pH_Status','Overall_Status','Organoleptic_Remark','Raw_Transcript','Record_ID'];
@@ -14,13 +17,13 @@ var TEXT_COLS = { Timestamp: 1, Date: 1, Batch_Code: 1, QA_Inspector: 1, Record_
 // Read-only handshake (informational). App v10 does NOT gate sync on it; open <exec URL>?action=health in a browser to check header readiness.
 function doGet() {
   try {
-    var sh = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
-    if (!sh || !sh.getLastColumn()) return out_({ version: 'qc-v9', ready: false, message: 'QC_Logs headers not found' });
+    var sh = book_().getSheetByName(SHEET_NAME);
+    if (!sh || !sh.getLastColumn()) return out_({ version: 'qc-v9.1', ready: false, message: 'QC_Logs headers not found' });
     var headers = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(function (h) { return String(h).trim(); });
     var missing = REQUIRED.filter(function (h) { return headers.indexOf(h) < 0; });
     var duplicates = headers.filter(function (h, i) { return h && headers.indexOf(h) !== i; });
-    return out_({ version: 'qc-v9', ready: !missing.length && !duplicates.length, missing: missing, duplicate_headers: duplicates });
-  } catch (err) { return out_({ version: 'qc-v9', ready: false, message: String(err) }); }
+    return out_({ version: 'qc-v9.1', ready: !missing.length && !duplicates.length, missing: missing, duplicate_headers: duplicates });
+  } catch (err) { return out_({ version: 'qc-v9.1', ready: false, message: String(err) }); }
 }
 
 function doPost(e) {
@@ -49,7 +52,7 @@ function doPost(e) {
         }
       }
     }
-    var sh = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+    var sh = book_().getSheetByName(SHEET_NAME);
     if (!sh) return out_({ status: 'error', message: 'Sheet tab not found: ' + SHEET_NAME });
 
     var lastCol = sh.getLastColumn();
@@ -92,7 +95,7 @@ function doPost(e) {
       headers.forEach(function (h, i) { if (TEXT_COLS[h]) sh.getRange(start, i + 1, rows.length, 1).setNumberFormat('@'); });
       range.setValues(rows);
     }
-    return out_({ status: 'success', written: rows.length, skipped: skipped, accepted_ids: accepted, version: 'qc-v9' });
+    return out_({ status: 'success', written: rows.length, skipped: skipped, accepted_ids: accepted, version: 'qc-v9.1' });
   } catch (err) {
     return out_({ status: 'error', message: String(err) });
   } finally {
@@ -109,7 +112,7 @@ function out_(obj) { return ContentService.createTextOutput(JSON.stringify(obj))
  *  - leaves the "Shift" column and all old data untouched (new rows just leave Shift blank)
  */
 function migrateHeaders() {
-  var sh = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+  var sh = book_().getSheetByName(SHEET_NAME);
   var lastCol = sh.getLastColumn();
   var h = sh.getRange(1, 1, 1, lastCol).getValues()[0].map(function (x) { return String(x).trim(); });
   var iOp = h.indexOf('Operator');

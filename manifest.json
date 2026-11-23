@@ -2,7 +2,7 @@
   "id": "./",
   "name": "Daily Organoleptic Report",
   "short_name": "Daily QC",
-  "description": "Offline-ready voice-entry organoleptic QC capture for Barakat Quality Plus (Brix, pH, remarks) - v15.2",
+  "description": "Offline-ready voice-entry organoleptic QC capture for Barakat Quality Plus (Brix, pH, remarks) - v16",
   "lang": "en",
   "start_url": "./",
   "scope": "./",

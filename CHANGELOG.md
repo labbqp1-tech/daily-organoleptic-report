@@ -1,5 +1,57 @@
 # Daily Organoleptic Report — CHANGELOG
 
+## v16 (24 Nov 2026): batch codes, slide-for-batch-E, slight-variation status, Today + Dashboard tabs
+
+Includes everything from v15.3 (v15.3 was built but never uploaded).
+
+### Batch code (production day + sub-batch letter)
+- **Format:** `DD` + month letter (A = Jan … K = Nov, L = Dec) + `YY` + sub-batch, e.g. `24K26D`. It is written to `Batch_Code` (no new payload key). Before v16 the spoken batch was parsed but never saved, so `Batch_Code` was always blank.
+- **Confirm before logging:**
+  - The first mic tap or Log of a session shows **"Confirm batch"**: the code, its day, and D / E buttons.
+  - **Change day** offers only **today and the 2 previous days** (Monday: Sun and Sat). A back-dated batch turns the header chip amber.
+  - It asks again after the app reopens, at the start of a new day (a back-dated batch never carries over), and after 30 minutes idle.
+- **Batch D is the default. Batch E applies to one entry only,** then returns to D.
+  - **Slide the mic knob to the right end and release:** batch E plus mic in one gesture. The knob arms at 60 % of the track, the hint "Release: batch E + speak" floats above, and the tablet vibrates.
+  - A plain tap is still mic with batch D. A partial slide, a slide while listening, or a gesture taken over by Android (`pointercancel`) does nothing.
+  - Other ways to set E: say "batch E", or tap the batch chip → E.
+- Recent rows show the batch next to the category.
+
+### Slight variation (amber) in the Sheet
+- `Brix_Status` / `pH_Status` = `SLIGHT VARIATION` for readings inside the tolerance band.
+- `Overall_Status` = `SLIGHT VARIATION ON BRIX`, `SLIGHT VARIATION ON pH`, or `SLIGHT VARIATION ON BRIX & pH` (only when both are in tolerance). Products without pH limits keep `N/A`.
+- Auto-save, the RED rules and the 17 keys are unchanged.
+
+### Backend `extras/Code.gs` qc-v9.2 (deployed as Version 5, same URL)
+- **Fix:** qc-v9.1 used `Array.fill`, which the project's legacy (Rhino) runtime does not have. From 22:57 to 00:42 every real send failed. The tablet kept those records queued, so none were lost.
+- **Report tools (run from the editor):**
+  - `runProductionSetup()` builds the **Today** tab (latest check date only; status and back-dated batch coloured), the **Dashboard** tab and the hidden **_calc** tab. It also applies amber/green/red rules on `QC_Logs`.
+    - **Dashboard contents:** month and product pickers; KPIs (checks, % pass / slight / out, products, average age at check, batch E share); a per-product table (average/min/max Brix, average pH, SD and CV, %s); a status-by-month chart; Brix and pH readings-vs-spec charts; monthly trend tables.
+  - `deleteLegacyRows_20261123()` removed the 15 rows of 23 Nov written by the old script (no Record_ID, no inspector). A CSV backup is kept off-repo.
+  - `runTestOnNewSheet()` builds everything on a throw-away spreadsheet with synthetic rows and exercises the real write path.
+
+## v15.3 (23 Nov 2026, not uploaded; included in v16): live-audit fixes (sync, pH words, swapped labels, backend qc-v9.1)
+
+Found by auditing the live Sheet (`Daily Organoleptic Report`, tab `QC_Logs`, 15 rows on 23 Nov) and the live Apps Script project `Barakat_Lab_QC_Logger`.
+
+### Correction to the v15.2 finding
+- The old script **does write rows**. It answers `{status, row, added, duplicates_skipped}`, not a bare success. All tablet entries up to 17:58 on 23 Nov are in the Sheet.
+- What it loses: it writes the old 17 headers, so **`QA_Inspector` is blank on every row** and **`Record_ID` is never written** (the Sheet header row was already renamed by hand).
+- The v15.2 **"Re-send N unconfirmed"** button is **removed**. It would have duplicated rows already in the Sheet, because they have no Record_ID.
+- Sync acknowledgement: `accepted_ids` (qc-v9.1) **or** the old script's honest counts (`added + duplicates_skipped` = records sent). A reply with neither keeps the records queued: *"Server did not confirm the records. They are kept on this tablet."*
+
+### Speech fixes (seen in the live Sheet)
+- **pH misheard as "fear", "BH", "ps", "pe", "pa", "bs", "pee"** (also glued: "ps3.54") is now read as pH. Before, pH was dropped and the word went into the remark ("Fear", "Bh", "Breakup ps3.54").
+- **Brix misheard as "breakup", "brakes"** is now read as Brix.
+- **Swapped labels** ("bricks 2.85 PH 12.8"): when the reading is RED as spoken but GREEN with Brix and pH swapped, a **Swap Brix ↔ pH** chip appears. Nothing saves until the operator taps Swap, then Log.
+
+### Backend: `extras/Code.gs` qc-v9.1
+- qc-v9 used `SpreadsheetApp.getActive()`, which **fails in the standalone project** (every request would error). qc-v9.1 opens the Sheet by ID (`SS_ID`).
+- Header-name mapping (works with the existing 18 columns incl. `Shift`), Record_ID de-duplication across the whole log, `QA_Inspector` required, formula-injection guard.
+- `migrateHeaders()` is not needed: the Sheet already has `QA_Inspector` and `Record_ID`.
+
+### Not changed
+SKUs, limits, TOL, `SILENCE_MS`, the 17 payload keys, category rules. Tolerance readings are still stored as `GREEN` with the remark "Slight variation noticed (…tolerance)".
+
 ## v15.2 (23 Nov 2026): category-first matching + "Verify category"
 
 ### Data-loss fix (found 23 Nov, 17:30): entries not reaching the Google Sheet

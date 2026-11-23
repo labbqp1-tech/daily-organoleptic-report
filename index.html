@@ -485,8 +485,41 @@ html.tc #overall::after{content:attr(data-t);font-size:24px;letter-spacing:-.02e
 /* v15.2: verify-category and look-alike buttons are full touch targets */
 #cands .pill{min-height:44px!important;height:auto;padding-top:0;padding-bottom:0;display:inline-flex;align-items:center}
 
-/* v15.2: recover button (footer) */
-#recoverBtn{margin-top:6px;min-height:44px;padding:0 14px;border:0;border-radius:999px;background:#B45309;color:#fff;font-weight:800;font-size:12.5px;cursor:pointer}
+/* v16: batch chip, batch dialog, slide-for-E mic */
+#batchChip{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.35);color:#fff;font-weight:800;font-size:13px;letter-spacing:.02em;cursor:pointer;white-space:nowrap}
+#batchChip.back{background:#B45309;border-color:#FCD34D}
+#batchChip.subE{box-shadow:0 0 0 3px #F59E0B}
+.bdlg{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:rgba(1,19,10,.55)}
+.bdlg.hide{display:none}
+.bbox{background:#fff;color:#0B1F14;border-radius:24px;padding:22px 24px;min-width:420px;max-width:560px;display:flex;flex-direction:column;gap:10px;box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+.bbox .eyebrow{color:#47685A}
+#batchNow{font-size:34px;letter-spacing:.04em}
+#batchDay{color:#47685A;font-weight:700}
+.bletters{display:flex;align-items:center;gap:8px;font-weight:700}
+.bletters button,.bact button,.bday{min-height:44px;min-width:56px;border-radius:14px;border:2px solid #CFE3D7;background:#F3FAF6;font-weight:800;font-size:16px;cursor:pointer;color:#0B1F14}
+.bletters button.on{background:#0B5E2E;color:#fff;border-color:#0B5E2E}
+#bE.on{background:#B45309;border-color:#B45309}
+.bact{display:flex;gap:10px;justify-content:flex-end}
+#batchOk{background:#0B5E2E;color:#fff;border-color:#0B5E2E;min-width:140px}
+#batchDays{display:flex;gap:10px}
+#batchDays.hide{display:none}
+.bday{flex:1;display:flex;flex-direction:column;align-items:flex-start;padding:8px 12px}
+.bday span{font-size:12.5px;font-weight:600;color:#47685A}
+.bday.on{border-color:#0B5E2E}
+.bhint{margin:0;font-size:12.5px;color:#47685A}
+#mic{touch-action:none;--kx:0px;user-select:none;-webkit-user-select:none}
+#mic::before{position:relative;z-index:1;transform:translateX(var(--kx));transition:transform .22s ease}
+#mic.drag::before{transition:none}
+#mic.arm::before{box-shadow:0 0 0 4px #F59E0B}
+#mic.drag::after{content:"Slide to the end for batch E"}
+#mic.arm::after{content:"Release: batch E + speak"}
+#mic.subE{background:linear-gradient(180deg,#FFF1D0,#FCD98A)}
+#mic.subE::after{content:"Batch E \00B7  Tap to speak"}
+#mic.live.subE{background:linear-gradient(180deg,#FBBF24,#F59E0B)}
+#mic.live.subE::after{content:"Listening\2026  \00B7  Batch E"}
+#mic{min-width:300px}
+#mic.drag::after{position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(-50%);padding:6px 12px;border-radius:999px;background:#01130A;color:#fff;font-size:13px;font-weight:800;box-shadow:0 8px 20px -8px rgba(0,0,0,.6)}
+#mic.arm::after{background:#B45309}
 </style>
 </head>
 <body data-mode="off">
@@ -498,6 +531,7 @@ html.tc #overall::after{content:attr(data-t);font-size:24px;letter-spacing:-.02e
     <span class="sp"></span>
     <label class="insp">Inspector&nbsp;&middot;<input id="op" placeholder="Your name" autocomplete="off" aria-label="QA inspector"></label>
     <input type="hidden" id="batch" value="">
+    <button id="batchChip" type="button" class="glass-dark">Batch</button>
     <select id="lang" class="glass-dark" aria-label="Speech language"><option value="en-AE">EN-AE</option><option value="en-GB">EN-GB</option><option value="en-US">EN-US</option></select>
     <span id="net" class="tag glass-dark">Online</span>
     <span id="qn" class="tag q glass-dark hide">Queue 0</span>
@@ -591,7 +625,7 @@ html.tc #overall::after{content:attr(data-t);font-size:24px;letter-spacing:-.02e
   </section>
 
   <footer class="ground" aria-label="Recently added on this device">
-    <div class="gl">Recently added<b><span id="footCount">0</span> logged<span class="uns" id="unsWrap"> &middot; <output id="sumUnsynced">0</output> unsynced</span></b><p id="syncError" class="hide" role="status"></p><button id="recoverBtn" class="hide" type="button">Re-send unconfirmed</button></div>
+    <div class="gl">Recently added<b><span id="footCount">0</span> logged<span class="uns" id="unsWrap"> &middot; <output id="sumUnsynced">0</output> unsynced</span></b><p id="syncError" class="hide" role="status"></p></div>
     <span class="gdiv"></span>
     <div class="rec hd" aria-hidden="true"><span>Time</span><span>SKU</span><span class="vv">Brix</span><span class="vv">pH</span><span>QC</span><span>Sync</span></div>
     <div id="recent"></div>
@@ -601,6 +635,16 @@ html.tc #overall::after{content:attr(data-t);font-size:24px;letter-spacing:-.02e
 <div id="toast"></div>
 <div id="flash" role="status" aria-live="polite">SAVED &#10003;</div>
 
+<div id="batchDlg" class="bdlg hide" role="dialog" aria-modal="true" aria-labelledby="batchTitle">
+  <div class="bbox">
+    <span class="eyebrow" id="batchTitle">Confirm batch before logging</span>
+    <b id="batchNow"></b><span id="batchDay"></span>
+    <div class="bletters"><span>Sub-batch</span><button id="bD" type="button">D</button><button id="bE" type="button">E</button></div>
+    <div class="bact"><button id="batchChange" type="button">Change day</button><button id="batchOk" type="button">Confirm</button></div>
+    <div id="batchDays" class="hide"></div>
+    <p class="bhint">E applies to the next entry only, then returns to D. Tip: slide the mic knob to the right end for batch E.</p>
+  </div>
+</div>
 <!-- ============ LOGIC (pure, testable) ============ -->
 <script id="logic">
 (function (root) {
@@ -870,8 +914,8 @@ function readInt(tokens, i) {
 }
 // v15: misheard reading labels / decimals and split fruit words.
 var DEC_HOMO = { 'for': '4', 'to': '2', 'too': '2', 'won': '1', 'ate': '8', 'tree': '3', 'free': '3' };
-var BRIX_HEARD = { breaks: 1, break: 1, prix: 1, briggs: 1, bricks: 1, brick: 1, brics: 1, brixs: 1 };
-var PH_HEARD = { page: 1, beach: 1, peach: 1 };
+var BRIX_HEARD = { breaks: 1, break: 1, prix: 1, briggs: 1, bricks: 1, brick: 1, brics: 1, brixs: 1, breakup: 1, brakes: 1, bricked: 1 };
+var PH_HEARD = { page: 1, beach: 1, peach: 1, fear: 1, bh: 1, ps: 1, pa: 1, pe: 1, bs: 1, pee: 1, ph: 1 };   // v15.3: fear/bh/ps seen in live sheet
 var COMPOUND = [[/\b(?:beet|beat|bead) root\b/g, 'beetroot'], [/\bpom(?:e|me)? granate\b/g, 'pomegranate'], [/\bwater melon\b/g, 'watermelon'],
                 [/\bpine apple\b/g, 'pineapple'], [/\bgrape fruit\b/g, 'grapefruit']];
 function fixLabels(out) {
@@ -895,6 +939,7 @@ function normalizeSpeech(text) {
     .replace(/\bp\.?\s?h\b\.?/g, ' ph ')
     .replace(/(\d),(\d)/g, '$1.$2')           // v15: "11,2" -> "11.2" (no space = decimal comma, never a list)
     .replace(/\bph(?=\d)/g, 'ph ')
+    .replace(/\b(ps|bh|bs|pa|pe)(?=\d)/g, '$1 ')   // v15.3: glued misheard pH label "ps3.54"
     .replace(/\b(brix|bricks|brick)(?=\d)/g, '$1 ')
     .replace(/(\d)\.\s+(\d)/g, '$1.$2')       // "3. 8" -> "3.8"  (before trailing-period stripping)
     .replace(/\b\d+(?:\.\d+)?\s*ml\b/g, ' ')   // "330 ml" / "330ml" are pack sizes, never readings
@@ -1183,6 +1228,20 @@ function matchSku(text, stream, sub) {
 }
 
 // ---------- Full transcript parse ----------
+
+// v16: values written to the Sheet. Tolerance = "SLIGHT VARIATION" (amber); overall names the parameter(s).
+function sheetStatus(a) {
+  var one = function (st, band) { return (st === 'MISSING' || st === 'NA') ? 'N/A' : (st === 'GREEN' && band === 'TOLERANCE' ? 'SLIGHT VARIATION' : st); };
+  var b = one(a.brix, a.brixBand), p = one(a.ph, a.phBand), o = a.overall === 'NA' ? 'N/A' : a.overall;
+  if (o === 'GREEN') {
+    var tb = b === 'SLIGHT VARIATION', tp = p === 'SLIGHT VARIATION';
+    if (tb && tp) o = 'SLIGHT VARIATION ON BRIX & pH'; else if (tb) o = 'SLIGHT VARIATION ON BRIX'; else if (tp) o = 'SLIGHT VARIATION ON pH';
+  }
+  return { brix: b, ph: p, overall: o };
+}
+// v16: batch code = production day DD + month letter (A=Jan ... K=Nov, L=Dec) + YY, then the sub-batch letter (D default, E).
+var MONTH_LETTERS = 'ABCDEFGHIJKL';
+function batchDay(d) { var p2 = function (n) { return (n < 10 ? '0' : '') + n; }; return p2(d.getDate()) + MONTH_LETTERS.charAt(d.getMonth()) + p2(d.getFullYear() % 100); }
 // ctx: { stream, sub, hasSku }.  kind: none | matched | dym | unmatched | comment | manual
 function parseTranscript(text, ctx) {
   ctx = ctx || {};
@@ -1221,7 +1280,7 @@ root.QC = { SKUS: SKUS, STREAMS: STREAMS, MODES: MODES, TOL: TOL, BRIX_MAX: BRIX
             subsOf: subsOf, pool: pool, assess: assess, evaluate: evaluate, limits: limits, specText: specText,
             autoRemark: autoRemark, stripFaultPrefix: stripFaultPrefix, varianceText: varianceText,
             normalizeSpeech: normalizeSpeech, extractReadings: extractReadings, parseRemarks: parseRemarks, matchSku: matchSku,
-            parseTranscript: parseTranscript, extractMeta: extractMeta };
+            parseTranscript: parseTranscript, extractMeta: extractMeta, sheetStatus: sheetStatus, batchDay: batchDay, MONTH_LETTERS: MONTH_LETTERS };
 })(typeof window !== 'undefined' ? window : globalThis);
 </script>
 <!-- ============ UI ============ -->
@@ -1621,6 +1680,16 @@ function applyParse(text) {
   var alerts = [], infos = [], suggest = null, dym = null;
   p.warnings.forEach(function (w) { alerts.push(w); });
   var cc = p.catCheck || null; state.catCheck = cc;
+  if (p.batch) {                                     // v16: "batch E" / "batch D" / "batch 22K26E" (only today or the 2 days before)
+    var bk = p.batch.replace(/[^A-Z0-9]/g, ''), bm = /^(\d{2}[A-L]\d{2})?(D|E|EE|DEE|DE)?$/.exec(bk), okB = false;
+    if (bm && (bm[1] || bm[2])) {
+      okB = true;
+      if (bm[1]) { var off = [0, 1, 2].filter(function (o) { return Q.batchDay(dayAt(o)) === bm[1]; })[0]; if (off === undefined) okB = false; else { batch.off = off; batch.okDay = dateOnly(new Date()); batch.last = Date.now(); } }
+      if (okB && bm[2]) setLetter(bm[2] === 'D' || bm[2] === 'DEE' || bm[2] === 'DE' ? 'D' : 'E', 'voice');
+      renderBatch();
+    }
+    if (!okB) infos.push('Batch "' + p.batch + '" not used \u2014 say "batch D" or "batch E", or tap the batch chip.');
+  }
 
   if (p.kind === 'matched' && !p.match.ambiguous) {
     if (!prev || prev.name !== p.match.sku.name) { if (prev) wipeFields(); state.sku = p.match.sku; }
@@ -1663,6 +1732,21 @@ function applyParse(text) {
     alerts.push('Comment captured: "' + heardText + '" — review, then tap Log QC Result.');
   }
   refresh();
+  (function () {                                     // v15.3: labels spoken the wrong way round ("brix 2.85 ph 12.8") -> offer a one-tap swap, never auto
+    var k = activeSku(), b = readNum('brix'), h = readNum('ph');
+    if (!k || !k.name || b === null || h === null || h > Q.BRIX_MAX || b > Q.PH_MAX) return;
+    var now = Q.assess(k, b, h, false), sw = Q.assess(k, h, b, false);
+    if (now.overall === 'RED' && sw.overall === 'GREEN') {
+      var sp = pill('Swap Brix \u2194 pH (Brix ' + h + ', pH ' + b + ')', false, function () {
+        $('brix').value = h; $('ph').value = b; state.manual.brix = true; state.manual.ph = true;
+        if (sp.parentNode) sp.parentNode.removeChild(sp);
+        state.flag = { alerts: state.flag.alerts, infos: state.flag.infos.filter(function (t) { return t.indexOf('look swapped') < 0; }) };
+        logDiag('swap-readings', k.name); refresh(); saveUi();
+      }, 'suggest');
+      $('cands').appendChild(sp);
+      infos.push('Brix and pH look swapped \u2014 tap Swap if so.');
+    }
+  })();
 
   var sku = activeSku(), a = state.assess, hasB = readNum('brix') !== null, hasP = readNum('ph') !== null;
   var poolEmpty = Q.pool(state.stream, state.sub).length === 0;
@@ -1719,6 +1803,87 @@ function confirmSuggestion(s) {
   state.sub = s.sub; state.sku = s; $('cands').innerHTML = '';
   state.flag = { alerts: state.flag.alerts.filter(function (t) { return !drop.test(t); }), infos: state.flag.infos.filter(function (t) { return !drop.test(t); }) };
   renderSubs(); renderSkus(); refresh(); saveUi();
+}
+
+// ---------- v16: batch code = production day (today or up to 2 days back) + sub-batch letter (D default, E for one entry) ----------
+var BATCH_IDLE_MS = 30 * 60 * 1000;
+var batch = { off: 0, letter: 'D', okDay: '', last: 0 };
+var WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function dayAt(off) { var d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() - off); return d; }
+function batchCode() { return Q.batchDay(dayAt(batch.off)) + batch.letter; }
+function dayLabel(off) { var d = dayAt(off); return WD[d.getDay()] + ' ' + d.getDate() + ' ' + MN[d.getMonth()] + (off === 0 ? ' (today)' : ''); }
+function batchNeedsConfirm() { return batch.okDay !== dateOnly(new Date()) || (Date.now() - batch.last) > BATCH_IDLE_MS; }
+function renderBatch() {
+  if (batch.okDay && batch.okDay !== dateOnly(new Date())) batch.off = 0;          // a new day never inherits a back-dated batch
+  var code = batchCode(), c = $('batchChip'), m = $('mic');
+  $('batch').value = code;
+  c.textContent = 'Batch ' + code; c.title = 'Production day: ' + dayLabel(batch.off) + ' — tap to change';
+  c.classList.toggle('back', batch.off > 0); c.classList.toggle('subE', batch.letter === 'E');
+  m.classList.toggle('subE', batch.letter === 'E');
+  m.setAttribute('aria-label', (batch.letter === 'E' ? 'Batch E. ' : '') + 'Tap to speak. Slide the mic knob to the right for batch E.');
+  if (!$('batchDlg').classList.contains('hide')) { $('batchNow').textContent = code; $('batchDay').textContent = dayLabel(batch.off); $('bD').classList.toggle('on', batch.letter === 'D'); $('bE').classList.toggle('on', batch.letter === 'E'); }
+}
+function setLetter(l, why) { if (batch.letter !== l) { batch.letter = l; logDiag('batch-letter', l + ' (' + why + ')'); } renderBatch(); }
+var pendingAfterBatch = null;
+function openBatch(after) {
+  pendingAfterBatch = after || null;
+  $('batchDays').innerHTML = ''; $('batchDays').classList.add('hide'); $('batchChange').classList.remove('hide');
+  $('batchDlg').classList.remove('hide'); renderBatch();
+  try { $('batchOk').focus(); } catch (e) {}
+}
+function closeBatch(run) { $('batchDlg').classList.add('hide'); var f = pendingAfterBatch; pendingAfterBatch = null; if (run && f) f(); }
+function confirmBatch() { batch.okDay = dateOnly(new Date()); batch.last = Date.now(); logDiag('batch-confirm', batchCode()); renderBatch(); closeBatch(true); }
+function showDays() {
+  var box = $('batchDays'); box.innerHTML = '';
+  [0, 1, 2].forEach(function (off) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'bday' + (off === batch.off ? ' on' : '');
+    b.innerHTML = '<b>' + Q.batchDay(dayAt(off)) + batch.letter + '</b><span>' + dayLabel(off) + '</span>';
+    b.onclick = function () { batch.off = off; confirmBatch(); };
+    box.appendChild(b);
+  });
+  box.classList.remove('hide'); $('batchChange').classList.add('hide');
+}
+function withBatch(fn) { if (batchNeedsConfirm()) openBatch(fn); else fn(); }
+function setupBatch() {
+  $('batchChip').onclick = function () { if (!listening) openBatch(null); };
+  $('batchOk').onclick = confirmBatch;
+  $('batchChange').onclick = showDays;
+  $('bD').onclick = function () { setLetter('D', 'dialog'); };
+  $('bE').onclick = function () { setLetter('E', 'dialog'); };
+  $('batchDlg').onclick = function (e) { if (e.target === $('batchDlg')) closeBatch(false); };
+  renderBatch();
+}
+// Tap = speak. Slide the knob to the right end and release = batch E for this entry + speak (one gesture).
+function requestVoice() { if (listening) { startVoice(); return; } withBatch(startVoice); }
+function setupSwipe() {
+  var m = $('mic'), drag = null, suppress = 0, KNOB = 64;
+  m.addEventListener('pointerdown', function (e) {
+    if (listening || state.busy || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    var r = m.getBoundingClientRect(); if (e.clientX - r.left > KNOB) return;       // only the knob starts a slide; the label is tap-only
+    drag = { x: e.clientX, id: e.pointerId, max: Math.max(48, r.width - KNOB), dx: 0, moved: false };
+    try { m.setPointerCapture(e.pointerId); } catch (x) {}
+    m.classList.add('drag');
+  });
+  m.addEventListener('pointermove', function (e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var dx = Math.max(0, Math.min(drag.max, e.clientX - drag.x)); drag.dx = dx;
+    if (dx > 10) drag.moved = true;
+    m.style.setProperty('--kx', dx + 'px'); m.classList.toggle('arm', dx >= drag.max * 0.6);
+  });
+  var end = function (e, cancelled) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var d = drag; drag = null;
+    m.classList.remove('drag', 'arm'); m.style.setProperty('--kx', '0px');
+    if (d.moved) { suppress = Date.now(); setTimeout(function () { suppress = 0; }, 80); }   // only the click fired by this same drag
+    if (cancelled || !d.moved || d.dx < d.max * 0.6) { if (d.moved) logDiag('swipe-cancel', cancelled ? 'system took the gesture' : 'released early'); return; }
+    setLetter('E', 'swipe');
+    try { if (navigator.vibrate) navigator.vibrate(40); } catch (x) {}
+    requestVoice();
+  };
+  m.addEventListener('pointerup', function (e) { end(e, false); });
+  m.addEventListener('pointercancel', function (e) { end(e, true); });
+  m.addEventListener('lostpointercapture', function (e) { if (drag && e.pointerId === drag.id) end(e, true); });
+  m.addEventListener('click', function (e) { if (Date.now() - suppress < 600) { e.preventDefault(); return; } requestVoice(); });
 }
 
 // ---------- voice engine ----------
@@ -1782,43 +1947,7 @@ function removeSent(ids) {
     data.recent.forEach(function (r) { if (ids[recordKey(r)]) { r.sync = 'synced'; r.v9 = true; } });   // v9: confirmed by qc-v9 accepted_ids
   });
 }
-// ---------- v15.2: recover entries the old backend claimed but never wrote ----------
-var BACKEND_OK_KEY = 'bqp_backend_v9';
-function backendConfirmed() { try { return localStorage.getItem(BACKEND_OK_KEY) === '1'; } catch (e) { return false; } }
-function unconfirmed() { return getRecent().filter(function (r) { return r.sync === 'synced' && !r.v9 && r.id; }); }
-function renderRecover() {
-  var b = $('recoverBtn'); if (!b) return;
-  var n = backendConfirmed() ? unconfirmed().length : 0;
-  b.classList.toggle('hide', !n); b.textContent = 'Re-send ' + n + ' unconfirmed';
-}
-function rowFromRecent(r, op, now) {
-  var sku = Q.SKUS.filter(function (s) { return s.sub === r.sub && s.name === r.sku; })[0] || null;
-  var brix = r.brix === '' || r.brix === null || r.brix === undefined ? null : Number(r.brix);
-  var ph = r.ph === '' || r.ph === null || r.ph === undefined ? null : Number(r.ph);
-  var a = sku ? Q.assess(sku, brix, ph, false) : null;
-  var st = function (x) { return !a || x === 'MISSING' || x === 'NA' ? 'N/A' : x; };
-  return { Timestamp: r.ts, Date: String(r.ts || '').slice(0, 10), QA_Inspector: op, Batch_Code: r.batch || '',
-           Stream: r.stream, Sub_Category: r.sub, SKU_Name: r.sku,
-           Measured_Brix: brix === null ? '' : brix, Brix_Spec: a ? a.brixSpec : 'N/A', Brix_Status: st(a && a.brix),
-           Measured_pH: ph === null ? '' : ph, pH_Spec: a ? a.phSpec : 'N/A', pH_Status: st(a && a.ph),
-           Overall_Status: r.status || 'N/A', Organoleptic_Remark: r.remark || '',
-           Raw_Transcript: '[Recovered from tablet log ' + stamp(now) + ' - spoken transcript not stored; QA_Inspector = inspector at recovery]',
-           Record_ID: r.id };
-}
-async function recoverUnconfirmed() {
-  var op = $('op').value.trim();
-  if (!op) { $('op').classList.add('need'); $('op').focus(); toast('Enter the inspector name first.'); return; }
-  var list = unconfirmed(); if (!list.length) return;
-  var now = new Date(), rows = list.map(function (r) { return rowFromRecent(r, op, now); });
-  await commitStore(function (data) {
-    var have = {}; data.queue.forEach(function (q) { have[recordKey(q)] = 1; });
-    rows.forEach(function (row) { if (!have[row.Record_ID]) data.queue.push(row); });
-    data.recent.forEach(function (r) { if (rows.some(function (x) { return x.Record_ID === r.id; })) r.sync = 'queued'; });
-  });
-  logDiag('recover', rows.length + ' entries re-queued');
-  toast(rows.length + ' entries re-queued. The sheet skips any that already arrived.', 4000);
-  renderRecent(); renderNet(); flushQueue(false);
-}
+var BACKEND_OK_KEY = 'bqp_backend_v9';   // set once a qc-v9 acknowledgement is seen (diagnostics only)
 function renderNet() {
   var q = getQueue().length, online = navigator.onLine !== false;
   if ($('storageWarning')) $('storageWarning').classList.toggle('hide', !(state.memoryOnly && q));
@@ -1844,11 +1973,14 @@ async function postRecords(records) {
     if (Array.isArray(j.accepted_ids)) {                                    // qc-v9+ script: per-record acknowledgement
       if (!expected.every(function (id) { return j.accepted_ids.indexOf(id) >= 0; })) throw new Error('Incomplete server acknowledgement; records retained');
       try { localStorage.setItem(BACKEND_OK_KEY, '1'); } catch (e) {}
+    } else if (typeof j.added === 'number') {                                // legacy script (pre-qc-v9): honest counts
+      var dup = typeof j.duplicates_skipped === 'number' ? j.duplicates_skipped : 0;
+      if (j.added + dup !== records.length) throw new Error('Incomplete server acknowledgement; records retained');
+      logDiag('backend-legacy', 'Old script (no Record_ID / QA_Inspector column). Update Apps Script to qc-v9.');
     } else {
-      // v15.2: a plain {status:'success'} proved to be the old script answering without writing (23 Nov 2026).
-      // Never treat an unconfirmed reply as sent: keep the records on the tablet and say why.
-      logDiag('backend-legacy', 'Server did not confirm the records (not qc-v9). Records kept.');
-      throw new Error('Backend script is out of date (no qc-v9 confirmation). Records are kept on this tablet.');
+      // v15.3: a reply with neither accepted_ids nor counts proves nothing — keep the records on the tablet.
+      logDiag('backend-unconfirmed', 'Server reply had no acknowledgement. Records kept.');
+      throw new Error('Server did not confirm the records. They are kept on this tablet.');
     }
     return j;
   }).finally(function () { clearTimeout(t); });
@@ -1903,18 +2035,19 @@ function renderRecent() {
   var arr = getRecent();
   $('syncError').textContent = state.syncError || '';
   $('syncError').classList.toggle('hide', !state.syncError);
-  $('sumTotal').textContent = arr.length; renderRecover();
-  $('sumPass').textContent = arr.filter(function (x) { return x.status === 'GREEN'; }).length;
+  $('sumTotal').textContent = arr.length;
+  $('sumPass').textContent = arr.filter(function (x) { return x.status === 'GREEN' || /^SLIGHT/.test(x.status || ''); }).length;
   $('sumOut').textContent = arr.filter(function (x) { return x.status === 'RED'; }).length;
   $('sumUnsynced').textContent = arr.filter(function (x) { return x.sync !== 'synced'; }).length;
   $('sumUnsynced').title = getQueue().length + ' pending records in the full queue (not capped at 30)';
   if (!arr.length) { $('recent').innerHTML = '<div class="rec empty">No entries saved on this device yet.</div>'; return; }
   var SY = { sending: 'Sending…', queued: 'Queued', synced: '✓ Synced' };
   $('recent').innerHTML = arr.map(function (x) {
-    var cls = x.status === 'N/A' ? 'NA' : (x.status === 'GREEN' && x.tol ? 'TOL' : x.status), txt = (x.status === 'GREEN' && x.tol) ? 'PASS (TOL)' : (x.status === 'GREEN' ? 'PASS' : (x.status === 'RED' ? 'OUT' : x.status));
+    var sl = /^SLIGHT/.test(x.status || ''), cls = x.status === 'N/A' ? 'NA' : ((sl || (x.status === 'GREEN' && x.tol)) ? 'TOL' : x.status);
+    var txt = sl ? ('SLIGHT \u00b7 ' + (/& pH$/.test(x.status) ? 'Brix+pH' : (/pH$/.test(x.status) ? 'pH' : 'Brix'))) : ((x.status === 'GREEN' && x.tol) ? 'PASS (TOL)' : (x.status === 'GREEN' ? 'PASS' : (x.status === 'RED' ? 'OUT' : x.status)));
     var nv = function (v) { return (v === '' || v === null || v === undefined) ? '—' : v; };
     return '<div class="rec" data-ts="' + esc(x.ts) + '" title="' + esc(x.remark || '') + '"><span class="tabnum">' + esc(String(x.ts).slice(11, 16)) + '</span>' +
-      '<span class="nm"><b>' + esc(x.sku) + '</b><em>' + esc(x.sub || x.stream || '') + '</em></span>' +
+      '<span class="nm"><b>' + esc(x.sku) + '</b><em data-sub="' + esc(x.sub || x.stream || '') + '">' + esc(x.sub || x.stream || '') + (x.batch ? ' \u00b7 ' + esc(x.batch) : '') + '</em></span>' +
       '<span class="vv tabnum">' + esc(nv(x.brix)) + '</span><span class="vv tabnum">' + esc(nv(x.ph)) + '</span>' +
       '<span class="badge ' + esc(cls) + '">' + esc(txt) + '</span><span class="sync ' + esc(x.sync) + '">' + (SY[x.sync] || '') + '</span></div>';
   }).join('');
@@ -1940,18 +2073,19 @@ async function logResult(auto) {
     if (ca.length < 3) { toast('RED result: enter the corrective action / HOLD before logging.', 4500); $('ca').focus(); return; }
     remark += ' | CORRECTIVE ACTION/HOLD: ' + ca;
   }
-  var now = new Date();
+  var now = new Date(), ss = Q.sheetStatus(a);   // v16: SLIGHT VARIATION (amber) for tolerance readings
   var row = {
     Timestamp: stamp(now), Date: dateOnly(now), QA_Inspector: $('op').value.trim(), Batch_Code: $('batch').value.trim(),
     Stream: sku.stream || state.stream, Sub_Category: sku.sub, SKU_Name: sku.name,
-    Measured_Brix: brix === null ? '' : brix, Brix_Spec: a.brixSpec, Brix_Status: (a.brix === 'MISSING' || a.brix === 'NA') ? 'N/A' : a.brix,
-    Measured_pH: ph === null ? '' : ph, pH_Spec: a.phSpec, pH_Status: (a.ph === 'MISSING' || a.ph === 'NA') ? 'N/A' : a.ph,
-    Overall_Status: a.overall === 'NA' ? 'N/A' : a.overall, Organoleptic_Remark: remark, Raw_Transcript: $('tx').value.trim(), Record_ID: newId()
+    Measured_Brix: brix === null ? '' : brix, Brix_Spec: a.brixSpec, Brix_Status: ss.brix,
+    Measured_pH: ph === null ? '' : ph, pH_Spec: a.phSpec, pH_Status: ss.ph,
+    Overall_Status: ss.overall, Organoleptic_Remark: remark, Raw_Transcript: $('tx').value.trim(), Record_ID: newId()
   };
   state.busy = true; refresh();
   try {
     var durable = await enqueue(row, a); // wait for atomic queue + recent transaction completion
     lsSet(CONFIG.OP_KEY, row.QA_Inspector);
+    batch.last = Date.now(); setLetter('D', 'after-log');   // v16: batch E applies to one entry only
     logDiag('record-queued', durable ? 'Persisted before form reset' : 'Memory only; keep page open');
     resetEntry(true);
     if (!durable) toast('Entry in MEMORY ONLY — keep this page open until synced.', 7000);
@@ -2000,12 +2134,11 @@ function init() {
   $('ph').oninput = function () { state.manual.ph = $('ph').value !== ''; refresh(); };
   $('manualSku').oninput = refresh;
   $('remark').oninput = function () { state.remarkSrc = $('remark').value === '' ? 'cleared' : 'manual'; state.voiceText = ''; state.voiceHold = false; refresh(); };
-  $('mic').onclick = startVoice; $('parse').onclick = function () { applyParse($('tx').value); };
+  setupSwipe(); setupBatch(); $('parse').onclick = function () { applyParse($('tx').value); };
   $('tx').onchange = function () { applyParse($('tx').value); };
-  $('log').onclick = function () { logResult(false); };
-  $('clearBtn').onclick = function () { state.sku = null; clearEntry(); renderSkus(); refresh(); };
+  $('log').onclick = function () { withBatch(function () { logResult(false); }); };
+  $('clearBtn').onclick = function () { state.sku = null; clearEntry(); setLetter('D', 'clear'); renderSkus(); refresh(); };
   $('retry').onclick = function () { flushQueue(false); };
-  $('recoverBtn').onclick = function () { recoverUnconfirmed(); };
   $('confirmBtn').onclick = function () { if (!outOfTol(state.assess)) return; state.confirmedKey = readingKey(); logDiag('reading-confirmed', readingKey()); refresh(); };
   $('editBtn').onclick = function () { var a = state.assess, id = (a && a.brixBand === 'OUT') ? 'brix' : 'ph', el = $(id); el.focus(); try { el.select(); } catch (e) {} };
   ['net', 'qn'].forEach(function (id) {
@@ -2017,7 +2150,7 @@ function init() {
   document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') { renderNet(); flushQueue(true); } });
   setInterval(function () { flushQueue(true); }, CONFIG.RETRY_MS);
   try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {}); } catch (e) {}
-  logDiag('app-start', 'v15.2');
+  logDiag('app-start', 'v16');
   renderMode(); renderSubs(); renderSkus(); renderNet(); renderRecent(); refresh();
   initStore().then(function () {
     renderNet(); renderRecent(); refresh(); flushQueue(true);
@@ -2114,7 +2247,7 @@ function lastToday() {
   var today = d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()), hit = null;
   D.querySelectorAll('#recent .rec[data-ts]').forEach(function (r) {
     if (hit) return; var b = r.querySelector('.nm b'), em = r.querySelector('.nm em'); if (!b || b.textContent.trim() !== name) return;
-    if (!em || em.textContent.trim() !== sub) return;                              // v15: same name in another category never counts
+    if (!em || (em.getAttribute('data-sub') || em.textContent).trim() !== sub) return;   // v16: batch shown after the category                              // v15: same name in another category never counts
     var ts = r.getAttribute('data-ts') || ''; if (ts.slice(0, 10) !== today) return; hit = r;
   });
   if (hit) {

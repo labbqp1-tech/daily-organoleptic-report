@@ -481,6 +481,12 @@ html.tc #overall::after{content:attr(data-t);font-size:24px;letter-spacing:-.02e
 #editBtn{background:#fff;color:#7F1D1D;box-shadow:inset 0 0 0 1.5px #FCA5A5}
 #confirmRow.done #confirmBtn{background:#FEE2E2;color:#7F1D1D;box-shadow:inset 0 0 0 1.5px #FCA5A5}
 #log:disabled{opacity:.55;filter:grayscale(.4)}
+
+/* v15.2: verify-category and look-alike buttons are full touch targets */
+#cands .pill{min-height:44px!important;height:auto;padding-top:0;padding-bottom:0;display:inline-flex;align-items:center}
+
+/* v15.2: recover button (footer) */
+#recoverBtn{margin-top:6px;min-height:44px;padding:0 14px;border:0;border-radius:999px;background:#B45309;color:#fff;font-weight:800;font-size:12.5px;cursor:pointer}
 </style>
 </head>
 <body data-mode="off">
@@ -585,7 +591,7 @@ html.tc #overall::after{content:attr(data-t);font-size:24px;letter-spacing:-.02e
   </section>
 
   <footer class="ground" aria-label="Recently added on this device">
-    <div class="gl">Recently added<b><span id="footCount">0</span> logged<span class="uns" id="unsWrap"> &middot; <output id="sumUnsynced">0</output> unsynced</span></b><p id="syncError" class="hide" role="status"></p></div>
+    <div class="gl">Recently added<b><span id="footCount">0</span> logged<span class="uns" id="unsWrap"> &middot; <output id="sumUnsynced">0</output> unsynced</span></b><p id="syncError" class="hide" role="status"></p><button id="recoverBtn" class="hide" type="button">Re-send unconfirmed</button></div>
     <span class="gdiv"></span>
     <div class="rec hd" aria-hidden="true"><span>Time</span><span>SKU</span><span class="vv">Brix</span><span class="vv">pH</span><span>QC</span><span>Sync</span></div>
     <div id="recent"></div>
@@ -1009,7 +1015,7 @@ var STREAM_KW = {      // spoken category/brand words: never product tokens; hea
 };
 // Words that are never SKU/comment content: units, labels, fillers, neutral pass words.
 var STOP = {};
-('juice fresh hpp pl ml the a an and with of is at was were it its barakat point ph brix bricks brick brics brixs batch shift operator remark remarks value level reading equals sample degrees degree ' +
+('fresh hpp pl ml the a an and with of is at was were it its barakat point ph brix bricks brick brics brixs batch shift operator remark remarks value level reading equals sample degrees degree ' +
  'normal ok okay good fine acceptable pass passed alright')
   .split(' ').forEach(function (w) { STOP[w] = 1; });
 function lev(a, b) {
@@ -1021,10 +1027,16 @@ function lev(a, b) {
   return d[m][n];
 }
 function stem(w) { return (w.length > 4 && /s$/.test(w) && !/ss$|us$|is$/.test(w)) ? w.slice(0, -1) : w; }
+// v15.1: product-type words. They describe the category, not the product, so they never decide a match on their own:
+// the fruit/product words must match; a heard type word only adds a small bonus (and, if it fits another category better,
+// produces a "Did you mean" there instead of a silent wrong pick).
+var TYPE_WORD = { juice: 1, smoothie: 1, shot: 1, water: 1, milk: 1 };
+var STRONG_TYPE = { smoothie: 1, shot: 1 };   // heard but not in the selected product -> warn, never auto-save
+function typeFix(w) { return /^smoo/.test(w) ? 'smoothie' : (/^juic/.test(w) ? 'juice' : w); }   // smoothy / smootty / smoothi / smoothies ... -> smoothie
 function toks(str) {
   return String(str).toLowerCase().replace(/&/g, ' ').split(/[^a-z0-9]+/).filter(Boolean)
     .filter(function (w) { return !STOP[w] && !STREAM_KW[w] && !/^\d+ml$/.test(w) && !/^\d+(\.\d+)?$/.test(w) && w.length > 1; })
-    .map(stem);
+    .map(stem).map(typeFix);
 }
 // Token similarity: exact, or close spelling (>= 0.8). NO prefix rule ("water" must never match "watermelon").
 function tokSim(a, b) {
@@ -1050,13 +1062,19 @@ function scoreSku(qp, s) {
   var best = null;
   [s.name].concat(s.aliases).forEach(function (n) {
     var ct = toks(n); if (!ct.length) return;
+    var core = ct.filter(function (c) { return !TYPE_WORD[c]; }), typ = ct.filter(function (c) { return TYPE_WORD[c]; });
+    if (!core.length) { core = ct; typ = []; }              // a name made only of type words keeps them as required
     var used = {}, matched = 0, sum = 0, qIdx = [];
-    ct.forEach(function (c) {
+    core.forEach(function (c) {
       var bi = -1, bs = 0;
       qp.forEach(function (q, i) { if (used[i]) return; var sc = tokSim(q.t, c); if (sc > bs) { bs = sc; bi = i; } });
       if (bi >= 0) { used[bi] = 1; matched++; sum += bs; qIdx.push(bi); }
     });
-    var cand = { cov: sum / ct.length, matched: matched, sum: sum, len: ct.length, qIdx: qIdx };
+    var cov = sum / core.length;
+    typ.forEach(function (c) {                                // optional: bonus only, never needed for coverage
+      qp.forEach(function (q, i) { if (!used[i] && q.t === c) { used[i] = 1; sum += 0.1; qIdx.push(i); } });
+    });
+    var cand = { cov: cov, matched: matched, sum: sum, core: sum - 0.1 * (qIdx.length - matched), len: core.length, qIdx: qIdx };
     if (!best || cand.cov > best.cov || (cand.cov === best.cov && cand.sum > best.sum)) best = cand;
   });
   return best || { cov: 0, matched: 0, sum: 0, len: 0, qIdx: [] };
@@ -1073,15 +1091,77 @@ function hints(qp, list) {
 }
 // Returns { sku, dym, ambiguous, candidates, explained[] }  - sku only ever comes from pool(stream, sub); dym is a SUGGESTION in another sub-category.
 function matchCore(qp, stream, sub) {
-  var subs = subsOf(stream), act = pool(stream, sub), all = SKUS.filter(function (s) { return s.stream === stream; });
-  var ra = rank(qp, act), rl = subs.length > 1 ? rank(qp, all) : ra;
-  var topA = ra[0] || null, topL = rl[0] || null, dym = null;
-  if (topL && subs.length > 1 && topL.sku.sub !== sub && (!topA || topL.sc.sum > topA.sc.sum + 0.05)) dym = topL.sku;
-  if (dym) return { sku: null, dym: dym, ambiguous: false, candidates: [], explained: [] };
+  // v15.2: strictly inside the selected category. Full matches first; otherwise a product whose spoken main word(s)
+  // single it out in this category is picked directly; real look-alikes come back as in-category choices.
+  var act = pool(stream, sub), ra = rank(qp, act), topA = ra[0] || null;
+  if (!topA) {
+    var part = act.map(function (s) { return { sku: s, sc: scoreSku(qp, s) }; })
+      .filter(function (x) { return x.sc.matched >= 1; })
+      .sort(function (a, b) { return b.sc.core - a.sc.core || b.sc.sum - a.sc.sum; });
+    if (part.length && (!part[1] || part[0].sc.core > part[1].sc.core + 0.05)) topA = part[0];
+    else if (part.length) return { sku: null, dym: null, ambiguous: false, candidates: part.slice(0, 4).map(function (x) { return x.sku; }), explained: [], tie: true };
+    ra = topA ? [topA] : [];
+  }
   var amb = !!(topA && ra[1] && (topA.sc.sum - ra[1].sc.sum) < 0.05 && Math.abs(topA.sc.cov - ra[1].sc.cov) < 0.05);
   return { sku: topA ? topA.sku : null, dym: null, ambiguous: amb,
            candidates: topA ? ra.slice(0, 4).map(function (x) { return x.sku; }) : hints(qp, act),
            explained: topA ? topA.sc.qIdx : [] };
+}
+// v15.2: product type and the category check (spoken type word or brand word that contradicts the selected category)
+var TYPES = ['juice', 'smoothie', 'shot'];
+function typeOf(s) {
+  var n = s.name.toLowerCase(), c = s.sub.toLowerCase();
+  if (/smoothie/.test(n)) return 'smoothie'; if (/\bshot\b/.test(n)) return 'shot';
+  if (/smoothie/.test(c)) return 'smoothie'; if (/shot/.test(c)) return 'shot'; return 'juice';
+}
+function typesOf(s) { var t = {}; t[typeOf(s)] = 1; toks(s.name).forEach(function (w) { if (TYPES.indexOf(w) >= 0) t[w] = 1; }); return t; }
+function spokenTypes(rest) {                       // only the product part of the sentence: before the first reading / label
+  var head = [], words = rest.split(' ');
+  for (var i = 0; i < words.length; i++) { var w = words[i]; if (/^\d/.test(w) || w === 'brix' || w === 'ph') break; head.push(w); }
+  var out = []; toks(head.join(' ')).forEach(function (t) { if (TYPES.indexOf(t) >= 0 && out.indexOf(t) < 0) out.push(t); });
+  return out;
+}
+function bestIn(qp, list) {
+  var r = rank(qp, list); if (r[0] && !(r[1] && r[0].sc.sum - r[1].sc.sum < 0.05)) return r[0].sku;
+  var part = list.map(function (s) { return { sku: s, sc: scoreSku(qp, s) }; }).filter(function (x) { return x.sc.matched >= 1; })
+    .sort(function (a, b) { return b.sc.core - a.sc.core; });
+  return (part.length && (!part[1] || part[0].sc.core > part[1].sc.core + 0.05)) ? part[0].sku : null;
+}
+function firstTop(qp, list) {                    // a suggestion only (the operator taps it): first of equally good matches, catalogue order
+  var sc = list.map(function (s) { return { sku: s, sc: scoreSku(qp, s) }; }).filter(function (x) { return x.sc.matched >= 1 && x.sc.cov >= MATCH_MIN; });
+  if (!sc.length) return null; var top = Math.max.apply(null, sc.map(function (x) { return x.sc.core; }));
+  return sc.filter(function (x) { return x.sc.core >= top - 0.05; })[0].sku;
+}
+function streamOfSub(sub) { var s = SKUS.filter(function (x) { return x.sub === sub; })[0]; return s ? s.stream : null; }
+function categoryCheck(qp, rest, heard, ctx, m) {
+  if (heard && heard !== ctx.sub) {                 // brand / category name of another category
+    var st = streamOfSub(heard);
+    return { reason: 'brand', word: heard, sub: heard, stream: st, sku: st ? bestIn(qp, pool(st, heard)) : null };
+  }
+  var spoken = spokenTypes(rest); if (!spoken.length) return null;
+  // Operator convention: Fresh Juices items are said "<fruit> juice"; Thrill / Ramadan items are said with their name ("thrill orange").
+  // So "juice" with no brand word while a branded Barakat category (not EKFC) is selected points to Fresh Juices.
+  var branded = Object.keys(STREAM_KW).some(function (k) { return STREAM_KW[k] === ctx.sub; });
+  if (!heard && branded && ctx.sub !== 'EKFC JUICES' && spoken.indexOf('juice') >= 0 && pool(ctx.stream, 'FRESH JUICES').length) {
+    var fr = rank(qp, pool(ctx.stream, 'FRESH JUICES')), fj = (fr[0] && !(fr[1] && fr[0].sc.sum - fr[1].sc.sum < 0.05)) ? fr[0] : null;   // full match only
+    if (fj) {                                       // and it must account for every spoken product word ("mango lassi" is not "mango juice")
+      var words = qp.map(function (q, i) { return i; }).filter(function (i) { return !qp[i].virtual && !TYPE_WORD[qp[i].t]; });
+      var covered = function (i) { return fj.sc.qIdx.indexOf(i) >= 0 || qp.some(function (v, vi) { return v.virtual && fj.sc.qIdx.indexOf(vi) >= 0 && v.of.indexOf(i) >= 0; }); };
+      fj = words.every(covered) ? fj.sku : null;
+    }
+    if (fj) return { reason: 'nobrand', word: 'juice', sub: 'FRESH JUICES', stream: ctx.stream, sku: fj };
+  }
+  if (m.sku) { var ok = typesOf(m.sku); if (spoken.every(function (t) { return ok[t]; })) return null; }
+  else if (!m.candidates || !m.candidates.length) {
+    // nothing here matched: point to the product of the spoken type in this group, if there is one
+  } else return null;
+  var want = spoken[spoken.length - 1];
+  var others = SKUS.filter(function (x) { return x.stream === ctx.stream && x.sub !== ctx.sub && typesOf(x)[want]; });
+  var catType = function (x) { return /smoothie/i.test(x.sub) ? 'smoothie' : (/shot/i.test(x.sub) ? 'shot' : 'juice'); };
+  var pure = others.filter(function (x) { return catType(x) === want; });          // e.g. SMOOTHIES before EKFC for "smoothie"
+  var alt = bestIn(qp, pure) || bestIn(qp, others) || firstTop(qp, pure.length ? pure : others);
+  if (!m.sku && !alt) return null;
+  return { reason: 'type', word: want, sub: alt ? alt.sub : null, stream: alt ? alt.stream : null, sku: alt };
 }
 function heardStream(norm) {
   var found = null;
@@ -1117,21 +1197,24 @@ function parseTranscript(text, ctx) {
   var kind = 'none', comment = '', manualName = '';
   var left = function (explained) {
     return qp.filter(function (q, i) {
-      if (q.virtual || explained.indexOf(i) >= 0) return false;
+      if (q.virtual || explained.indexOf(i) >= 0 || TYPE_WORD[q.t]) return false;
       return !qp.some(function (v, vi) { return v.virtual && explained.indexOf(vi) >= 0 && v.of.indexOf(i) >= 0; });
     }).map(function (q) { return q.w; });
   };
   if (qp.length) {
     if (isManualStream) { kind = 'manual'; manualName = sentenceCase(qp.filter(function (q) { return !q.virtual; }).map(function (q) { return q.w; })); }
     else if (m.sku) { kind = 'matched'; comment = sentenceCase(left(m.explained)); }
+    else if (m.tie) kind = 'unmatched';
     else if (m.dym) kind = 'dym';
-    else if (ctx.hasSku) { kind = 'comment'; comment = sentenceCase(qp.filter(function (q) { return !q.virtual; }).map(function (q) { return q.w; })); }   // a SKU is already selected: leftover words are remarks
+    else if (ctx.hasSku) { kind = 'comment'; comment = sentenceCase(qp.filter(function (q) { return !q.virtual && !TYPE_WORD[q.t]; }).map(function (q) { return q.w; })); }   // a SKU is already selected: leftover words are remarks
     else kind = 'unmatched';
   }
   m.spoke = qp.length > 0; m.stream = ctx.stream;
+  var warnings = readings.warnings.slice();
+  var catCheck = isManualStream ? null : categoryCheck(qp, meta.rest, heard, ctx, m);
   return { norm: norm, kind: kind, batch: meta.batch, brix: readings.brix, ph: readings.ph, invalidBrix: readings.invalidBrix,
-           warnings: readings.warnings, defectText: rem.text, hold: rem.hold, comment: comment, manualName: manualName, match: m,
-           ignoredStream: (heard && heard !== ctx.sub) ? heard : null };
+           warnings: warnings, defectText: rem.text, hold: rem.hold, comment: comment, manualName: manualName, match: m,
+           ignoredStream: null, catCheck: catCheck };
 }
 
 root.QC = { SKUS: SKUS, STREAMS: STREAMS, MODES: MODES, TOL: TOL, BRIX_MAX: BRIX_MAX, PH_MAX: PH_MAX, DICT: DICT, MANUAL_SKU: MANUAL_SKU, MATCH_MIN: MATCH_MIN,
@@ -1396,7 +1479,7 @@ function wipeFields() {
 // Full reset of the entry form (SKU selection is the caller's decision). Used by selectSku/setStream/setSub/setMode/Clear/after log.
 function clearEntry() {
   wipeFields(); $('tx').value = ''; $('manualSku').value = '';
-  state.flag = { alerts: [], infos: [] }; $('cands').innerHTML = ''; $('op').classList.remove('need');
+  state.flag = { alerts: [], infos: [] }; $('cands').innerHTML = ''; $('op').classList.remove('need'); state.catCheck = null;
 }
 function resetEntry(afterLog) {
   state.sku = null; clearEntry(); renderSkus(); refresh(); renderNet();
@@ -1445,7 +1528,7 @@ function outOfTol(a) { return !!(a && (a.brixBand === 'OUT' || a.phBand === 'OUT
 function readingKey() { var k = activeSku(); return [k ? k.name : '', readNum('brix'), readNum('ph')].join('|'); }
 function needsConfirm(a) { return outOfTol(a) && state.confirmedKey !== readingKey(); }
 function renderConfirm(a) {
-  var row = $('confirmRow'), out = outOfTol(a), ok = out && !needsConfirm(a);
+  var row = $('confirmRow'), out = outOfTol(a) && !state.catCheck, ok = out && !needsConfirm(a);
   row.classList.toggle('hide', !out); row.classList.toggle('done', ok);
   $('confirmBtn').textContent = ok ? '\u2713 Reading confirmed' : 'Confirm reading';
   $('confirmBtn').setAttribute('aria-pressed', String(ok));
@@ -1460,9 +1543,13 @@ function renderFlag(a) {
   var alerts = badMsgs().concat(state.flag.alerts), infos = state.flag.infos.slice();
   $('brix').classList.toggle('bad', badInput('brix')); $('ph').classList.toggle('bad', badInput('ph'));
   $('brix').setAttribute('aria-invalid', String(badInput('brix'))); $('ph').setAttribute('aria-invalid', String(badInput('ph')));
-  $('log').disabled = !state.ready || state.busy || badInput('brix') || badInput('ph') || needsConfirm(a);
-  if (a && a.overall === 'RED') alerts.unshift(redMessage(a));
+  $('log').disabled = !state.ready || state.busy || badInput('brix') || badInput('ph') || needsConfirm(a) || !!state.catCheck;
   var w = $('vwarn'), vc = $('verdictCard');
+  if (state.catCheck) {                              // v15.2: the category question comes first; the reading is judged after Keep / Switch
+    w.className = 'note info'; w.innerHTML = infos.filter(function (t) { return t.indexOf(VERIFY) === 0; }).map(esc).join('<br>');
+    vc.classList.remove('blink'); return;
+  }
+  if (a && a.overall === 'RED') alerts.unshift(redMessage(a));
   if (alerts.length) {
     w.className = 'note alert'; w.innerHTML = '<b>HOLD — NOT SAVED</b><br>' + alerts.concat(infos).map(esc).join('<br>');
     w.classList.add('blink'); vc.classList.add('blink');
@@ -1514,7 +1601,7 @@ function refresh() {
   else { o.className = 'NA'; o.textContent = 'N/A – no limits / no reading'; }
   vc.setAttribute('data-state', a.overall === 'GREEN' ? 'green' : (a.overall === 'RED' ? 'red' : 'na'));
   $('variance').textContent = Q.varianceText(a);
-  $('cawrap').classList.toggle('hide', a.overall !== 'RED');
+  $('cawrap').classList.toggle('hide', a.overall !== 'RED' || !!state.catCheck);   // v15.2: no HOLD row until the category is confirmed
   state.wasRed = a.overall === 'RED'; renderBanner(sku, a);
   if (state.confirmedKey && state.confirmedKey !== readingKey()) state.confirmedKey = '';   // any change to SKU/Brix/pH needs a fresh confirmation
   renderConfirm(a);
@@ -1533,7 +1620,7 @@ function applyParse(text) {
   var p = Q.parseTranscript(text, { stream: state.stream, sub: state.sub, hasSku: !!prev });
   var alerts = [], infos = [], suggest = null, dym = null;
   p.warnings.forEach(function (w) { alerts.push(w); });
-  if (p.ignoredStream) alerts.push('Heard "' + p.ignoredStream + '" — ignored; staying on ' + state.sub + '.');
+  var cc = p.catCheck || null; state.catCheck = cc;
 
   if (p.kind === 'matched' && !p.match.ambiguous) {
     if (!prev || prev.name !== p.match.sku.name) { if (prev) wipeFields(); state.sku = p.match.sku; }
@@ -1545,12 +1632,19 @@ function applyParse(text) {
     alerts.push('Did you mean ' + dym.name + ' under ' + dym.sub + '? Tap the highlighted chip to confirm.');
   } else if (p.kind === 'unmatched') {
     if (prev) wipeFields(); state.sku = null; suggest = p.match.candidates.map(function (s) { return s.name; });
-    alerts.push('Couldn\'t match the item in ' + state.sub + ' — tap a SKU tile or re-speak.');
+    if (p.match.tie) infos.push('More than one product in ' + subLabel(state.sub) + ' matches — tap the right one.');
+    else if (!cc) alerts.push('Couldn\'t match the item in ' + state.sub + ' — tap a SKU tile or re-speak.');
   } else if (p.kind === 'manual') {
     $('manualSku').value = p.manualName;
   }
   renderSkus(suggest);
   var cands = $('cands'); cands.innerHTML = '';
+  if (p.match.tie) p.match.candidates.forEach(function (s) { cands.appendChild(pill(s.name, false, function () { pickChip(s); }, 'suggest')); });
+  if (cc) {                                          // v15.2: verify category (never switches by voice; only the operator's tap does)
+    infos.push(verifyText(cc, state.sku));
+    if (state.sku) cands.appendChild(pill('Keep ' + subLabel(state.sub), false, keepCategory, 'suggest'));
+    if (cc.sku) cands.appendChild(pill('Switch to ' + subLabel(cc.sub) + ' \u00b7 ' + cc.sku.name, false, function () { switchCategory(cc); }, 'suggest'));
+  }
   if (dym) {
     var cp = pill('Did you mean ' + dym.name + ' (' + dym.sub + ')?', false, function () { confirmSuggestion(dym); }, 'suggest');
     cands.appendChild(cp);
@@ -1588,6 +1682,37 @@ function applyParse(text) {
   renderFlag(a);
   var level = (alerts.length || (a && a.overall === 'RED')) ? 'alert' : (infos.length ? 'info' : null);
   return { save: save, level: level };
+}
+// ---------- v15.2: category check ----------
+function subLabel(s) { return String(s || '').toLowerCase().replace(/\b([a-z])/g, function (m) { return m.toUpperCase(); }).replace(/\bEkfc\b/, 'EKFC').replace(/\bAdnoc\b/, 'ADNOC').replace(/\bViva\b/, 'ViVA'); }
+var VERIFY = 'VERIFY CATEGORY';
+function verifyText(c, sku) {
+  var here = subLabel(state.sub);
+  if (c.reason === 'brand') return VERIFY + ' — heard "' + subLabel(c.word) + '" but ' + here + ' is selected. Tap Keep or Switch.';
+  if (c.reason === 'nobrand') return VERIFY + ' — "juice" without "' + here.split(' ')[0] + '": is this a Fresh Juices item? Tap Keep or Switch.';
+  return VERIFY + ' — heard "' + c.word + '"' + (sku ? ' but ' + sku.name + ' (' + here + ') is not a ' + c.word : ', not found in ' + here) + '. Tap ' + (sku ? 'Keep or ' : '') + 'Switch.';
+}
+function dropVerify() {
+  state.catCheck = null; $('cands').innerHTML = '';
+  state.flag = { alerts: state.flag.alerts, infos: state.flag.infos.filter(function (t) { return t.indexOf(VERIFY) !== 0 && t.indexOf('More than one product') !== 0; }) };
+}
+function maybeSave() {                               // after the operator's tap: the normal auto-save rule, nothing looser
+  var a = state.assess, sku = activeSku();
+  if (state.flag.alerts.length || state.flag.infos.length || !sku || !sku.name || !a) return;
+  if (a.overall === 'GREEN' && a.brix === 'GREEN' && state.remarkSrc !== 'voice' && !state.voiceHold && $('op').value.trim()) logResult(true);
+}
+function keepCategory() { logDiag('category-kept', state.sub); dropVerify(); refresh(); maybeSave(); }
+function pickChip(s) { state.sku = s; dropVerify(); renderSkus(); refresh(); maybeSave(); }
+function switchCategory(c) {
+  var keep = { brix: $('brix').value, ph: $('ph').value, remark: $('remark').value, ca: $('ca').value, manual: state.manual,
+               remarkSrc: state.remarkSrc, voiceText: state.voiceText, voiceHold: state.voiceHold, autoPrefix: state.autoPrefix };
+  var mode = Object.keys(Q.MODES).filter(function (m) { return Q.MODES[m].streams.indexOf(c.stream) >= 0; })[0] || state.mode;
+  if (mode !== state.mode) { state.lastSub[state.mode] = state.sub; state.mode = mode; }
+  state.stream = c.stream; state.sub = c.sub; state.sku = c.sku;
+  ['brix', 'ph', 'remark', 'ca'].forEach(function (id) { $(id).value = keep[id]; });
+  state.manual = keep.manual; state.remarkSrc = keep.remarkSrc; state.voiceText = keep.voiceText; state.voiceHold = keep.voiceHold; state.autoPrefix = keep.autoPrefix;
+  logDiag('category-switched', c.sub + ' / ' + c.sku.name);
+  dropVerify(); renderMode(); renderSubs(); renderSkus(); refresh(); saveUi(); maybeSave();
 }
 function confirmSuggestion(s) {
   var drop = /^(Did you mean|Close match|Couldn't match|No SKU selected)/;     // v15: keep reading warnings, drop only the SKU prompts
@@ -1654,8 +1779,45 @@ function enqueue(row, assessment) {
 function removeSent(ids) {
   return commitStore(function (data) {
     data.queue = data.queue.filter(function (r) { return !ids[recordKey(r)]; });
-    data.recent.forEach(function (r) { if (ids[recordKey(r)]) r.sync = 'synced'; });
+    data.recent.forEach(function (r) { if (ids[recordKey(r)]) { r.sync = 'synced'; r.v9 = true; } });   // v9: confirmed by qc-v9 accepted_ids
   });
+}
+// ---------- v15.2: recover entries the old backend claimed but never wrote ----------
+var BACKEND_OK_KEY = 'bqp_backend_v9';
+function backendConfirmed() { try { return localStorage.getItem(BACKEND_OK_KEY) === '1'; } catch (e) { return false; } }
+function unconfirmed() { return getRecent().filter(function (r) { return r.sync === 'synced' && !r.v9 && r.id; }); }
+function renderRecover() {
+  var b = $('recoverBtn'); if (!b) return;
+  var n = backendConfirmed() ? unconfirmed().length : 0;
+  b.classList.toggle('hide', !n); b.textContent = 'Re-send ' + n + ' unconfirmed';
+}
+function rowFromRecent(r, op, now) {
+  var sku = Q.SKUS.filter(function (s) { return s.sub === r.sub && s.name === r.sku; })[0] || null;
+  var brix = r.brix === '' || r.brix === null || r.brix === undefined ? null : Number(r.brix);
+  var ph = r.ph === '' || r.ph === null || r.ph === undefined ? null : Number(r.ph);
+  var a = sku ? Q.assess(sku, brix, ph, false) : null;
+  var st = function (x) { return !a || x === 'MISSING' || x === 'NA' ? 'N/A' : x; };
+  return { Timestamp: r.ts, Date: String(r.ts || '').slice(0, 10), QA_Inspector: op, Batch_Code: r.batch || '',
+           Stream: r.stream, Sub_Category: r.sub, SKU_Name: r.sku,
+           Measured_Brix: brix === null ? '' : brix, Brix_Spec: a ? a.brixSpec : 'N/A', Brix_Status: st(a && a.brix),
+           Measured_pH: ph === null ? '' : ph, pH_Spec: a ? a.phSpec : 'N/A', pH_Status: st(a && a.ph),
+           Overall_Status: r.status || 'N/A', Organoleptic_Remark: r.remark || '',
+           Raw_Transcript: '[Recovered from tablet log ' + stamp(now) + ' - spoken transcript not stored; QA_Inspector = inspector at recovery]',
+           Record_ID: r.id };
+}
+async function recoverUnconfirmed() {
+  var op = $('op').value.trim();
+  if (!op) { $('op').classList.add('need'); $('op').focus(); toast('Enter the inspector name first.'); return; }
+  var list = unconfirmed(); if (!list.length) return;
+  var now = new Date(), rows = list.map(function (r) { return rowFromRecent(r, op, now); });
+  await commitStore(function (data) {
+    var have = {}; data.queue.forEach(function (q) { have[recordKey(q)] = 1; });
+    rows.forEach(function (row) { if (!have[row.Record_ID]) data.queue.push(row); });
+    data.recent.forEach(function (r) { if (rows.some(function (x) { return x.Record_ID === r.id; })) r.sync = 'queued'; });
+  });
+  logDiag('recover', rows.length + ' entries re-queued');
+  toast(rows.length + ' entries re-queued. The sheet skips any that already arrived.', 4000);
+  renderRecent(); renderNet(); flushQueue(false);
 }
 function renderNet() {
   var q = getQueue().length, online = navigator.onLine !== false;
@@ -1681,10 +1843,13 @@ async function postRecords(records) {
     var expected = records.map(recordKey);
     if (Array.isArray(j.accepted_ids)) {                                    // qc-v9+ script: per-record acknowledgement
       if (!expected.every(function (id) { return j.accepted_ids.indexOf(id) >= 0; })) throw new Error('Incomplete server acknowledgement; records retained');
-    } else if (j.written !== undefined || j.skipped !== undefined) {         // counts only
-      if (Number(j.written || 0) + Number(j.skipped || 0) !== records.length) throw new Error('Unverified server acknowledgement; records retained');
-    }                                                                        // older script: {status:'success'} is accepted (never blocks sync)
-    if (j.version !== 'qc-v9' && !postRecords.warned) { postRecords.warned = true; logDiag('backend-legacy', 'Server did not report qc-v9 - deploy extras/Code.gs for Record_ID dedupe'); }
+      try { localStorage.setItem(BACKEND_OK_KEY, '1'); } catch (e) {}
+    } else {
+      // v15.2: a plain {status:'success'} proved to be the old script answering without writing (23 Nov 2026).
+      // Never treat an unconfirmed reply as sent: keep the records on the tablet and say why.
+      logDiag('backend-legacy', 'Server did not confirm the records (not qc-v9). Records kept.');
+      throw new Error('Backend script is out of date (no qc-v9 confirmation). Records are kept on this tablet.');
+    }
     return j;
   }).finally(function () { clearTimeout(t); });
 }
@@ -1738,7 +1903,7 @@ function renderRecent() {
   var arr = getRecent();
   $('syncError').textContent = state.syncError || '';
   $('syncError').classList.toggle('hide', !state.syncError);
-  $('sumTotal').textContent = arr.length;
+  $('sumTotal').textContent = arr.length; renderRecover();
   $('sumPass').textContent = arr.filter(function (x) { return x.status === 'GREEN'; }).length;
   $('sumOut').textContent = arr.filter(function (x) { return x.status === 'RED'; }).length;
   $('sumUnsynced').textContent = arr.filter(function (x) { return x.sync !== 'synced'; }).length;
@@ -1840,6 +2005,7 @@ function init() {
   $('log').onclick = function () { logResult(false); };
   $('clearBtn').onclick = function () { state.sku = null; clearEntry(); renderSkus(); refresh(); };
   $('retry').onclick = function () { flushQueue(false); };
+  $('recoverBtn').onclick = function () { recoverUnconfirmed(); };
   $('confirmBtn').onclick = function () { if (!outOfTol(state.assess)) return; state.confirmedKey = readingKey(); logDiag('reading-confirmed', readingKey()); refresh(); };
   $('editBtn').onclick = function () { var a = state.assess, id = (a && a.brixBand === 'OUT') ? 'brix' : 'ph', el = $(id); el.focus(); try { el.select(); } catch (e) {} };
   ['net', 'qn'].forEach(function (id) {
@@ -1851,7 +2017,7 @@ function init() {
   document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') { renderNet(); flushQueue(true); } });
   setInterval(function () { flushQueue(true); }, CONFIG.RETRY_MS);
   try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {}); } catch (e) {}
-  logDiag('app-start', 'v15');
+  logDiag('app-start', 'v15.2');
   renderMode(); renderSubs(); renderSkus(); renderNet(); renderRecent(); refresh();
   initStore().then(function () {
     renderNet(); renderRecent(); refresh(); flushQueue(true);

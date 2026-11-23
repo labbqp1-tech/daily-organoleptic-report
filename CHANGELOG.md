@@ -1,5 +1,66 @@
 # Daily Organoleptic Report — CHANGELOG
 
+## v15.2 (23 Nov 2026): category-first matching + "Verify category"
+
+### Data-loss fix (found 23 Nov, 17:30): entries not reaching the Google Sheet
+- **Finding:** the live Apps Script at `/exec` is an **old script, not qc-v9**. Its `doGet` reports the headers `Shift, Operator` with no `QA_Inspector` or `Record_ID`, and its last row is 7. It answers a POST with a plain `{"status":"success"}` but writes nothing.
+- **Why the tablet showed "synced":** since v12 the app accepted that plain "success", marked the entries **synced** and removed them from the queue. The records survive only in the tablet's last-30 "Recently added" list.
+- **Fix 1, no silent loss:** a record counts as sent only when the server confirms it (`accepted_ids`, qc-v9). Any other "success" keeps the records queued and shows *"Backend script is out of date (no qc-v9 confirmation). Records are kept on this tablet."*
+- **Fix 2, recovery:**
+  - Once the backend has confirmed a record (qc-v9 deployed), a footer button **"Re-send N unconfirmed"** appears.
+  - It rebuilds each entry the old backend claimed but never stored, using the tablet's Recent list, and re-queues it. The Record_ID, product, category, Brix, pH, specs, statuses, overall status, remark and timestamp are the originals.
+  - `QA_Inspector` is the inspector entered at recovery time. `Raw_Transcript` is marked `[Recovered from tablet log …]`, because the spoken transcript was not stored.
+  - qc-v9 skips Record_IDs already in the sheet, so re-sending cannot duplicate.
+- **Tested end to end:** the bug was reproduced; v15.2 keeps the queue against the old backend; recovery wrote all lost entries field-for-field; a second tap wrote nothing.
+- **Backend still required:** deploy `extras/Code.gs` (qc-v9) as a new version of the same deployment, then run `migrateHeaders()` once. Without it, v15.2 keeps everything queued on the tablet, which is safe but not synced.
+
+Includes the v15.1 smoothie fix (v15.1 was built but never deployed). `#logic` and `#ui` only. No SKU, limit, category, payload key or `Code.gs` change.
+
+**Problem seen on the tablet**
+- In Smoothies, "mango smootty bricks 17.1" showed "Did you mean MANGO JUICE (FRESH JUICES)?" instead of selecting MANGO SMOOTHIE.
+- **Cause:** "smoothie" was a required word, "juice" was ignored, and a misheard "smootty" left the smoothie at half a match.
+
+**How product matching works now (agreed with Akhil, 23 Nov)**
+1. **Only the selected category is searched.** Cross-category "Did you mean" suggestions are gone.
+2. **The main word is enough.** "mango" in Smoothies gives MANGO SMOOTHIE, and "ginger" in Shots gives GINGER SHOT.
+   - The type words juice / smoothie / shot / water / milk are optional.
+   - Misheard forms are accepted: "smootty", "smoothy", "juices"…
+   - 163 of 179 single product words pick one product directly.
+3. **Look-alikes inside the same category** (16 words, e.g. "apple" in Fresh Juices = Green Apple / Apple Celery Ginger) show tap-to-pick buttons. Nothing is saved until one is tapped.
+4. **Verify category.** An amber message with **Keep \<category\>** and **Switch to \<category\> · \<product\>** buttons appears when the spoken words contradict the selected category:
+   - **Type word:** "mango **juice**" while in Smoothies; "mango **smoothie**" while in Fresh Juices.
+   - **Brand word:** "**Carrefour** orange" while in Fresh Juices (also Thrill, EKFC, ViVA, ADNOC, Talabat, Etihad, Calo, Ramadan).
+   - **Convention:** Fresh Juices items are said "\<fruit\> juice", and Thrill items "Thrill \<product\>". So "orange juice" without "Thrill" while in Thrill asks "is this a Fresh Juices item?". This applies only when Fresh Juices has that exact product.
+   - **EKFC is exempt**, at the owner's request: operators handle EKFC look-alikes manually.
+   - **Voice never switches the category. Only the operator's tap does.** Switch keeps the spoken readings and remark, and moves between Barakat and Private Labelling when needed.
+   - **While the message is shown:** nothing auto-saves, Log QC Result is locked, and the Confirm reading row and HOLD row stay hidden. After Keep or Switch, the reading is judged against the chosen product with the normal rules (auto-save if in spec; Confirm + corrective action if out of tolerance).
+   - Type words are read only from the product part of the sentence, before the first reading, so "…watery like juice" in a remark does not trigger it.
+5. Buttons are 44 px; no page scroll at 1280×800 or 1280×720.
+
+**Catalogue audit (138 products, 12 categories)**
+- **Placement:** every product is in the category of its source CSV. EKFC (9) and Talabat (2) smoothies and Talabat's GREEN JUICE SHOT are customer lines, and correctly stay there.
+- **Own category:** 311/311 spoken variants pick the right product (was 265/311).
+  - **Main word alone:** 163 direct, 16 look-alike buttons, 0 false category messages.
+  - **Natural type or brand word in the right category:** 271/276 with no message. The 5 that do get one are Thrill items with an identical Fresh Juices product said *without* "Thrill", which is the agreed convention.
+- **Wrong category:** 690 cases (product said with its type or brand word while another category is selected).
+  - **Verify message:** 666. Switch offers the exact intended product in 661.
+  - **Silent pick:** 17, all EKFC (agreed manual).
+  - **"Not found":** the rest.
+
+**Verification**
+
+| Suite | Result |
+|---|---|
+| Category / verify UI | 14/14 |
+| v15 behaviour cases | 27/27 |
+| Smoothie scenarios | 9/9 |
+| v12 regression | 14/15 (the intended Confirm lock) |
+| Service worker and upgrade | 11/11 |
+| Two-window lock | 1 send per record |
+| v15 → v15.2 update | queued record kept and synced |
+
+**Cache:** `daily-organoleptic-report-v15.2`.
+
 ## v15 (23 Nov 2026)
 
 Built from v14 "Horizon". The approved design is unchanged except where listed under **Visible changes**. The Google Sheet contract is unchanged: same 17 payload keys, same `Record_ID` format (`QC-YYYYMMDDhhmmss-<32 hex>`), same `extras/Code.gs` (qc-v9).

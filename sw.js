@@ -1,8 +1,8 @@
-/* Daily Organoleptic Report — service worker v15.
+/* Daily Organoleptic Report — service worker v15.2.
    Pages/JSON: network first, but a page navigation waits at most 3 s before the saved copy is shown
    (the network answer still refreshes the cache in the background). PNG: cache first.
    Only successful same-origin GETs are cached. Apps Script writes and all cross-origin traffic pass straight through. */
-const CACHE = 'daily-organoleptic-report-v15';
+const CACHE = 'daily-organoleptic-report-v15.2';
 const PREFIX = 'daily-organoleptic-report-';
 const SHELL = ['./', 'index.html'];                       // must install, or the update is abandoned and the old version keeps working
 const EXTRA = ['manifest.json', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
